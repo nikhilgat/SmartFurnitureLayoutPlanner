@@ -1,9 +1,7 @@
 import json
-from google import genai
-from typing import Dict, List
 import math
-from barrierfreiFT.extract_guidelines import extract_design_guidelines_text
-
+from google import genai
+from typing import Dict, List, Tuple, Any
 
 class RoomLayoutOptimizer:
     def __init__(self, api_key: str):
@@ -55,6 +53,35 @@ class RoomLayoutOptimizer:
                 clearance_reqs = constraints['furniture_specific_clearances'][furniture_type]
                 violations.extend(self._check_furniture_clearances(item, clearance_reqs, furniture, room_width, room_height))
         
+        # Check functional relationships
+        functional_pairs = constraints.get('furniture_relationships', {}).get('functional_pairs', {})
+        for main_type, rels in functional_pairs.items():
+            mains = [item for item in furniture if item['name'] == main_type]
+            if not mains:
+                continue
+            required_partner_types = rels.get('required_partners', [])
+            if not required_partner_types:
+                continue
+            partners = [item for item in furniture if item['name'] in required_partner_types]
+            for partner in partners:
+                min_dist_to_main = min(self._calculate_center_distance(partner, main) for main in mains)
+                if 'max_distance' in rels and min_dist_to_main > rels['max_distance']:
+                    violations.append(f"{partner['name']} too far from nearest {main_type} ({min_dist_to_main:.1f}cm > {rels['max_distance']}cm)")
+                if 'min_distance' in rels and min_dist_to_main < rels['min_distance']:
+                    violations.append(f"{partner['name']} too close to nearest {main_type} ({min_dist_to_main:.1f}cm < {rels['min_distance']}cm)")
+        
+        # Check proximity requirements for same-room pairs
+        proximity_reqs = constraints.get('furniture_relationships', {}).get('proximity_requirements', {}).get('same_room_pairs', {})
+        for pair_key, req in proximity_reqs.items():
+            type1, type2 = pair_key.split('-')
+            items1 = [i for i in furniture if i['name'] == type1]
+            items2 = [i for i in furniture if i['name'] == type2]
+            for item1 in items1:
+                for item2 in items2:
+                    dist = self._calculate_center_distance(item1, item2)
+                    if 'max_distance' in req and dist > req['max_distance']:
+                        violations.append(f"{type1} and {type2} too far apart ({dist:.1f}cm > {req['max_distance']}cm)")
+        
         return violations
     
     def _calculate_minimum_distance(self, item1: Dict, item2: Dict) -> float:
@@ -72,6 +99,14 @@ class RoomLayoutOptimizer:
         
         return max(dx, dy)  # Return the minimum clearance distance
     
+    def _calculate_center_distance(self, item1: Dict, item2: Dict) -> float:
+        """Calculate distance between centers of two furniture items"""
+        cx1 = item1['x'] + item1['width'] / 2
+        cy1 = item1['y'] + item1['height'] / 2
+        cx2 = item2['x'] + item2['width'] / 2
+        cy2 = item2['y'] + item2['height'] / 2
+        return math.sqrt((cx1 - cx2)**2 + (cy1 - cy2)**2)
+    
     def _check_furniture_clearances(self, item: Dict, clearance_reqs: Dict, all_furniture: List[Dict], room_width: int, room_height: int) -> List[str]:
         """Check if furniture item meets clearance requirements"""
         violations = []
@@ -88,9 +123,11 @@ class RoomLayoutOptimizer:
     
     def _calculate_front_space(self, item: Dict, all_furniture: List[Dict], room_width: int, room_height: int) -> float:
         """Calculate available space in front of furniture item"""
+        # Simplified calculation - assumes front is towards positive Y direction
         item_front_y = item['y'] + item['height']
         space_to_wall = room_height - item_front_y
         
+        # Check for other furniture blocking the front
         min_space = space_to_wall
         for other_item in all_furniture:
             if other_item == item:
@@ -108,96 +145,67 @@ class RoomLayoutOptimizer:
     
     def create_optimization_prompt(self, layout: Dict, constraints: Dict, violations: List[str]) -> str:
         """
-        Create a detailed prompt for the AI model to optimize the layout.
+        Create a detailed prompt for the AI model to optimize the layout
+        
+        Args:
+            layout (Dict): Current room layout
+            constraints (Dict): Barrier-free constraints
+            violations (List[str]): Current constraint violations
+            
+        Returns:
+            str: Formatted prompt for the AI model
         """
-        # Start with base prompt
+        functional_pairs_json = json.dumps(constraints.get('furniture_relationships', {}).get('functional_pairs', {}), indent=2)
         prompt = f"""
-    You are an expert in barrier-free (accessible) interior design. Optimize this room layout to fix accessibility violations.
+You are an expert in barrier-free (accessible) interior design. Optimize this room layout to fix accessibility violations.
 
-    CURRENT ROOM LAYOUT:
-    {json.dumps(layout, indent=2)}
+CURRENT ROOM LAYOUT:
+{json.dumps(layout, indent=2)}
 
-    ACCESSIBILITY VIOLATIONS TO FIX:
-    {chr(10).join(f"- {violation}" for violation in violations)}
+ACCESSIBILITY VIOLATIONS TO FIX:
+{chr(10).join(f"- {violation}" for violation in violations)}
 
-    CONSTRAINTS TO FOLLOW:
-    - Minimum path width: {constraints['room_constraints']['min_path_width']}cm between all furniture
-    - Furniture clearances as specified in constraints
-    - Room boundaries: {layout['room']['width']}cm x {layout['room']['height']}cm
-    - All furniture must stay within room bounds
-    """
+CONSTRAINTS TO FOLLOW:
+- Minimum path width: {constraints['room_constraints']['min_path_width']}cm between all furniture
+- Furniture clearances as specified in constraints
+- Room boundaries: {layout['room']['width']}cm x {layout['room']['height']}cm
+- All furniture must stay within room bounds
+- Functional relationships: Keep related furniture close and properly oriented as per:
+{functional_pairs_json}
 
-        prompt += extract_design_guidelines_text(constraints)
+INSTRUCTIONS:
+1. Move furniture to resolve ALL violations listed above
+2. Maintain functional groups and relationships: e.g., place chairs around and facing tables, bedside tables adjacent to beds, wardrobes near beds.
+3. Orient furniture appropriately: e.g., chairs facing tables, sofas facing TV cabinets.
+4. Maintain minimum {constraints['room_constraints']['min_path_width']}cm clearance between items
+5. Keep all furniture within room boundaries
+6. Use only rotation values: 0, 90, 180, 270
+7. Return ONLY valid JSON - no explanations or markdown
 
-        # Append the instructions and format
-        prompt += f"""
-    INSTRUCTIONS:
-    1. Move furniture to resolve ALL violations listed above
-    2. Maintain minimum clearance
-    3. Keep all furniture within room boundaries
-    4. Use only rotation values: 0, 90, 180, 270
-    5. Return ONLY valid JSON - no explanations or markdown
-
-    REQUIRED OUTPUT FORMAT - RETURN EXACTLY THIS STRUCTURE:
+REQUIRED OUTPUT FORMAT - RETURN EXACTLY THIS STRUCTURE:
+{{
+  "room": {{
+    "width": {layout['room']['width']},
+    "height": {layout['room']['height']}
+  }},
+  "furniture": [
     {{
-    "room": {{
-        "width": {layout['room']['width']},
-        "height": {layout['room']['height']}
-    }},
-    "furniture": [
-        {{
-        "name": "Sofa",
-        "x": 100,
-        "y": 100,
-        "width": 200,
-        "height": 90,
-        "zHeight": "85",
-        "rotation": 0
-        }}
-    ],
-    "openings": []
+      "name": "Sofa",
+      "x": 100,
+      "y": 100,
+      "width": 200,
+      "height": 90,
+      "zHeight": "85",
+      "rotation": 0
     }}
+  ],
+  "openings": []
+}}
 
-    Return the optimized layout JSON now:
-    """
+Return the optimized layout JSON now:"""
         return prompt
-
-        ...
-        prompt += f"""
-    ACCESSIBILITY VIOLATIONS TO FIX:
-    {chr(10).join(f"- {violation}" for violation in violations)}
-
-    CONSTRAINTS TO FOLLOW:
-    - Minimum path width: {constraints['room_constraints']['min_path_width']}cm between all furniture
-    - Furniture clearances as specified in constraints
-    - Room boundaries: {layout['room']['width']}cm x {layout['room']['height']}cm
-    - All furniture must stay within room bounds
-    """
-        prompt += extract_design_guidelines_text(constraints)
-
-        prompt += """
-    INSTRUCTIONS:
-    1. Move furniture to resolve ALL violations listed above
-    2. Maintain minimum clearance
-    3. Keep all furniture within room boundaries
-    4. Use only rotation values: 0, 90, 180, 270
-    5. Return ONLY valid JSON - no explanations or markdown
-
-    REQUIRED OUTPUT FORMAT - RETURN EXACTLY THIS STRUCTURE:
-    {
-    "room": {
-        "width": %d,
-        "height": %d
-    },
-    "furniture": [...]
-    }
-    Return the optimized layout JSON now:
-    """ % (layout['room']['width'], layout['room']['height'])
-
-        return prompt
- 
     
-    def optimize_layout(self, layout: Dict, constraints: Dict, max_iterations: int = 3) -> Dict:
+    def optimize_layout(self, layout: Dict, constraints: Dict, max_iterations: int = 5) -> Dict:
         """
         Optimize room layout using AI model
         
@@ -354,10 +362,10 @@ def main():
     optimizer = RoomLayoutOptimizer(API_KEY)
     
     # Specify your file paths here
-    constraints_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\merged_barrier_free_constraints.json"
-    layout_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\room-layout.json"
-    output_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\optimized_room_layout.json"
-    report_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\optimization_report.json"
+    constraints_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\merged_barrier_free_constraints.json"
+    layout_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\room-layout.json"
+    output_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\optimized_room_layout.json"
+    report_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\optimization_report.json"
     
     # Load constraints and layout
     constraints = optimizer.load_constraints(constraints_path)

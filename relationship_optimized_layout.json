@@ -1,0 +1,66 @@
+{
+  "method": "Relationship-Aware Deterministic Layout",
+  "room": {
+    "width": 800,
+    "height": 600
+  },
+  "furniture": [
+    {
+      "name": "Bed",
+      "x": 0,
+      "y": 300,
+      "rotation": 0,
+      "width": 180,
+      "height": 200
+    },
+    {
+      "name": "Wardrobe",
+      "x": 0,
+      "y": 185.0,
+      "rotation": 0,
+      "width": 150,
+      "height": 60
+    },
+    {
+      "name": "Bedside Table",
+      "x": 235.0,
+      "y": 300,
+      "rotation": 0,
+      "width": 45,
+      "height": 45
+    },
+    {
+      "name": "Table",
+      "x": 0,
+      "y": 0,
+      "rotation": 0,
+      "width": 120,
+      "height": 70
+    },
+    {
+      "name": "Chair",
+      "x": 200,
+      "y": 10,
+      "rotation": 270,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "name": "Sofa",
+      "x": 600,
+      "y": 0,
+      "rotation": 0,
+      "width": 200,
+      "height": 90
+    }
+  ],
+  "openings": [],
+  "features": [
+    "Functional relationship optimization",
+    "Wheelchair accessibility compliance",
+    "Deterministic and repeatable results",
+    "Zone-based furniture grouping",
+    "Partner-aware placement"
+  ],
+  "note": "This layout prioritizes functional relationships between furniture items"
+}

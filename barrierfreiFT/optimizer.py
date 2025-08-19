@@ -320,10 +320,10 @@ def main():
     optimizer = RoomLayoutOptimizer(API_KEY)
     
     # Specify your file paths here
-    constraints_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\barrier_free_constraints.json"
-    layout_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\room-layout.json"
-    output_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\optimized_room_layout.json"
-    report_path = r"C:\Users\nikhi\Documents\Algorithms\barrierfreiFT\optimization_report.json"
+    constraints_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\merged_barrier_free_constraints.json"
+    layout_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\room-layout.json"
+    output_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\optimized_room_layout.json"
+    report_path = r"C:\Users\nikhi\Documents\SmartFurnitureLayoutPlanner\barrierfreiFT\optimization_report.json"
     
     # Load constraints and layout
     constraints = optimizer.load_constraints(constraints_path)

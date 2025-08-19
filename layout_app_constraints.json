@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "version": "2025-08-18-minimal-bedroom-living",
+    "notes": "Curated to match app catalogs only; units are centimeters. Keep a single global pixel-to-cm scale in your renderer so these clearances are enforced geometrically.",
+    "units": { "length": "cm", "angle": "degrees", "illumination": "lux" }
+  },
+
+  "rotation_angles": [0, 90, 180, 270],
+
+  "validation_rules": {
+    "no_overlap": true,
+    "respect_fixed_items": true,
+    "ensure_reachability": true,
+    "check_turning_circles": true,
+    "continuous_accessible_path": true,
+    "allowed_tolerances_cm": 2
+  },
+
+  "clearance_requirements": {
+    "general_clearance": 90,
+    "path_width": 120,
+    "turning_area_regular": [120, 120],
+    "turning_area_wheelchair": [150, 150]
+  },
+
+  "room_constraints": {
+    "min_passage_width": 90,
+    "min_path_width": 120,
+    "min_corridor_width": 150,
+    "min_door_width": 90,
+    "min_door_height": 205,
+    "door_handle_height": [85, 95],
+    "threshold_max_height": 1.3,
+    "min_window_height": 60,
+    "window_handle_height": [85, 105],
+    "min_room_height": 220
+  },
+
+  "door_maneuvering_clearances": {
+    "units": "cm",
+    "approaches": [
+      { "name": "front_pull", "perpendicular_depth": 152, "latch_side_extension": 46 },
+      { "name": "front_push_no_closer", "perpendicular_depth": 122, "latch_side_extension": 0 },
+      { "name": "hinge_side_pull", "perpendicular_depth": 152, "latch_side_extension": 91 },
+      { "name": "latch_side_pull", "perpendicular_depth": 122, "latch_side_extension": 61 }
+    ]
+  },
+
+  "furniture_object_schema": {
+    "required_fields": [
+      "id","type","width_cm","depth_cm","height_cm","x_cm","y_cm","rotation_deg","fixed"
+    ],
+    "optional_fields": [
+      "clearance_front_cm","clearance_sides_cm","transfer_side","mounting_height_cm","operable_force_N","notes"
+    ]
+  },
+
+  "furniture_specific_clearances": {
+    "Bed": {
+      "left_access": 120,
+      "right_access": 120,
+      "front_clearance": 90,
+      "notes": "Aim for at least one 120 cm transfer side; both sides preferred."
+    },
+    "Bedside Table": {
+      "adjacent_to": "Bed",
+      "max_distance": 30,
+      "front_clearance": 60
+    },
+    "Wardrobe": {
+      "front_clearance": 150,
+      "door_swing_clearance": 100
+    },
+    "Sofa": {
+      "front_clearance": 120,
+      "behind_clearance_for_circulation": 75
+    },
+    "Study Table": {
+      "front_clearance": 120,
+      "under_rideable_width": 80,
+      "under_rideable_depth": 48,
+      "under_rideable_height_min": 67
+    },
+    "Study Chair": {
+      "front_clearance": 90,
+      "pushback_clearance": 90
+    }
+  },
+
+  "bedroom_transfer": {
+    "side_clear_space_preferred": 120,
+    "end_clear_space_min": 90,
+    "bed_height_recommended": [46, 55],
+    "notes": "Side clear space aligns with wheelchair or walker transfers."
+  },
+
+  "ergonomic_constraints": {
+    "seating_ergonomics": {
+      "chair_seat_height": [40, 50],
+      "desk_height": [70, 76],
+      "knee_clearance_min": 63,
+      "legroom_depth_min": 40
+    },
+    "reach_distances": {
+      "comfortable_forward_reach": 60,
+      "maximum_forward_reach": 75,
+      "comfortable_side_reach": 45,
+      "maximum_side_reach": 60
+    },
+    "visual_comfort": {
+      "computer_screen_distance": [50, 70],
+      "reading_light_distance": [35, 50]
+    }
+  },
+
+  "accessibility_enhancements": {
+    "wheelchair_specific": {
+      "under_table_clearance": { "height": 67, "width": 80, "depth": 48 },
+      "approach_clearances": { "frontal": 76, "parallel": 122 },
+      "reach_ranges": { "high_forward": 122, "low_forward": 38, "high_side": 137, "low_side": 23 },
+      "turning_space_diameter": 150
+    },
+    "universal_design": {
+      "door_width": 90,
+      "hallway_width": 120,
+      "turning_space": 150,
+      "ramp_slope_max": 8.33
+    }
+  },
+
+  "furniture_relationships": {
+    "functional_pairs": {
+      "Bed": {
+        "required_partners": ["Bedside Table"],
+        "optional_partners": ["Wardrobe"],
+        "max_distance": 80,
+        "min_distance": 0,
+        "orientation": "adjacent",
+        "description": "Bedside table within arm’s reach; do not intrude on transfer side."
+      },
+      "Study Table": {
+        "required_partners": ["Study Chair"],
+        "optional_partners": [],
+        "max_distance": 60,
+        "min_distance": 0,
+        "orientation": "facing",
+        "description": "Chair should slide under table; maintain approach space."
+      }
+    },
+    "proximity_requirements": {
+      "same_room_pairs": {
+        "Bed-Wardrobe": { "max_distance": 300, "description": "Wardrobe in same room; preserve clear route." }
+      },
+      "circulation_requirements": {
+        "around_bed": 60,
+        "behind_seating": 75,
+        "desk_chair_pullout": 90,
+        "wardrobe_door_swing": 100,
+        "general_walkway": 90
+      }
+    },
+    "orientation_rules": {
+      "facing_relationships": ["Study Chair-Study Table"],
+      "adjacent_relationships": ["Bedside Table-Bed"]
+    },
+    "room_zones": {
+      "sleeping_zone": {
+        "primary_furniture": ["Bed"],
+        "secondary_furniture": ["Bedside Table","Wardrobe"],
+        "optional_furniture": [],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "dimmable",
+          "circulation_priority": "medium"
+        }
+      },
+      "work_zone": {
+        "primary_furniture": ["Study Table"],
+        "secondary_furniture": ["Study Chair"],
+        "optional_furniture": [],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "task-focused",
+          "circulation_priority": "low"
+        }
+      },
+      "living_zone": {
+        "primary_furniture": ["Sofa"],
+        "secondary_furniture": [],
+        "optional_furniture": [],
+        "zone_characteristics": {
+          "privacy_level": "medium",
+          "noise_tolerance": "medium",
+          "lighting_needs": "variable",
+          "circulation_priority": "high"
+        }
+      }
+    }
+  },
+
+  "architectural_elements": {
+    "Door": {
+      "type": "door",
+      "min_clear_width": 90,
+      "maneuvering_clearances_ref": "door_maneuvering_clearances"
+    },
+    "Window": {
+      "type": "window",
+      "min_sill_height": 60,
+      "handle_height": [85, 105]
+    }
+  },
+
+  "hazard_avoidance": {
+    "no_rugs_on_primary_paths": true,
+    "night_lighting_on_primary_path": true
+  },
+
+  "llm_integration": {
+    "action_space": {
+      "translate_step_cm": 5,
+      "rotate_angles": [0, 90, 180, 270],
+      "allowed_operations": ["translate","rotate","swap","assign_zone"]
+    },
+    "hard_constraints": [
+      "room_constraints.min_door_width",
+      "clearance_requirements.turning_area_wheelchair",
+      "validation_rules.no_overlap",
+      "validation_rules.continuous_accessible_path",
+      "furniture_specific_clearances.Bed.left_access",
+      "furniture_specific_clearances.Wardrobe.front_clearance"
+    ],
+    "soft_constraints_with_weights": {
+      "minimize_travel_distance_bed_to_door": 0.4,
+      "keep_bed_transfer_side_clear": 0.5,
+      "maximize_natural_light_at_study": 0.2,
+      "avoid_back_to_door_for_sofa": 0.2,
+      "maintain_symmetry_where_possible": 0.05
+    },
+    "connectivity_goals": [
+      { "path": ["Bed","Door"], "min_width": 90 },
+      { "path": ["Bed","Wardrobe"], "min_width": 90 },
+      { "path": ["Study Table","Door"], "min_width": 90 },
+      { "path": ["Sofa","Door"], "min_width": 90 }
+    ],
+    "output_expectations": {
+      "return_format": "json",
+      "include_violation_list": true,
+      "include_path_polylines": true
+    }
+  }
+}

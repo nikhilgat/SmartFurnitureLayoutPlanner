@@ -1,0 +1,971 @@
+{
+  "clearance_requirements": {
+    "general_clearance": 90,
+    "path_width": 120,
+    "wheelchair_encounter_area": [
+      180,
+      180
+    ],
+    "turning_area_regular": [
+      120,
+      120
+    ],
+    "turning_area_wheelchair": [
+      150,
+      150
+    ],
+    "ramp_landing": [
+      150,
+      150
+    ],
+    "ramp_intermediate_landing": [
+      150,
+      120
+    ],
+    "elevator_waiting_area": [
+      150,
+      150
+    ],
+    "wheelchair_storage_area": [
+      180,
+      150
+    ],
+    "wheelchair_storage_maneuvering": [
+      180,
+      150
+    ]
+  },
+  "furniture_specific_clearances": {
+    "Bed": {
+      "left_access": 150,
+      "right_access": 120,
+      "front_clearance": 150
+    },
+    "Wardrobe": {
+      "front_clearance": 150
+    },
+    "Sofa": {
+      "front_clearance": 150
+    },
+    "Armchair": {
+      "front_clearance": 150
+    },
+    "Coffee Table": {
+      "surround_clearance": 150,
+      "under_rideable_width": 90,
+      "under_rideable_depth": 55,
+      "max_height": 80
+    },
+    "TV Cabinet": {
+      "front_clearance": 150
+    },
+    "Kitchen Counter": {
+      "front_clearance": 150,
+      "under_rideable_width": 90,
+      "under_rideable_depth": 55,
+      "max_height": 80
+    },
+    "Sink": {
+      "front_clearance": 150,
+      "under_rideable_width": 90,
+      "under_rideable_depth": 55,
+      "max_height": 80
+    },
+    "Stove": {
+      "front_clearance": 150
+    },
+    "Refrigerator": {
+      "front_clearance": 150
+    },
+    "Toilet": {
+      "front_clearance": 150,
+      "access_side_clearance": [
+        90,
+        70
+      ],
+      "opposite_side_clearance": [
+        30,
+        70
+      ],
+      "lateral_distance_to_wall": 20,
+      "seat_height": [
+        46,
+        48
+      ],
+      "grab_bar_spacing": [
+        65,
+        70
+      ],
+      "grab_bar_height_above_seat": 28,
+      "grab_bar_protrusion_beyond_edge": 15,
+      "lateral_transfer_space": [
+        90,
+        70
+      ]
+    },
+    "Washbasin": {
+      "front_clearance": 150,
+      "under_rideable_width": 90,
+      "under_rideable_depth": 55,
+      "max_height": 80,
+      "fitting_max_distance_from_edge": 40,
+      "mirror_height": 100
+    },
+    "Shower": {
+      "front_clearance": 150,
+      "area": [
+        150,
+        150
+      ],
+      "seat_height": [
+        46,
+        48
+      ],
+      "grab_bar_height_above_seat": 28,
+      "grab_bar_spacing": [
+        65,
+        70
+      ],
+      "grab_bar_protrusion_beyond_seat": 15,
+      "threshold_max_height": 1.3
+    },
+    "Bathtub": {
+      "front_clearance": 150
+    },
+    "Service Counter": {
+      "front_clearance": 150,
+      "under_rideable_width": 90,
+      "under_rideable_depth": 55,
+      "max_height": 80
+    },
+    "Wheelchair Seating (Event Space)": {
+      "frontal_approach_clearance": [
+        130,
+        150
+      ],
+      "lateral_approach_clearance": [
+        150,
+        90
+      ],
+      "adjacent_traffic_area_width": 90
+    },
+    "Changing Cabin": {
+      "lying_surface": [
+        180,
+        90
+      ],
+      "lying_surface_height": [
+        46,
+        48
+      ],
+      "front_clearance": 150
+    }
+  },
+  "room_constraints": {
+    "min_passage_width": 90,
+    "min_path_width": 120,
+    "min_corridor_width": 150,
+    "min_door_width": 90,
+    "min_door_height": 205,
+    "max_door_jamb_depth": 26,
+    "min_window_height": 60,
+    "window_handle_height": [
+      85,
+      105
+    ],
+    "window_operating_force": [
+      30,
+      5
+    ],
+    "min_room_height": 220,
+    "min_door_passage_height": 200,
+    "min_ramp_width": 120,
+    "max_ramp_slope": 6,
+    "max_ramp_length": 600,
+    "elevator_cabin_turning": [
+      140,
+      200
+    ],
+    "elevator_cabin_no_turning": [
+      110,
+      140
+    ],
+    "elevator_access_width": 90,
+    "control_panel_height": [
+      85,
+      110
+    ],
+    "control_panel_lateral_clearance": 50,
+    "stair_rise": 17,
+    "stair_tread": 29,
+    "handrail_height": [
+      85,
+      90
+    ],
+    "handrail_extension": 30,
+    "handrail_diameter": [
+      3,
+      4.5
+    ],
+    "sidewalk_width_15m": 150,
+    "sidewalk_width_6m": 120,
+    "max_sidewalk_slope_longitudinal": 3,
+    "max_sidewalk_slope_cross": 2.5,
+    "door_handle_height": [
+      85,
+      95
+    ],
+    "door_operating_force_N": 22.2,
+    "light_switch_height": [
+      85,
+      110
+    ],
+    "outlet_height_min": 40,
+    "threshold_max_height": 1.3,
+    "window_operating_force_note": "Assumed format [force_N, torque_Nm]; verify manufacturer data"
+  },
+  "furniture_relationships": {
+    "functional_pairs": {
+      "Dining Table": {
+        "required_partners": [
+          "Dining Chair",
+          "Chair"
+        ],
+        "optional_partners": [
+          "Sideboard",
+          "China Cabinet",
+          "Bar Cart"
+        ],
+        "max_distance": 150,
+        "min_distance": 60,
+        "orientation": "facing",
+        "description": "Chairs should face the table with adequate legroom"
+      },
+      "Coffee Table": {
+        "required_partners": [
+          "Sofa",
+          "Sectional",
+          "Armchair"
+        ],
+        "optional_partners": [
+          "Ottoman",
+          "Side Table"
+        ],
+        "max_distance": 100,
+        "min_distance": 40,
+        "orientation": "parallel",
+        "description": "Should be within comfortable reach of seating"
+      },
+      "Study Table": {
+        "required_partners": [
+          "Office Chair",
+          "Study Chair"
+        ],
+        "optional_partners": [
+          "Bookshelf",
+          "Filing Cabinet",
+          "Desk Lamp"
+        ],
+        "max_distance": 120,
+        "min_distance": 60,
+        "orientation": "facing",
+        "description": "Chair should slide under desk comfortably"
+      },
+      "Bed": {
+        "required_partners": [
+          "Bedside Table",
+          "Nightstand"
+        ],
+        "optional_partners": [
+          "Wardrobe",
+          "Dresser",
+          "Bench"
+        ],
+        "max_distance": 80,
+        "min_distance": 30,
+        "orientation": "adjacent",
+        "description": "Bedside tables should be within arm's reach"
+      },
+      "Sofa": {
+        "required_partners": [
+          "Coffee Table",
+          "Side Table"
+        ],
+        "optional_partners": [
+          "TV Cabinet",
+          "Entertainment Center",
+          "Floor Lamp"
+        ],
+        "max_distance": 120,
+        "min_distance": 40,
+        "orientation": "parallel",
+        "description": "Coffee table should be accessible without standing"
+      },
+      "TV Cabinet": {
+        "required_partners": [
+          "Sofa",
+          "Sectional",
+          "Armchair"
+        ],
+        "optional_partners": [
+          "Side Table",
+          "Floor Lamp"
+        ],
+        "max_distance": 350,
+        "min_distance": 180,
+        "orientation": "facing",
+        "description": "Seating should face TV at comfortable viewing distance"
+      },
+      "Kitchen Island": {
+        "required_partners": [
+          "Bar Stool",
+          "Counter Stool"
+        ],
+        "optional_partners": [
+          "Pendant Light"
+        ],
+        "max_distance": 120,
+        "min_distance": 60,
+        "orientation": "facing",
+        "description": "Stools should fit under overhang with legroom"
+      },
+      "Vanity": {
+        "required_partners": [
+          "Vanity Chair",
+          "Stool"
+        ],
+        "optional_partners": [
+          "Mirror",
+          "Vanity Light"
+        ],
+        "max_distance": 100,
+        "min_distance": 50,
+        "orientation": "facing",
+        "description": "Chair should slide under vanity surface"
+      },
+      "Bookshelf": {
+        "required_partners": [
+          "Reading Chair",
+          "Armchair"
+        ],
+        "optional_partners": [
+          "Side Table",
+          "Floor Lamp",
+          "Ottoman"
+        ],
+        "max_distance": 200,
+        "min_distance": 80,
+        "orientation": "adjacent",
+        "description": "Seating should be positioned for comfortable book access"
+      },
+      "Bar Cart": {
+        "required_partners": [
+          "Lounge Chair",
+          "Sofa"
+        ],
+        "optional_partners": [
+          "Side Table"
+        ],
+        "max_distance": 180,
+        "min_distance": 60,
+        "orientation": "adjacent",
+        "description": "Should be accessible from main seating area"
+      }
+    },
+    "proximity_requirements": {
+      "same_room_pairs": {
+        "Bed-Wardrobe": {
+          "max_distance": 300,
+          "description": "Wardrobe should be in bedroom but not necessarily adjacent"
+        },
+        "Sofa-Floor Lamp": {
+          "max_distance": 200,
+          "description": "Floor lamp should provide adequate reading light"
+        },
+        "Dining Table-Sideboard": {
+          "max_distance": 250,
+          "description": "Sideboard should be accessible during meals"
+        }
+      },
+      "circulation_requirements": {
+        "around_dining_table": 90,
+        "behind_seating": 75,
+        "around_bed": 60,
+        "desk_chair_pullout": 90,
+        "wardrobe_door_swing": 100,
+        "general_walkway": 90
+      }
+    },
+    "orientation_rules": {
+      "facing_relationships": [
+        "Study Chair - Study Table",
+        "Sofa-TV Cabinet",
+        "Armchair-Coffee Table",
+        "Office Chair-Desk",
+        "Bar Stool-Kitchen Island"
+      ],
+      "adjacent_relationships": [
+        "Bedside Table-Bed",
+        "Side Table-Sofa",
+        "Floor Lamp-Reading Chair"
+      ],
+      "parallel_relationships": [
+        "Coffee Table-Sofa",
+        "Bench-Dining Table",
+        "Ottoman-Sectional"
+      ]
+    },
+    "room_zones": {
+      "sleeping_zone": {
+        "primary_furniture": [
+          "Bed",
+          "King Bed",
+          "Queen Bed",
+          "Twin Bed"
+        ],
+        "secondary_furniture": [
+          "Bedside Table",
+          "Nightstand",
+          "Dresser"
+        ],
+        "optional_furniture": [
+          "Wardrobe",
+          "Armchair",
+          "Bench",
+          "Vanity"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "dimmable",
+          "circulation_priority": "low"
+        }
+      },
+      "living_zone": {
+        "primary_furniture": [
+          "Sofa",
+          "Sectional",
+          "Loveseat"
+        ],
+        "secondary_furniture": [
+          "Coffee Table",
+          "Side Table",
+          "TV Cabinet"
+        ],
+        "optional_furniture": [
+          "Armchair",
+          "Ottoman",
+          "Floor Lamp",
+          "Bookshelf"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "medium",
+          "noise_tolerance": "medium",
+          "lighting_needs": "variable",
+          "circulation_priority": "high"
+        }
+      },
+      "dining_zone": {
+        "primary_furniture": [
+          "Dining Table",
+          "Kitchen Table"
+        ],
+        "secondary_furniture": [
+          "Dining Chair",
+          "Chair"
+        ],
+        "optional_furniture": [
+          "Sideboard",
+          "China Cabinet",
+          "Bar Cart"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "low",
+          "noise_tolerance": "high",
+          "lighting_needs": "bright",
+          "circulation_priority": "high"
+        }
+      },
+      "work_zone": {
+        "primary_furniture": [
+          "Desk",
+          "Office Desk",
+          "Writing Desk"
+        ],
+        "secondary_furniture": [
+          "Office Chair",
+          "Desk Chair"
+        ],
+        "optional_furniture": [
+          "Bookshelf",
+          "Filing Cabinet",
+          "Desk Lamp"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "task-focused",
+          "circulation_priority": "low"
+        }
+      },
+      "storage_zone": {
+        "primary_furniture": [
+          "Wardrobe",
+          "Closet",
+          "Armoire"
+        ],
+        "secondary_furniture": [
+          "Dresser",
+          "Chest of Drawers"
+        ],
+        "optional_furniture": [
+          "Bench",
+          "Mirror"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "medium",
+          "noise_tolerance": "high",
+          "lighting_needs": "bright",
+          "circulation_priority": "medium"
+        }
+      },
+      "kitchen_zone": {
+        "primary_furniture": [
+          "Kitchen Counter",
+          "Kitchen Island"
+        ],
+        "secondary_furniture": [
+          "Bar Stool",
+          "Counter Stool"
+        ],
+        "optional_furniture": [
+          "Bar Cart",
+          "Kitchen Table"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "low",
+          "noise_tolerance": "high",
+          "lighting_needs": "bright",
+          "circulation_priority": "high"
+        }
+      }
+    }
+  },
+  "ergonomic_constraints": {
+    "seating_ergonomics": {
+      "chair_seat_height": [
+        40,
+        50
+      ],
+      "table_height": [
+        72,
+        76
+      ],
+      "desk_height": [
+        70,
+        76
+      ],
+      "counter_height": [
+        85,
+        95
+      ],
+      "bar_height": [
+        100,
+        110
+      ],
+      "knee_clearance_min": 63,
+      "thigh_clearance_min": 20,
+      "legroom_depth_min": 40
+    },
+    "reach_distances": {
+      "comfortable_forward_reach": 60,
+      "maximum_forward_reach": 75,
+      "comfortable_side_reach": 45,
+      "maximum_side_reach": 60,
+      "comfortable_upward_reach": 140,
+      "maximum_upward_reach": 180
+    },
+    "visual_comfort": {
+      "tv_viewing_distance": {
+        "32_inch": [
+          160,
+          240
+        ],
+        "42_inch": [
+          210,
+          320
+        ],
+        "55_inch": [
+          275,
+          410
+        ],
+        "65_inch": [
+          325,
+          490
+        ],
+        "75_inch": [
+          375,
+          560
+        ]
+      },
+      "computer_screen_distance": [
+        50,
+        70
+      ],
+      "reading_light_distance": [
+        35,
+        50
+      ]
+    }
+  },
+  "accessibility_enhancements": {
+    "wheelchair_specific": {
+      "under_table_clearance": {
+        "height": 67,
+        "width": 80,
+        "depth": 48
+      },
+      "approach_clearances": {
+        "frontal": 76,
+        "parallel": 122,
+        "note": "Minimum clear floor space for approaches (approx. 30x48 in)."
+      },
+      "reach_ranges": {
+        "high_forward": 122,
+        "low_forward": 38,
+        "high_side": 137,
+        "low_side": 23
+      },
+      "turning_space_diameter": 150
+    },
+    "universal_design": {
+      "door_width": 85,
+      "hallway_width": 120,
+      "turning_space": 150,
+      "ramp_slope_max": 8.33,
+      "step_height_max": 17
+    }
+  },
+  "lighting_requirements": {
+    "task_lighting": {
+      "reading": 500,
+      "writing": 750,
+      "cooking": 750,
+      "grooming": 500
+    },
+    "ambient_lighting": {
+      "living_room": 200,
+      "bedroom": 150,
+      "dining_room": 300,
+      "kitchen": 300
+    },
+    "accent_lighting": {
+      "artwork": 150,
+      "architectural_features": 100
+    },
+    "glare_control": {
+      "avoid_direct_glare": true,
+      "use_diffusers": true
+    }
+  },
+  "acoustic_considerations": {
+    "noise_control": {
+      "bedroom_max_db": 35,
+      "living_room_max_db": 45,
+      "kitchen_max_db": 50,
+      "office_max_db": 40
+    },
+    "sound_absorption": {
+      "carpet_nrc": 0.35,
+      "curtains_nrc": 0.55,
+      "upholstered_furniture_nrc": 0.45
+    }
+  },
+  "rotation_angles": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "interior_design_guidelines": {
+    "functional_costs": {
+      "clearance_violation_penalty": true,
+      "circulation_penalty": true,
+      "pairwise_distance_cost": true,
+      "pairwise_angle_cost": true,
+      "conversation_distance_range": [
+        120,
+        240
+      ],
+      "conversation_angle_encouragement": true
+    },
+    "visual_costs": {
+      "visual_balance_penalty": true,
+      "alignment_with_walls": true,
+      "alignment_between_objects": true,
+      "focal_point_emphasis": true,
+      "focal_point_symmetry": true
+    },
+    "grouping_rules": {
+      "conversation_groups": {
+        "seating_types": [
+          "Sofa",
+          "Armchair",
+          "Sectional",
+          "Loveseat",
+          "Chair"
+        ],
+        "group_distance": [
+          120,
+          240
+        ],
+        "angle_towards_each_other": true
+      },
+      "focal_point_groups": {
+        "focal_objects": [
+          "Fireplace",
+          "TV Cabinet",
+          "Window"
+        ],
+        "facing_orientation": true,
+        "symmetry_required": true
+      }
+    },
+    "fixed_item_support": {
+      "user_fixed_items": true,
+      "description": "Allow user to fix some furniture in place during optimization"
+    }
+  },
+  "meta": {
+    "version": "2025-08-14",
+    "units": {
+      "length": "cm",
+      "angle": "degrees",
+      "area": "cm^2",
+      "illumination": "lux",
+      "force": "N"
+    },
+    "jurisdictions": {
+      "primary": "DE",
+      "standards": [
+        {
+          "name": "DIN 18040-2",
+          "title": "Barrierefreies Bauen – Planungsgrundlagen – Teil 2: Wohnungen",
+          "year": 2011
+        },
+        {
+          "name": "EN 17210",
+          "title": "Accessibility and usability of the built environment – Functional requirements",
+          "year": 2021
+        },
+        {
+          "name": "ISO 21542",
+          "title": "Building construction — Accessibility and usability of the built environment",
+          "year": 2021
+        },
+        {
+          "name": "ADA 2010",
+          "title": "2010 ADA Standards for Accessible Design (reference for door maneuvers/thresholds)",
+          "year": 2010
+        }
+      ]
+    },
+    "schema_notes": "All dimensions are clear (net) sizes. Arrays are [width, depth] unless otherwise specified. 'front_clearance' is orthogonal to the item face. Turning spaces use diameter x diameter.",
+    "source_urls_note": "Exact DIN text is paywalled; values align with reputable summaries and Access Board guidance for ADA where applicable."
+  },
+  "llm_integration": {
+    "action_space": {
+      "translate_step_cm": 5,
+      "rotate_angles": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "allowed_operations": [
+        "translate",
+        "rotate",
+        "swap",
+        "flip_orientation",
+        "resize_if_resizable",
+        "assign_zone"
+      ]
+    },
+    "hard_constraints": [
+      "room_constraints.min_door_width",
+      "clearance_requirements.turning_area_wheelchair",
+      "furniture_specific_clearances.Toilet.lateral_transfer_space",
+      "furniture_relationships.room_zones.no_obstruction_paths",
+      "accessibility_enhancements.wheelchair_specific.under_table_clearance",
+      "room_constraints.min_corridor_width"
+    ],
+    "soft_constraints_with_weights": {
+      "minimize_travel_distance_bed_to_toilet": 0.6,
+      "maximize_natural_light_at_seating": 0.3,
+      "avoid_back_to_door_for_primary_seating": 0.2,
+      "group_related_functions": 0.25,
+      "maintain_symmetry_where_possible": 0.05
+    },
+    "conflict_resolution": [
+      {
+        "priority": 1,
+        "rule": "Safety and legal accessibility standards (DIN/EN/ADA) override aesthetics and convenience."
+      },
+      {
+        "priority": 2,
+        "rule": "Maintain continuous accessible path (no pinch points) before optimizing furniture grouping."
+      },
+      {
+        "priority": 3,
+        "rule": "If two soft goals conflict, choose the one with higher weight; break ties by minimizing total moves."
+      }
+    ],
+    "connectivity_goals": [
+      {
+        "path": [
+          "Bed",
+          "Door"
+        ],
+        "min_width": 90
+      },
+      {
+        "path": [
+          "Bed",
+          "Toilet"
+        ],
+        "min_width": 90
+      },
+      {
+        "path": [
+          "Sofa",
+          "Door"
+        ],
+        "min_width": 90
+      }
+    ],
+    "output_expectations": {
+      "return_format": "json",
+      "include_violation_list": true,
+      "include_path_polylines": true
+    }
+  },
+  "door_maneuvering_clearances": {
+    "units": "cm",
+    "notes": "Derived from ADA 404.2.4 figures for maneuvering clearances; useful when DIN-based guidance is silent.",
+    "approaches": [
+      {
+        "name": "front_pull",
+        "perpendicular_depth": 152,
+        "latch_side_extension": 46
+      },
+      {
+        "name": "front_push_no_closer",
+        "perpendicular_depth": 122,
+        "latch_side_extension": 0
+      },
+      {
+        "name": "front_push_with_closer",
+        "perpendicular_depth": 122,
+        "latch_side_extension": 31
+      },
+      {
+        "name": "hinge_side_pull_option_A",
+        "perpendicular_depth": 152,
+        "latch_side_extension": 91
+      },
+      {
+        "name": "hinge_side_pull_option_B",
+        "perpendicular_depth": 137,
+        "latch_side_extension": 107
+      },
+      {
+        "name": "hinge_side_push_no_closer",
+        "perpendicular_depth": 107,
+        "latch_side_extension": 0
+      },
+      {
+        "name": "hinge_side_push_with_closer",
+        "perpendicular_depth": 122,
+        "latch_side_extension": 0
+      },
+      {
+        "name": "latch_side_pull_no_closer",
+        "perpendicular_depth": 122,
+        "latch_side_extension": 61
+      },
+      {
+        "name": "latch_side_pull_with_closer",
+        "perpendicular_depth": 137,
+        "latch_side_extension": 61
+      },
+      {
+        "name": "latch_side_push_no_closer",
+        "perpendicular_depth": 107,
+        "latch_side_extension": 61
+      },
+      {
+        "name": "latch_side_push_with_closer",
+        "perpendicular_depth": 122,
+        "latch_side_extension": 61
+      }
+    ]
+  },
+  "thresholds_and_slopes": {
+    "max_threshold_height": 1.3,
+    "bevel_required_over": 0.6,
+    "bevel_slope_ratio": "1:2",
+    "ramp_slope_max_percent": 8.33,
+    "cross_slope_max_percent": 2.0,
+    "notes": "Prefer threshold-free transitions; where unavoidable, follow ADA 303 and DIN guidance."
+  },
+  "visual_contrast": {
+    "door_handle_contrast": true,
+    "control_contrast_requirement": "Provide light/dark contrast per DIN 32975 guidance; target LRV contrast >= 30.",
+    "edge_markings": {
+      "stairs_leading_edge_contrast": true
+    }
+  },
+  "bedroom_transfer": {
+    "side_clear_space_preferred": 120,
+    "end_clear_space_min": 90,
+    "bed_height_recommended": [
+      46,
+      55
+    ],
+    "notes": "Side clear space aligns with wheelchair transfers; bed height close to wheelchair seat height improves transfers."
+  },
+  "validation_rules": {
+    "no_overlap": true,
+    "respect_fixed_items": true,
+    "ensure_reachability": true,
+    "check_turning_circles": true,
+    "continuous_accessible_path": true,
+    "allowed_tolerances_cm": 2
+  },
+  "furniture_object_schema": {
+    "required_fields": [
+      "id",
+      "type",
+      "width_cm",
+      "depth_cm",
+      "height_cm",
+      "x_cm",
+      "y_cm",
+      "rotation_deg",
+      "fixed"
+    ],
+    "optional_fields": [
+      "clearance_front_cm",
+      "clearance_sides_cm",
+      "transfer_side",
+      "mounting_height_cm",
+      "operable_force_N",
+      "notes"
+    ]
+  },
+  "hazard_avoidance": {
+    "keep_clear_from_cooktop_cm": 30,
+    "no_rugs_on_primary_paths": true,
+    "night_lighting_on_primary_path": true
+  }
+}
