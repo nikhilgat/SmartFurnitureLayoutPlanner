@@ -5,11 +5,11 @@ import matplotlib.patches as patches
 from typing import List, Dict, Tuple
 import copy
 
-# Load config JSON
+
 with open("room-layout-1.json", "r") as f:
     config = json.load(f)
 
-# Load barrier-free constraints
+
 with open("constraints/enhanced_barrier_free_constraints.json", "r") as f:
     bf_constraints = json.load(f)
 
@@ -26,22 +26,18 @@ class EnhancedDeterministicBarrierFreePlanner:
         self.ergonomics = bf_constraints["ergonomic_constraints"]
         self.accessibility = bf_constraints["accessibility_enhancements"]
         
-        # Define furniture groups and their relationships
         self.furniture_groups = self._create_furniture_groups()
         
-        # Define group priority order (most important first)
         self.group_priority = [
             "sleeping_zone", "bathroom_zone", "storage_zone", 
             "dining_zone", "living_zone", "work_zone"
         ]
         
-        # Define individual furniture priority within groups
         self.furniture_priority = [
             "Bed", "Toilet", "Washbasin", "Wardrobe", "Dining Table", 
             "Desk", "Sofa", "Chair", "Coffee Table", "TV Cabinet"
         ]
         
-        # Define preferred wall positions for different furniture types
         self.wall_preferences = {
             "Bed": ["against_wall"],
             "Wardrobe": ["against_wall"], 

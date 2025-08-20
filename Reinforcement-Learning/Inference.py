@@ -1,40 +1,18 @@
-#!/usr/bin/env python3
-"""
-Barrier-Free Furniture Layout Inference Script
-
-This script loads a trained PPO model and optimizes furniture layouts for accessibility.
-It takes a room layout JSON file as input and produces an optimized layout.
-
-Usage:
-    python inference.py --model path/to/model --constraints path/to/constraints.json --layout path/to/layout.json
-    
-    # Or with default paths:
-    python inference.py --layout room_layout.json
-    
-    # Or just run directly (F5 in IDE) using the settings below
-"""
-
-# ============================================================================
-# 🔧 CONFIGURATION SETTINGS - EDIT THESE TO CUSTOMIZE YOUR RUN
 # ============================================================================
 
-# 📁 FILE PATHS - Change these to your specific files
-LAYOUT_FILE = "room-layout-1.json"              # Your room layout JSON file
-MODEL_PATH = "Outputs/RL/barrier_free_furniture_model_v9.zip"  # Your trained model
-CONSTRAINTS_PATH = "constraints/merged_barrier_free_constraints.json"  # Constraints file
+LAYOUT_FILE = "room-layout-1.json"              #  room layout 
+MODEL_PATH = "Outputs/RL/barrier_free_furniture_model_v9.zip"  
+CONSTRAINTS_PATH = "constraints/merged_barrier_free_constraints.json"  
 
-# 🎯 OPTIMIZATION SETTINGS - Adjust these for different results
-NUM_EPISODES = 75                              # How many optimization attempts (try 50+ for better results)
-MAX_STEPS_PER_EPISODE = 700                   # Maximum steps per episode
-USE_DETERMINISTIC_ACTIONS = False             # True = more consistent, False = more exploration
-OUTPUT_DIRECTORY = "Outputs/RL/inference_output"         # Where to save results
+NUM_EPISODES = 75                              
+MAX_STEPS_PER_EPISODE = 700                   
+USE_DETERMINISTIC_ACTIONS = False             
+OUTPUT_DIRECTORY = "Outputs/RL/inference_output"         
 
-# 📊 OUTPUT SETTINGS - Control what gets generated
-SAVE_VISUALIZATIONS = True                    # Generate layout images and progress charts
-VERBOSE_LOGGING = True                        # Show detailed progress information
+SAVE_VISUALIZATIONS = True                    
+VERBOSE_LOGGING = True                       
 
-# 🚀 QUICK RUN MODE - Set to True to run with settings above (no command line)
-RUN_DIRECTLY = True                           # Set to True to use settings above, False for command line
+RUN_DIRECTLY = True                          
 
 # ============================================================================
 
@@ -688,11 +666,5 @@ Examples:
 
 
 if __name__ == "__main__":
-    # 🔥 QUICK START GUIDE:
-    # 1. Set RUN_DIRECTLY = True at the top of this file
-    # 2. Update LAYOUT_FILE, NUM_EPISODES, and other settings as needed
-    # 3. Press F5 or run this script directly!
-    # 
-    # OR set RUN_DIRECTLY = False to use command line arguments
     
     exit(main())

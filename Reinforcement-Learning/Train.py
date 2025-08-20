@@ -618,7 +618,7 @@ class CustomCallback(BaseCallback):
 
 def train_barrier_free_model(room_layout_path: str, 
                            constraints_path: str,
-                           total_timesteps: int = 50000,
+                           total_timesteps: int = 300000,
                            model_save_path: str = "barrier_free_model"):
     """Train the barrier-free furniture arrangement model"""
     with open(room_layout_path, 'r') as f:
@@ -719,7 +719,7 @@ if __name__ == "__main__":
     model, env = train_barrier_free_model(
         room_layout_path="room-layout-1.json",
         constraints_path="constraints/merged_barrier_free_constraints.json",
-        total_timesteps=50000,  
+        total_timesteps=300000,  
         model_save_path="Outputs/RL/barrier_free_furniture_model_v9"
     )
     
@@ -733,6 +733,7 @@ if __name__ == "__main__":
         constraints_path="constraints/merged_barrier_free_constraints.json",
         num_episodes=20
     )
+    
     
     if best_layout:
         logger.info("=== BARRIER-FREE LAYOUT OPTIMIZATION COMPLETE ===")
