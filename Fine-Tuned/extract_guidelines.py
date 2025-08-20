@@ -1,15 +1,6 @@
 from typing import Dict
 
 def extract_design_guidelines_text(constraints: Dict) -> str:
-    """
-    Extracts a human-readable block of design guidelines from the constraints JSON.
-    
-    Args:
-        constraints (Dict): The complete constraint dictionary
-    
-    Returns:
-        str: A formatted string with design guidelines for AI prompt
-    """
     guidelines = constraints.get("interior_design_guidelines", {})
     if not guidelines:
         return ""

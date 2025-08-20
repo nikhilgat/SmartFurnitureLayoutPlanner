@@ -4,14 +4,13 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from typing import List, Dict, Tuple
 import copy
-import random
 
 # Load config JSON
-with open("room-layout.json", "r") as f:
+with open("room-layout-5.json", "r") as f:
     config = json.load(f)
 
 # Load barrier-free constraints
-with open("barrier_free_constraints_relational.json", "r") as f:
+with open("constraints/barrier_free_constraints_relational.json", "r") as f:
     bf_constraints = json.load(f)
 
 ROOM_WIDTH = config["room"]["width"]
@@ -96,7 +95,8 @@ class EnhancedDeterministicBarrierFreePlanner:
             "table": "Dining Table", "dining table": "Dining Table", "coffee table": "Coffee Table",
             "desk": "Desk", "wardrobe": "Wardrobe", "tv cabinet": "TV Cabinet",
             "sink": "Washbasin", "toilet": "Toilet", "armchair": "Armchair",
-            "nightstand": "Bedside Table", "bedside table": "Bedside Table"
+            "nightstand": "Bedside Table", "bedside table": "Bedside Table",
+            "study table": "Desk", "study chair": "Chair"
         }
         return name_map.get(name.lower(), name.title())
     
@@ -118,7 +118,7 @@ class EnhancedDeterministicBarrierFreePlanner:
         return "miscellaneous"
     
     def get_furniture_partners(self, furniture: Dict) -> List[str]:
-        """Get required and optional partners for a furniture item"""
+        """Get required partners for a furniture item"""
         norm_name = self.normalize_furniture_name(furniture["name"])
         functional_pairs = self.relationships["functional_pairs"]
         
@@ -170,6 +170,27 @@ class EnhancedDeterministicBarrierFreePlanner:
         
         return zones
     
+    def convert_opening_to_rect(self, opening: Dict) -> Dict:
+        """Convert an opening's wall, position, and size to a rectangle format."""
+        wall = opening.get("wall")
+        position = opening.get("position", 0)
+        size = opening.get("size", 0)
+
+        # Default thickness for doors/windows (e.g., wall thickness)
+        thickness = 10  # Adjust this value based on your room model
+
+        if wall == "bottom":
+            return {"x": position, "y": 0, "width": size, "height": thickness}
+        elif wall == "top":
+            return {"x": position, "y": ROOM_HEIGHT - thickness, "width": size, "height": thickness}
+        elif wall == "left":
+            return {"x": 0, "y": position, "width": thickness, "height": size}
+        elif wall == "right":
+            return {"x": ROOM_WIDTH - thickness, "y": position, "width": thickness, "height": size}
+        else:
+            # Default case if wall is not specified or invalid
+            return {"x": position, "y": 0, "width": size, "height": thickness}
+    
     def check_rectangle_overlap(self, rect1: Dict, rect2: Dict) -> bool:
         """Check if two rectangles overlap"""
         return not (rect1["x"] + rect1["width"] <= rect2["x"] or
@@ -206,7 +227,8 @@ class EnhancedDeterministicBarrierFreePlanner:
         
         # Check opening blockage
         for opening in openings:
-            if self.check_rectangle_overlap(furniture_rect, opening):
+            opening_rect = self.convert_opening_to_rect(opening)
+            if self.check_rectangle_overlap(furniture_rect, opening_rect):
                 return False
         
         return True
@@ -250,7 +272,7 @@ class EnhancedDeterministicBarrierFreePlanner:
         positions = []
         px, py = primary["x"], primary["y"]
         
-        close_dist = min(dist, 80)  # Max 80cm for close relationships
+        close_dist = min(dist, 80)
         
         positions.append({"x": px + (pw - sw) // 2, "y": py + ph + close_dist, "rotation": 180})
         positions.append({"x": px + (pw - sw) // 2, "y": py - close_dist - sh, "rotation": 0})
@@ -264,7 +286,7 @@ class EnhancedDeterministicBarrierFreePlanner:
         positions = []
         px, py = primary["x"], primary["y"]
         
-        close_dist = min(dist, 60)  # Max 60cm for adjacent items
+        close_dist = min(dist, 60)
         
         positions.append({"x": px + pw + close_dist, "y": py, "rotation": 0})
         positions.append({"x": px + pw + close_dist, "y": py + ph - sh, "rotation": 0})
@@ -289,32 +311,26 @@ class EnhancedDeterministicBarrierFreePlanner:
         
         return positions
     
-    def get_wall_positions(self, furniture: Dict, seed: int = 0) -> List[Dict]:
-        """Get deterministic wall positions for furniture with variation"""
+    def get_wall_positions(self, furniture: Dict) -> List[Dict]:
+        """Get deterministic wall positions for furniture"""
         w, h = self.get_furniture_dimensions(furniture)
         positions = []
         
-        # Against walls (prioritized positions)
         wall_positions = [
-            # Left wall
             {"x": 0, "y": ROOM_HEIGHT//4, "rotation": 0},
             {"x": 0, "y": ROOM_HEIGHT//2, "rotation": 0},
             {"x": 0, "y": ROOM_HEIGHT*3//4 - h, "rotation": 0},
-            # Right wall  
             {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT//4, "rotation": 0},
             {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT//2, "rotation": 0},
             {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT*3//4 - h, "rotation": 0},
-            # Bottom wall
             {"x": ROOM_WIDTH//4, "y": 0, "rotation": 0},
             {"x": ROOM_WIDTH//2 - w//2, "y": 0, "rotation": 0},
             {"x": ROOM_WIDTH*3//4 - w, "y": 0, "rotation": 0},
-            # Top wall
             {"x": ROOM_WIDTH//4, "y": ROOM_HEIGHT - h, "rotation": 0},
             {"x": ROOM_WIDTH//2 - w//2, "y": ROOM_HEIGHT - h, "rotation": 0},
             {"x": ROOM_WIDTH*3//4 - w, "y": ROOM_HEIGHT - h, "rotation": 0},
         ]
         
-        # Corner positions
         corner_positions = [
             {"x": 0, "y": 0, "rotation": 0},
             {"x": ROOM_WIDTH - w, "y": 0, "rotation": 0},
@@ -322,7 +338,6 @@ class EnhancedDeterministicBarrierFreePlanner:
             {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT - h, "rotation": 0},
         ]
         
-        # Add preferred positions based on furniture type
         norm_name = self.normalize_furniture_name(furniture["name"])
         preferences = self.wall_preferences.get(norm_name, [])
         
@@ -331,13 +346,8 @@ class EnhancedDeterministicBarrierFreePlanner:
         if "corner" in preferences:
             positions.extend(corner_positions)
         
-        # If no specific preferences, use all positions
         if not positions:
             positions = wall_positions + corner_positions
-        
-        # Shuffle positions for variation
-        random.seed(seed)
-        random.shuffle(positions)
             
         return positions
     
@@ -347,20 +357,20 @@ class EnhancedDeterministicBarrierFreePlanner:
         norm_name = self.normalize_furniture_name(furniture["name"])
         w, h = self.get_furniture_dimensions(furniture)
         
-        # 1. Wall proximity bonus
+        # Wall proximity bonus
         wall_bonus = 0
-        if furniture['x'] <= 10:  # Left wall
+        if furniture['x'] <= 10:
             wall_bonus += 30
-        if furniture['x'] + w >= ROOM_WIDTH - 10:  # Right wall
+        if furniture['x'] + w >= ROOM_WIDTH - 10:
             wall_bonus += 30
-        if furniture['y'] <= 10:  # Bottom wall
+        if furniture['y'] <= 10:
             wall_bonus += 25
-        if furniture['y'] + h >= ROOM_HEIGHT - 10:  # Top wall
+        if furniture['y'] + h >= ROOM_HEIGHT - 10:
             wall_bonus += 25
         
         score += wall_bonus
         
-        # 2. Corner bonus for appropriate furniture
+        # Corner bonus for appropriate furniture
         corner_bonus = 0
         if ((furniture['x'] <= 10 and furniture['y'] <= 10) or
             (furniture['x'] + w >= ROOM_WIDTH - 10 and furniture['y'] <= 10) or
@@ -371,7 +381,7 @@ class EnhancedDeterministicBarrierFreePlanner:
         
         score += corner_bonus
         
-        # 3. Center avoidance for large furniture
+        # Center avoidance for large furniture
         if norm_name in ['Bed', 'Sofa', 'Wardrobe']:
             center_x = ROOM_WIDTH / 2
             center_y = ROOM_HEIGHT / 2
@@ -382,7 +392,7 @@ class EnhancedDeterministicBarrierFreePlanner:
             center_avoidance_bonus = min(50, distance_from_center / 10)
             score += center_avoidance_bonus
         
-        # 4. Relationship bonus with existing furniture
+        # Relationship bonus with existing furniture
         relationship_bonus = 0
         functional_pairs = self.relationships["functional_pairs"]
         
@@ -407,289 +417,150 @@ class EnhancedDeterministicBarrierFreePlanner:
             
             for partner_type in constraints.get("optional_partners", []):
                 partners = [f for f in layout if self.normalize_furniture_name(f["name"]) == partner_type]
+                
                 if partners:
                     closest_partner = min(partners, key=lambda p: self.calculate_distance(furniture, p))
                     distance = self.calculate_distance(furniture, closest_partner)
                     
                     min_dist = constraints.get("min_distance", 30)
                     max_dist = constraints.get("max_distance", 200)
+                    optimal_dist = (min_dist + max_dist) / 2
                     
                     if min_dist <= distance <= max_dist:
-                        relationship_bonus += 25
+                        distance_score = 100 - abs(distance - optimal_dist) / optimal_dist * 50
+                        relationship_bonus += max(50, distance_score)
+                    else:
+                        relationship_bonus -= 25
         
         score += relationship_bonus
-        
-        # 5. Accessibility bonus
-        if self.has_wheelchair_access(furniture, layout):
-            score += 100
         
         return score
     
     def calculate_distance(self, furniture1: Dict, furniture2: Dict) -> float:
-        """Calculate distance between centers of two furniture items"""
+        """Calculate Euclidean distance between centers of two furniture items"""
         w1, h1 = self.get_furniture_dimensions(furniture1)
         w2, h2 = self.get_furniture_dimensions(furniture2)
+        center1 = (furniture1["x"] + w1/2, furniture1["y"] + h1/2)
+        center2 = (furniture2["x"] + w2/2, furniture2["y"] + h2/2)
+        return math.hypot(center1[0] - center2[0], center1[1] - center2[1])
+    
+    def find_optimal_position_with_partners(self, furniture: Dict, partners: List[Dict], layout: List[Dict]) -> Dict:
+        """Find optimal position for furniture considering partners"""
+        best_position = None
+        best_score = float('-inf')
         
-        center1_x = furniture1["x"] + w1 / 2
-        center1_y = furniture1["y"] + h1 / 2
-        center2_x = furniture2["x"] + w2 / 2
-        center2_y = furniture2["y"] + h2 / 2
+        # Get possible positions
+        positions = self.get_wall_positions(furniture)
+        for partner in partners:
+            positions.extend(self.get_partner_positions(furniture, partner))
         
-        return math.hypot(center2_x - center1_x, center2_y - center1_y)
+        # Evaluate each position
+        for pos in positions:
+            test_furniture = furniture.copy()
+            test_furniture.update(pos)
+            
+            if self.is_position_valid(test_furniture, layout):
+                score = self.score_position(test_furniture, layout)
+                if score > best_score:
+                    best_score = score
+                    best_position = pos
+        
+        return best_position if best_position else furniture
+    
+    def create_relationship_aware_layout(self, furniture_list: List[Dict]) -> List[Dict]:
+        """Create a relationship-aware layout"""
+        optimized_layout = []
+        remaining_furniture = furniture_list.copy()
+        placed_furniture = set()  # Track placed furniture by name or unique identifier
+        
+        # Sort furniture by priority
+        sorted_furniture = sorted(
+            remaining_furniture,
+            key=lambda f: self.furniture_priority.index(self.normalize_furniture_name(f["name"]))
+            if self.normalize_furniture_name(f["name"]) in self.furniture_priority else len(self.furniture_priority)
+        )
+        
+        for furniture in sorted_furniture:
+            # Skip if already placed (e.g., as a partner)
+            if furniture["name"] in placed_furniture:
+                continue
+                
+            # Add furniture to placed set
+            placed_furniture.add(furniture["name"])
+            
+            # Find partners that haven't been placed
+            partners = [p for p in self.find_partner_furniture(furniture, remaining_furniture) 
+                       if p["name"] not in placed_furniture]
+            
+            # Find optimal position for the current furniture
+            optimal_position = self.find_optimal_position_with_partners(furniture, partners, optimized_layout)
+            
+            # Update and add furniture to layout
+            furniture_copy = furniture.copy()
+            furniture_copy.update(optimal_position)
+            optimized_layout.append(furniture_copy)
+            
+            # Remove from remaining_furniture if still present
+            if furniture in remaining_furniture:
+                remaining_furniture.remove(furniture)
+            
+            # Place partners
+            for partner in partners:
+                partner_positions = self.get_partner_positions(furniture_copy, partner)
+                best_partner_pos = None
+                best_partner_score = float('-inf')
+                
+                for pos in partner_positions:
+                    test_partner = partner.copy()
+                    test_partner.update(pos)
+                    if self.is_position_valid(test_partner, optimized_layout):
+                        score = self.score_position(test_partner, optimized_layout)
+                        if score > best_partner_score:
+                            best_partner_score = score
+                            best_partner_pos = pos
+                
+                if best_partner_pos:
+                    partner_copy = partner.copy()
+                    partner_copy.update(best_partner_pos)
+                    optimized_layout.append(partner_copy)
+                    placed_furniture.add(partner["name"])
+                    if partner in remaining_furniture:
+                        remaining_furniture.remove(partner)
+        
+        # Place any remaining furniture
+        for furniture in remaining_furniture[:]:  # Iterate over a copy to allow safe removal
+            if furniture["name"] in placed_furniture:
+                continue
+            optimal_position = self.find_optimal_position_with_partners(furniture, [], optimized_layout)
+            furniture_copy = furniture.copy()
+            furniture_copy.update(optimal_position)
+            optimized_layout.append(furniture_copy)
+            placed_furniture.add(furniture["name"])
+            if furniture in remaining_furniture:
+                remaining_furniture.remove(furniture)
+        
+        return optimized_layout
     
     def has_wheelchair_access(self, furniture: Dict, layout: List[Dict]) -> bool:
-        """Check if furniture has adequate wheelchair access"""
+        """Check if furniture has sufficient wheelchair access"""
         clearance_zones = self.create_clearance_zones(furniture)
-        
         for zone in clearance_zones:
-            if zone["type"] == "front":
-                for other in layout:
-                    if other == furniture:
-                        continue
-                    
-                    w, h = self.get_furniture_dimensions(other)
-                    other_rect = {"x": other["x"], "y": other["y"], "width": w, "height": h}
-                    
-                    if self.check_rectangle_overlap(zone, other_rect):
-                        return False
+            for other_furniture in layout:
+                if other_furniture == furniture:
+                    continue
+                w, h = self.get_furniture_dimensions(other_furniture)
+                other_rect = {"x": other_furniture["x"], "y": other_furniture["y"], "width": w, "height": h}
+                if self.check_rectangle_overlap(zone, other_rect):
+                    return False
         return True
     
-    def find_optimal_position_with_partners(self, furniture: Dict, partners: List[Dict], layout: List[Dict], seed: int = 0) -> Dict:
-        """Find optimal position considering partner relationships"""
-        best_position = None
-        best_score = -float('inf')
-        
-        placed_partners = [p for p in partners if any(placed["name"] == p["name"] for placed in layout)]
-        
-        if placed_partners:
-            for partner in placed_partners:
-                placed_partner = next(placed for placed in layout if placed["name"] == partner["name"])
-                partner_positions = self.get_partner_positions(placed_partner, furniture)
-                
-                random.seed(seed)
-                random.shuffle(partner_positions)
-                
-                for position in partner_positions:
-                    test_furniture = {**furniture, **position}
-                    
-                    if self.is_position_valid(test_furniture, layout):
-                        score = self.score_position(test_furniture, layout)
-                        score += 200
-                        
-                        if score > best_score:
-                            best_score = score
-                            best_position = position
-        
-        if best_position is None or best_score < 500:
-            wall_positions = self.get_wall_positions(furniture, seed)
-            grid_positions = self.get_grid_positions(furniture, grid_size=40)
-            all_positions = wall_positions + grid_positions[:50]
-            
-            random.seed(seed)
-            random.shuffle(all_positions)
-            
-            for position in all_positions:
-                test_furniture = {**furniture, **position}
-                
-                if self.is_position_valid(test_furniture, layout):
-                    score = self.score_position(test_furniture, layout)
-                    
-                    if score > best_score:
-                        best_score = score
-                        best_position = position
-        
-        return best_position if best_position else {"x": 50, "y": 50, "rotation": 0}
-    
-    def get_grid_positions(self, furniture: Dict, grid_size: int = 50) -> List[Dict]:
-        """Get systematic grid positions across the room"""
-        w, h = self.get_furniture_dimensions(furniture)
-        positions = []
-        
-        x_positions = list(range(0, ROOM_WIDTH - int(w) + 1, grid_size))
-        y_positions = list(range(0, ROOM_HEIGHT - int(h) + 1, grid_size))
-        
-        for x in x_positions:
-            for y in y_positions:
-                for rotation in [0, 90, 180, 270]:
-                    positions.append({"x": x, "y": y, "rotation": rotation})
-        
-        return positions
-    
-    def create_relationship_aware_layout(self, furniture_list: List[Dict], seed: int = 0) -> List[Dict]:
-        """Create layout with functional relationship awareness"""
-        random.seed(seed)
-        layout = []
-        remaining_furniture = copy.deepcopy(furniture_list)
-        
-        furniture_by_group = {}
-        for furniture in remaining_furniture:
-            group = self.identify_furniture_group(furniture)
-            if group not in furniture_by_group:
-                furniture_by_group[group] = []
-            furniture_by_group[group].append(furniture)
-        
-        # Shuffle group priority for variation
-        group_priority = self.group_priority.copy()
-        random.shuffle(group_priority)
-        
-        for group_name in group_priority:
-            if group_name not in furniture_by_group:
-                continue
-            
-            group_furniture = furniture_by_group[group_name]
-            print(f"\nProcessing {group_name}: {[f['name'] for f in group_furniture]}")
-            
-            # Shuffle within group for variation
-            group_furniture = group_furniture.copy()
-            random.shuffle(group_furniture)
-            
-            # First pass: place primary furniture and required partners
-            for furniture in list(group_furniture):
-                if furniture in remaining_furniture:
-                    print(f"  Placing {furniture['name']}...")
-                    
-                    partners = self.find_partner_furniture(furniture, remaining_furniture)
-                    
-                    optimal_position = self.find_optimal_position_with_partners(furniture, partners, layout, seed)
-                    furniture.update(optimal_position)
-                    layout.append(furniture)
-                    remaining_furniture.remove(furniture)
-                    
-                    for partner in partners:
-                        if partner in remaining_furniture:
-                            partner_norm = self.normalize_furniture_name(partner["name"])
-                            furniture_norm = self.normalize_furniture_name(furniture["name"])
-                            
-                            functional_pairs = self.relationships["functional_pairs"]
-                            is_required = False
-                            
-                            if furniture_norm in functional_pairs:
-                                required_partners = functional_pairs[furniture_norm].get("required_partners", [])
-                                if partner_norm in required_partners:
-                                    is_required = True
-                            
-                            if partner_norm in functional_pairs:
-                                required_partners = functional_pairs[partner_norm].get("required_partners", [])
-                                if furniture_norm in required_partners:
-                                    is_required = True
-                            
-                            if is_required:
-                                print(f"    -> Placing required partner {partner['name']}...")
-                                partner_position = self.find_optimal_position_with_partners(partner, [furniture], layout, seed)
-                                partner.update(partner_position)
-                                layout.append(partner)
-                                remaining_furniture.remove(partner)
-            
-            # Second pass: place optional partners
-            for furniture in list(group_furniture):
-                if furniture in layout:
-                    partners = self.find_partner_furniture(furniture, remaining_furniture)
-                    
-                    for partner in partners:
-                        if partner in remaining_furniture:
-                            partner_norm = self.normalize_furniture_name(partner["name"])
-                            furniture_norm = self.normalize_furniture_name(furniture["name"])
-                            
-                            functional_pairs = self.relationships["functional_pairs"]
-                            is_optional = False
-                            
-                            if furniture_norm in functional_pairs:
-                                optional_partners = functional_pairs[furniture_norm].get("optional_partners", [])
-                                if partner_norm in optional_partners:
-                                    is_optional = True
-                            
-                            if partner_norm in functional_pairs:
-                                optional_partners = functional_pairs[partner_norm].get("optional_partners", [])
-                                if furniture_norm in optional_partners:
-                                    is_optional = True
-                            
-                            if is_optional:
-                                print(f"    -> Placing optional partner {partner['name']}...")
-                                partner_position = self.find_optimal_position_with_partners(partner, [furniture], layout, seed)
-                                partner.update(partner_position)
-                                layout.append(partner)
-                                remaining_furniture.remove(partner)
-        
-        for furniture in remaining_furniture[:]:
-            print(f"Placing remaining {furniture['name']}...")
-            optimal_position = self.find_optimal_position_with_partners(furniture, [], layout, seed)
-            furniture.update(optimal_position)
-            layout.append(furniture)
-            remaining_furniture.remove(furniture)
-        
-        return layout
-    
-    def get_furniture_priority(self, furniture: Dict) -> int:
-        """Get priority index for furniture (lower number = higher priority)"""
-        norm_name = self.normalize_furniture_name(furniture["name"])
-        try:
-            return self.furniture_priority.index(norm_name)
-        except ValueError:
-            return len(self.furniture_priority)
-    
     def evaluate_layout(self, layout: List[Dict]) -> float:
-        """Comprehensive layout evaluation including relationships"""
-        score = 1000
-        
-        accessible_count = sum(1 for f in layout if self.has_wheelchair_access(f, layout))
-        accessibility_score = (accessible_count / len(layout)) * 300
-        score += accessibility_score
-        
-        relationship_score = self.evaluate_relationships(layout)
-        score += relationship_score
-        
-        space_efficiency = self.calculate_space_efficiency(layout)
-        score += space_efficiency
-        
-        wall_bonus = sum(self.calculate_wall_proximity(f) for f in layout)
-        score += wall_bonus
-        
-        circulation_score = self.evaluate_circulation(layout)
-        score += circulation_score
-        
-        return score
-    
-    def evaluate_relationships(self, layout: List[Dict]) -> float:
-        """Enhanced relationship evaluation"""
+        """Evaluate the overall quality of the layout"""
         score = 0
-        functional_pairs = self.relationships["functional_pairs"]
-        
-        for primary_name, constraints in functional_pairs.items():
-            primary_items = [f for f in layout if self.normalize_furniture_name(f["name"]) == primary_name]
-            
-            for primary_item in primary_items:
-                for partner_type in constraints.get("required_partners", []):
-                    partner_items = [f for f in layout if self.normalize_furniture_name(f["name"]) == partner_type]
-                    
-                    if partner_items:
-                        closest_partner = min(partner_items, key=lambda p: self.calculate_distance(primary_item, p))
-                        distance = self.calculate_distance(primary_item, closest_partner)
-                        
-                        min_dist = constraints.get("min_distance", 30)
-                        max_dist = constraints.get("max_distance", 200)
-                        
-                        if min_dist <= distance <= max_dist:
-                            score += 150
-                        else:
-                            score -= 75
-                    else:
-                        score -= 100
-                
-                for partner_type in constraints.get("optional_partners", []):
-                    partner_items = [f for f in layout if self.normalize_furniture_name(f["name"]) == partner_type]
-                    
-                    if partner_items:
-                        closest_partner = min(partner_items, key=lambda p: self.calculate_distance(primary_item, p))
-                        distance = self.calculate_distance(primary_item, closest_partner)
-                        
-                        min_dist = constraints.get("min_distance", 30)
-                        max_dist = constraints.get("max_distance", 200)
-                        
-                        if min_dist <= distance <= max_dist:
-                            score += 50
-                        else:
-                            score -= 15
-        
+        score += self.calculate_space_efficiency(layout) * 0.4
+        score += self.evaluate_circulation(layout) * 0.3
+        for furniture in layout:
+            score += self.score_position(furniture, layout) * 0.3 / len(layout)
         return score
     
     def calculate_space_efficiency(self, layout: List[Dict]) -> float:
@@ -748,6 +619,7 @@ class EnhancedDeterministicBarrierFreePlanner:
             "suboptimal_relationships": []
         }
         
+        # Analyze functional groups
         for group_name, group_info in self.furniture_groups.items():
             group_furniture = []
             for furniture in layout:
@@ -760,6 +632,7 @@ class EnhancedDeterministicBarrierFreePlanner:
                     "furniture_items": [f["name"] for f in group_furniture]
                 }
         
+        # Analyze relationships
         functional_pairs = self.relationships["functional_pairs"]
         
         for primary_name, constraints in functional_pairs.items():
@@ -803,91 +676,31 @@ def load_initial_layout() -> List[Dict]:
         })
     return layout
 
-def create_multiple_optimized_layouts(initial_layout: List[Dict], num_layouts: int = 5) -> Tuple[List[List[Dict]], object]:
-    """Create multiple optimized layouts with variations"""
+def create_relationship_aware_layout(initial_layout: List[Dict]) -> Tuple[List[Dict], object]:
+    """Create a relationship-aware, consistent layout using enhanced deterministic algorithm"""
     planner = EnhancedDeterministicBarrierFreePlanner()
-    layouts = []
     
-    # Generate multiple layouts with different seeds
-    for i in range(num_layouts):
-        furniture_copy = copy.deepcopy(initial_layout)
-        layout = planner.create_relationship_aware_layout(furniture_copy, seed=i)
-        layouts.append((layout, planner.evaluate_layout(layout)))
+    furniture_copy = copy.deepcopy(initial_layout)
     
-    # Sort layouts by score in descending order
-    layouts.sort(key=lambda x: x[1], reverse=True)
+    optimized_layout = planner.create_relationship_aware_layout(furniture_copy)
     
-    # Extract only the layouts (discard scores)
-    optimized_layouts = [layout for layout, _ in layouts]
-    
-    return optimized_layouts[:num_layouts], planner
+    return optimized_layout, planner
 
-def visualize_layout(before_layout: List[Dict], after_layouts: List[List[Dict]], planner):
-    """Visualize original and multiple optimized layouts"""
-    num_layouts = len(after_layouts)
-    fig, axs = plt.subplots(1, num_layouts + 1, figsize=(11 * (num_layouts + 1), 11))
+def visualize_layout(before_layout: List[Dict], after_layout: List[Dict], planner):
+    """Visualize before and after layouts with relationship indicators"""
+    fig, axs = plt.subplots(1, 2, figsize=(22, 11))
+    titles = ["Original Layout", "Relationship-Optimized Layout"]
+    layouts = [before_layout, after_layout]
     
-    # Plot original layout
-    axs[0].set_xlim(0, ROOM_WIDTH)
-    axs[0].set_ylim(0, ROOM_HEIGHT)
-    axs[0].set_title(f"Original Layout (Score: {planner.evaluate_layout(before_layout):.1f})")
-    axs[0].set_aspect('equal')
-    axs[0].grid(True, alpha=0.3)
-    
-    # Draw original layout
-    for furniture in before_layout:
-        clearance_zones = planner.create_clearance_zones(furniture)
-        for zone in clearance_zones:
-            color = 'orange' if zone["type"] == "front" else 'yellow'
-            alpha = 0.2 if zone["type"] == "front" else 0.1
-            clr_rect = patches.Rectangle(
-                (zone["x"], zone["y"]), zone["width"], zone["height"],
-                linewidth=1, edgecolor=color, facecolor=color,
-                alpha=alpha, linestyle='--')
-            axs[0].add_patch(clr_rect)
-        
-        w, h = planner.get_furniture_dimensions(furniture)
-        group = planner.identify_furniture_group(furniture)
-        group_colors = {
-            "sleeping_zone": 'lightblue',
-            "dining_zone": 'lightcoral',
-            "living_zone": 'lightgreen',
-            "work_zone": 'lightyellow',
-            "bathroom_zone": 'lightcyan',
-            "storage_zone": 'plum',
-            "miscellaneous": 'lightgray'
-        }
-        
-        rect = patches.Rectangle((furniture["x"], furniture["y"]), w, h,
-                               linewidth=2, edgecolor='black',
-                               facecolor=group_colors.get(group, 'lightgray'), alpha=0.8)
-        axs[0].add_patch(rect)
-        
-        center_x, center_y = furniture["x"] + w/2, furniture["y"] + h/2
-        axs[0].text(center_x, center_y, furniture["name"], ha='center', va='center',
-                   fontsize=8, weight='bold')
-        
-        if planner.has_wheelchair_access(furniture, before_layout):
-            axs[0].plot(center_x, center_y, 'g*', markersize=10, alpha=0.8)
-        else:
-            axs[0].plot(center_x, center_y, 'r*', markersize=8, alpha=0.8)
-    
-    for opening in openings:
-        door_rect = patches.Rectangle(
-            (opening["x"], opening["y"]), opening["width"], opening["height"],
-            linewidth=3, edgecolor='green', facecolor='lightgreen', alpha=0.6)
-        axs[0].add_patch(door_rect)
-        axs[0].text(opening["x"] + opening["width"]/2, opening["y"] + opening["height"]/2,
-                   'DOOR', ha='center', va='center', fontweight='bold', color='darkgreen')
-    
-    # Plot optimized layouts
-    for i, layout in enumerate(after_layouts):
-        ax = axs[i + 1]
+    for i in range(2):
+        ax = axs[i]
         ax.set_xlim(0, ROOM_WIDTH)
         ax.set_ylim(0, ROOM_HEIGHT)
-        ax.set_title(f"Optimized Layout {i + 1} (Score: {planner.evaluate_layout(layout):.1f})")
+        ax.set_title(f"{titles[i]} (Score: {planner.evaluate_layout(layouts[i]):.1f})")
         ax.set_aspect('equal')
         ax.grid(True, alpha=0.3)
+        
+        layout = layouts[i]
         
         # Draw clearance zones
         for furniture in layout:
@@ -986,12 +799,14 @@ def visualize_layout(before_layout: List[Dict], after_layouts: List[List[Dict]],
         
         # Draw openings
         for opening in openings:
+            opening_rect = planner.convert_opening_to_rect(opening)
             door_rect = patches.Rectangle(
-                (opening["x"], opening["y"]), opening["width"], opening["height"],
+                (opening_rect["x"], opening_rect["y"]), opening_rect["width"], opening_rect["height"],
                 linewidth=3, edgecolor='green', facecolor='lightgreen', alpha=0.6)
             ax.add_patch(door_rect)
-            ax.text(opening["x"] + opening["width"]/2, opening["y"] + opening["height"]/2,
-                   'DOOR', ha='center', va='center', fontweight='bold', color='darkgreen')
+            ax.text(opening_rect["x"] + opening_rect["width"]/2, opening_rect["y"] + opening_rect["height"]/2,
+                   'DOOR' if opening["type"] == "door" else 'WINDOW',
+                   ha='center', va='center', fontweight='bold', color='darkgreen')
         
         ax.set_xlabel("Width (cm)")
         ax.set_ylabel("Height (cm)")
@@ -1031,88 +846,84 @@ def analyze_layout(layout: List[Dict], planner, title: str = "Layout Analysis"):
     
     rel_analysis = planner.analyze_relationships(layout)
     
-    print(f"\n📊 Functional Group Distribution:")
+    print(f"\n Functional Group Distribution:")
     for group, info in rel_analysis["functional_groups"].items():
         print(f"  • {group.replace('_', ' ').title()}: {info['furniture_count']} items")
         print(f"    Items: {', '.join(info['furniture_items'])}")
     
-    print(f"\n✅ Optimal Relationships ({len(rel_analysis['optimal_relationships'])}):")
+    print(f"\n Optimal Relationships ({len(rel_analysis['optimal_relationships'])}):")
     for rel in rel_analysis["optimal_relationships"]:
         print(f"  • {rel}")
     
     if rel_analysis["suboptimal_relationships"]:
-        print(f"\n⚠️  Suboptimal Relationships ({len(rel_analysis['suboptimal_relationships'])}):")
+        print(f"\n Suboptimal Relationships ({len(rel_analysis['suboptimal_relationships'])}):")
         for rel in rel_analysis["suboptimal_relationships"]:
             print(f"  • {rel}")
     
     if rel_analysis["missing_relationships"]:
-        print(f"\n❌ Missing Relationships ({len(rel_analysis['missing_relationships'])}):")
+        print(f"\n Missing Relationships ({len(rel_analysis['missing_relationships'])}):")
         for rel in rel_analysis["missing_relationships"]:
             print(f"  • {rel}")
     
-    print(f"\n📍 Furniture Positions:")
+    print(f"\n Furniture Positions:")
     for furniture in layout:
         group = planner.identify_furniture_group(furniture)
         print(f"  • {furniture['name']} ({group}): ({furniture['x']:.0f}, {furniture['y']:.0f}) - {furniture['rotation']}°")
 
-def save_layouts(layouts: List[List[Dict]], prefix: str = "optimized_layout"):
-    """Save multiple optimized layouts"""
-    for i, layout in enumerate(layouts, 1):
-        output_data = {
-            "method": "Relationship-Aware Deterministic Layout",
-            "room": {"width": ROOM_WIDTH, "height": ROOM_HEIGHT},
-            "furniture": layout,
-            "openings": openings,
-            "features": [
-                "Functional relationship optimization",
-                "Wheelchair accessibility compliance", 
-                "Deterministic with controlled variation",
-                "Zone-based furniture grouping",
-                "Partner-aware placement"
-            ],
-            "note": f"Optimized layout {i} with varied placement"
-        }
-        
-        filename = f"{prefix}_{i}.json"
-        with open(filename, "w") as f:
-            json.dump(output_data, f, indent=2)
-        
-        print(f"Optimized layout {i} saved to {filename}")
+def save_layout(layout: List[Dict], filename: str = "relationship_optimized_layout.json"):
+    """Save the relationship-optimized layout"""
+    output_data = {
+        "method": "Relationship-Aware Deterministic Layout",
+        "room": {"width": ROOM_WIDTH, "height": ROOM_HEIGHT},
+        "furniture": layout,
+        "openings": openings,
+        "features": [
+            "Functional relationship optimization",
+            "Wheelchair accessibility compliance", 
+            "Deterministic and repeatable results",
+            "Zone-based furniture grouping",
+            "Partner-aware placement"
+        ],
+        "note": "This layout prioritizes functional relationships between furniture items"
+    }
+    
+    with open(filename, "w") as f:
+        json.dump(output_data, f, indent=2)
+    
+    print(f"Relationship-optimized layout saved to {filename}")
 
-# Main execution
 if __name__ == "__main__":
-    print("🏠 Creating Multiple Relationship-Aware Deterministic Furniture Layouts...")
+    print(" Creating Relationship-Aware Deterministic Furniture Layout...")
     print(f"Room dimensions: {ROOM_WIDTH}cm x {ROOM_HEIGHT}cm")
     print(f"Number of furniture items: {len(furniture_items)}")
-    print("🔗 This method generates multiple optimized layouts with functional relationships!")
+    print(" This method focuses on functional relationships between furniture!")
     
     initial_layout = load_initial_layout()
     
-    print("\n🎯 Generating multiple optimized layouts...")
-    num_layouts = 5
-    optimized_layouts, planner = create_multiple_optimized_layouts(initial_layout, num_layouts)
+    print("\n Generating relationship-optimized layout...")
+    optimized_layout, planner = create_relationship_aware_layout(initial_layout)
     
     analyze_layout(initial_layout, planner, "Original Layout Analysis")
-    for i, layout in enumerate(optimized_layouts, 1):
-        analyze_layout(layout, planner, f"Optimized Layout {i} Analysis")
+    analyze_layout(optimized_layout, planner, "Relationship-Optimized Layout Analysis")
     
-    save_layouts(optimized_layouts)
+    save_layout(optimized_layout)
     
-    print("\n🎨 Generating visualization for all layouts...")
-    visualize_layout(initial_layout, optimized_layouts, planner)
+    print("\n Generating visualization with relationship indicators...")
+    visualize_layout(initial_layout, optimized_layout, planner)
     
-    print("\n✅ Multiple layout optimization complete!")
-    print("🔗 Key features:")
-    print("   • ✅ Multiple distinct optimized layouts")
-    print("   • ✅ Functional relationship prioritization")
-    print("   • ✅ Tables placed with chairs")
-    print("   • ✅ Beds placed with nightstands") 
-    print("   • ✅ Desks placed with chairs")
-    print("   • ✅ Sofas placed with coffee tables")
-    print("   • ✅ Zone-based furniture grouping")
-    print("   • ✅ Wheelchair accessibility compliance")
-    print("   • ✅ Optimal distance relationships")
-    print("\n🎨 Visualization Legend:")
+    print("\n Relationship-aware optimization complete!")
+    print(" Run this script again - you'll get identical results every time!")
+    print(" Key features:")
+    print("   • Functional relationship prioritization")
+    print("   • Tables placed with chairs")
+    print("   • Beds placed with nightstands") 
+    print("   • Desks placed with chairs")
+    print("   • Sofas placed with coffee tables")
+    print("   • Zone-based furniture grouping")
+    print("   • Consistent, repeatable results")
+    print("   • Wheelchair accessibility compliance")
+    print("   • Optimal distance relationships")
+    print("\n Visualization Legend:")
     print("   • Green lines: Optimal relationships")
     print("   • Red dashed lines: Suboptimal relationships") 
     print("   • Green stars: Wheelchair accessible")

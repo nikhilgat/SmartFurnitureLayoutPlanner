@@ -1,0 +1,108 @@
+{
+  "room": {
+    "width": 800,
+    "height": 600
+  },
+  "furniture": [
+    {
+      "name": "Sofa",
+      "x": 158.96446409422515,
+      "y": 197.14689206263017,
+      "width": 90.0,
+      "height": 200.0,
+      "zHeight": 85.0,
+      "rotation": 180
+    },
+    {
+      "name": "Study Table",
+      "x": 516.2960302886712,
+      "y": 92.86758793659585,
+      "width": 70.0,
+      "height": 120.0,
+      "zHeight": 75.0,
+      "rotation": 90
+    },
+    {
+      "name": "Study Chair",
+      "x": 40.57640056527113,
+      "y": 423.2007655876808,
+      "width": 50.0,
+      "height": 50.0,
+      "zHeight": 90.0,
+      "rotation": 180
+    },
+    {
+      "name": "Bed",
+      "x": 348.63813025118156,
+      "y": 321.4174802157417,
+      "width": 180.0,
+      "height": 200.0,
+      "zHeight": 55.0,
+      "rotation": 180
+    },
+    {
+      "name": "Wardrobe",
+      "x": 75.17538200555722,
+      "y": 68.05930660823755,
+      "width": 150.0,
+      "height": 60.0,
+      "zHeight": 200.0,
+      "rotation": 0
+    },
+    {
+      "name": "Sofa",
+      "x": 594.3001038382698,
+      "y": 357.55760761454303,
+      "width": 200.0,
+      "height": 90.0,
+      "zHeight": 85.0,
+      "rotation": 0
+    },
+    {
+      "name": "Bedside Table",
+      "x": 722.3858262518808,
+      "y": 37.52442680423312,
+      "width": 45.0,
+      "height": 45.0,
+      "zHeight": 60.0,
+      "rotation": 0
+    },
+    {
+      "name": "Wardrobe",
+      "x": 396.1332262392182,
+      "y": 217.58941094572552,
+      "width": 150.0,
+      "height": 60.0,
+      "zHeight": 200.0,
+      "rotation": 0
+    }
+  ],
+  "openings": [
+    {
+      "type": "door",
+      "wall": "bottom",
+      "position": 377,
+      "size": 90,
+      "openingHeight": "210"
+    },
+    {
+      "type": "window",
+      "wall": "left",
+      "position": 193,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    },
+    {
+      "type": "window",
+      "wall": "right",
+      "position": 217,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    }
+  ],
+  "accessibility_score": 0.918918918918919,
+  "layout_efficiency": 0.6598307291666667,
+  "total_violations": 23
+}

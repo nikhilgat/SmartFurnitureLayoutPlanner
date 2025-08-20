@@ -1,0 +1,23 @@
+{
+  "optimization_summary": {
+    "total_episodes": 75,
+    "best_episode": 1,
+    "best_comprehensive_score": 0,
+    "improvement_metrics": {
+      "accessibility_improvement": -0.012899262899262798,
+      "efficiency_improvement": 0.0,
+      "violations_reduction": 0
+    }
+  },
+  "final_metrics": {
+    "accessibility_score": 0.918918918918919,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 23
+  },
+  "statistics": {
+    "avg_accessibility": 0.9835289246860005,
+    "max_accessibility": 0.9929078014184397,
+    "min_violations": 17,
+    "avg_violations": 20.85333333333333
+  }
+}

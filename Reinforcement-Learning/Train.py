@@ -673,7 +673,7 @@ def test_trained_model(model_path: str,
     
     env = BarrierFreeEnvironment(room_layout, constraints)
     
-    model = PPO.load(model_path, env=env, weights_only=True)
+    model = PPO.load(model_path, env=env)
     
     best_layout = None
     best_score = float('-inf')
@@ -712,14 +712,15 @@ def test_trained_model(model_path: str,
     
     return best_layout
 
+
 if __name__ == "__main__":
     logger.info("Starting barrier-free furniture arrangement training...")
     
     model, env = train_barrier_free_model(
-        room_layout_path="room-layout.json",
-        constraints_path="merged_barrier_free_constraints.json",
-        total_timesteps=50000,  # Reduced for testing
-        model_save_path="barrier_free_furniture_model_v9"
+        room_layout_path="room-layout-1.json",
+        constraints_path="constraints/merged_barrier_free_constraints.json",
+        total_timesteps=50000,  
+        model_save_path="Outputs/RL/barrier_free_furniture_model_v9"
     )
     
     logger.info("Training completed!")
@@ -727,9 +728,9 @@ if __name__ == "__main__":
     logger.info("Testing trained model...")
     
     best_layout = test_trained_model(
-        model_path="barrier_free_furniture_model_v9",
-        room_layout_path="room-layout.json", 
-        constraints_path="merged_barrier_free_constraints.json",
+        model_path="Outputs/RL/barrier_free_furniture_model_v9",
+        room_layout_path="room-layout-1.json", 
+        constraints_path="constraints/merged_barrier_free_constraints.json",
         num_episodes=20
     )
     

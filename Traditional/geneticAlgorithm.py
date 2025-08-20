@@ -6,11 +6,11 @@ from typing import List, Dict, Tuple
 import copy
 
 # Load config JSON
-with open("room-layout-new.json", "r") as f:
+with open("room-layout-1.json", "r") as f:
     config = json.load(f)
 
 # Load barrier-free constraints
-with open("barrier_free_constraints_relational.json", "r") as f:
+with open("constraints/enhanced_barrier_free_constraints.json", "r") as f:
     bf_constraints = json.load(f)
 
 ROOM_WIDTH = config["room"]["width"]
@@ -756,7 +756,7 @@ def analyze_layout(layout: List[Dict], planner, title: str = "Layout Analysis"):
 def save_layout(layout: List[Dict], filename: str = "relationship_optimized_layout.json"):
     """Save the relationship-optimized layout"""
     output_data = {
-        "method": "Relationship-Aware Deterministic Layout",
+        "method": "Relationship-Aware Genetic Algorithm Layout",
         "room": {"width": ROOM_WIDTH, "height": ROOM_HEIGHT},
         "furniture": layout,
         "openings": openings,

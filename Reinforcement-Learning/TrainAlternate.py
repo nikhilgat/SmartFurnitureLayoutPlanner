@@ -29,7 +29,7 @@ CONFIG = {
     "PLANNER_LAYOUT_FILE": "room-layout-new.json",
     "UNITS_SCALE": 1.0,
     "SEED": 42,
-    "TOTAL_TIMESTEPS": 100_000,  # Increased training time
+    "TOTAL_TIMESTEPS": 50_000,  # Increased training time
     "MAX_STEPS_PER_EPISODE": 300,  # Longer episodes
     "SAVE_PATH": "ppo_barrier_free_improved",
     "RUN_EVAL": True,
