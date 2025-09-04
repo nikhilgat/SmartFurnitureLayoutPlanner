@@ -1,0 +1,442 @@
+{
+  "clearance_requirements": {
+    "general_clearance": 90,
+    "path_width": 120,
+    "wheelchair_encounter_area": [
+      180,
+      180
+    ],
+    "turning_area_regular": [
+      120,
+      120
+    ],
+    "turning_area_wheelchair": [
+      150,
+      150
+    ]
+  },
+  "furniture_specific_clearances": {
+    "Bed": {
+      "left_access": 150,
+      "right_access": 150,
+      "front_clearance": 150
+    },
+    "Wardrobe": {
+      "front_clearance": 150
+    },
+    "Sofa": {
+      "front_clearance": 150
+    }
+  },
+  "room_constraints": {
+    "min_passage_width": 90,
+    "min_path_width": 120,
+    "min_corridor_width": 150,
+    "min_door_width": 90,
+    "min_door_height": 205,
+    "max_door_jamb_depth": 26,
+    "min_window_height": 60,
+    "window_handle_height": [
+      85,
+      105
+    ],
+    "min_room_height": 220,
+    "min_door_passage_height": 200,
+    "min_ramp_width": 120,
+    "max_ramp_slope": 6,
+    "max_ramp_length": 600
+  },
+  "furniture_relationships": {
+    "functional_pairs": {
+      "Study Table": {
+        "required_partners": [
+          "Office Chair",
+          "Study Chair"
+        ],
+        "optional_partners": [
+          "Bookshelf",
+          "Filing Cabinet",
+          "Desk Lamp"
+        ],
+        "max_distance": 120,
+        "min_distance": 60,
+        "orientation": "facing",
+        "description": "Chair should slide under desk comfortably"
+      },
+      "Bed": {
+        "required_partners": [
+          "Bedside Table",
+          "Nightstand"
+        ],
+        "optional_partners": [
+          "Wardrobe",
+          "Dresser",
+          "Bench"
+        ],
+        "max_distance": 80,
+        "min_distance": 30,
+        "orientation": "adjacent",
+        "description": "Bedside tables should be within arm's reach"
+      },
+      "Sofa": {
+        "required_partners": [
+          "Coffee Table",
+          "Side Table"
+        ],
+        "optional_partners": [
+          "TV Cabinet",
+          "Entertainment Center",
+          "Floor Lamp"
+        ],
+        "max_distance": 120,
+        "min_distance": 40,
+        "orientation": "parallel",
+        "description": "Coffee table should be accessible without standing"
+      }
+    },
+    "proximity_requirements": {
+      "same_room_pairs": {
+        "Bed-Bedside Table": {
+          "max_distance": 50,
+          "description": "Bedside table should be in bedroom and adjacent to bed"
+        },
+        "Study Table-Study Chair": {
+          "max_distance": 30,
+          "description": "Study chair should be in same room and adjacent to Study Table"
+        }
+      },
+      "circulation_requirements": {
+        "around_dining_table": 90,
+        "behind_seating": 75,
+        "around_bed": 60,
+        "desk_chair_pullout": 90,
+        "wardrobe_door_swing": 100,
+        "general_walkway": 90
+      }
+    },
+    "orientation_rules": {
+      "facing_relationships": [
+        "Study Chair - Study Table",
+        "Sofa-TV Cabinet",
+        "Armchair-Coffee Table",
+        "Office Chair-Desk",
+        "Bar Stool-Kitchen Island"
+      ],
+      "adjacent_relationships": [
+        "Bedside Table-Bed",
+        "Study Table-Study Chair"
+      ],
+      "parallel_relationships": [
+        "Coffee Table-Sofa",
+        "Bench-Dining Table",
+        "Ottoman-Sectional"
+      ]
+    },
+    "room_zones": {
+      "sleeping_zone": {
+        "primary_furniture": [
+          "Bed",
+          "King Bed",
+          "Queen Bed",
+          "Twin Bed"
+        ],
+        "secondary_furniture": [
+          "Bedside Table",
+          "Nightstand",
+          "Dresser"
+        ],
+        "optional_furniture": [
+          "Wardrobe",
+          "Armchair",
+          "Bench",
+          "Vanity"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "dimmable",
+          "circulation_priority": "low"
+        }
+      },
+      "living_zone": {
+        "primary_furniture": [
+          "Sofa",
+          "Sectional",
+          "Loveseat"
+        ],
+        "secondary_furniture": [
+          "Coffee Table",
+          "Side Table",
+          "TV Cabinet"
+        ],
+        "optional_furniture": [
+          "Armchair",
+          "Ottoman",
+          "Floor Lamp",
+          "Bookshelf"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "medium",
+          "noise_tolerance": "medium",
+          "lighting_needs": "variable",
+          "circulation_priority": "high"
+        }
+      },
+      "work_zone": {
+        "primary_furniture": [
+          "Study Table",
+          "Study Chair",
+          "Writing Desk"
+        ],
+        "secondary_furniture": [
+          "Office Chair",
+          "Desk Chair"
+        ],
+        "optional_furniture": [
+          "Bookshelf",
+          "Filing Cabinet",
+          "Desk Lamp"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "high",
+          "noise_tolerance": "low",
+          "lighting_needs": "task-focused",
+          "circulation_priority": "low"
+        }
+      },
+      "storage_zone": {
+        "primary_furniture": [
+          "Wardrobe",
+          "Closet",
+          "Armoire"
+        ],
+        "secondary_furniture": [
+          "Dresser",
+          "Chest of Drawers"
+        ],
+        "optional_furniture": [
+          "Bench",
+          "Mirror"
+        ],
+        "zone_characteristics": {
+          "privacy_level": "medium",
+          "noise_tolerance": "high",
+          "lighting_needs": "bright",
+          "circulation_priority": "medium"
+        }
+      }
+    }
+  },
+  "accessibility_enhancements": {
+    "wheelchair_specific": {
+      "under_table_clearance": {
+        "height": 67,
+        "width": 80,
+        "depth": 48
+      },
+      "approach_clearances": {
+        "frontal": 76,
+        "parallel": 122,
+        "note": "Minimum clear floor space for approaches (approx. 30x48 in)."
+      },
+      "reach_ranges": {
+        "high_forward": 122,
+        "low_forward": 38,
+        "high_side": 137,
+        "low_side": 23
+      },
+      "turning_space_diameter": 150
+    },
+    "universal_design": {
+      "door_width": 85,
+      "hallway_width": 120,
+      "turning_space": 150,
+      "ramp_slope_max": 8.33,
+      "step_height_max": 17
+    }
+  },
+  "rotation_angles": [
+    0,
+    90,
+    180,
+    270
+  ],
+  "interior_design_guidelines": {
+    "functional_costs": {
+      "clearance_violation_penalty": true,
+      "circulation_penalty": true,
+      "pairwise_distance_cost": true,
+      "pairwise_angle_cost": true,
+      "conversation_distance_range": [
+        120,
+        240
+      ],
+      "conversation_angle_encouragement": true
+    },
+    "visual_costs": {
+      "visual_balance_penalty": true,
+      "alignment_with_walls": true,
+      "alignment_between_objects": true,
+      "focal_point_emphasis": true,
+      "focal_point_symmetry": true
+    },
+    "grouping_rules": {
+      "conversation_groups": {
+        "seating_types": [
+          "Sofa",
+          "Armchair",
+          "Sectional",
+          "Loveseat",
+          "Chair"
+        ],
+        "group_distance": [
+          120,
+          240
+        ],
+        "angle_towards_each_other": true
+      },
+      "focal_point_groups": {
+        "focal_objects": [
+          "Fireplace",
+          "TV Cabinet",
+          "Window"
+        ],
+        "facing_orientation": true,
+        "symmetry_required": true
+      }
+    },
+    "fixed_item_support": {
+      "user_fixed_items": true,
+      "description": "Allow user to fix some furniture in place during optimization"
+    }
+  },
+  "meta": {
+    "version": "2025-08-14",
+    "units": {
+      "length": "cm",
+      "angle": "degrees",
+      "area": "cm^2",
+      "illumination": "lux",
+      "force": "N"
+    }
+   },
+  "llm_integration": {
+    "action_space": {
+      "translate_step_cm": 5,
+      "rotate_angles": [
+        0,
+        90,
+        180,
+        270
+      ],
+      "allowed_operations": [
+        "translate",
+        "rotate",
+        "swap",
+        "flip_orientation",
+        "resize_if_resizable",
+        "assign_zone"
+      ]
+    },
+    "hard_constraints": [
+      "room_constraints.min_door_width",
+      "clearance_requirements.turning_area_wheelchair",
+      "furniture_specific_clearances.Toilet.lateral_transfer_space",
+      "furniture_relationships.room_zones.no_obstruction_paths",
+      "accessibility_enhancements.wheelchair_specific.under_table_clearance",
+      "room_constraints.min_corridor_width"
+    ],
+    "soft_constraints_with_weights": {
+      "minimize_travel_distance_bed_to_toilet": 0.6,
+      "maximize_natural_light_at_seating": 0.3,
+      "avoid_back_to_door_for_primary_seating": 0.2,
+      "group_related_functions": 0.25,
+      "maintain_symmetry_where_possible": 0.05
+    },
+    "conflict_resolution": [
+      {
+        "priority": 1,
+        "rule": "Safety and legal accessibility standards (DIN/EN/ADA) override aesthetics and convenience."
+      },
+      {
+        "priority": 2,
+        "rule": "Maintain continuous accessible path (no pinch points) before optimizing furniture grouping."
+      },
+      {
+        "priority": 3,
+        "rule": "If two soft goals conflict, choose the one with higher weight; break ties by minimizing total moves."
+      }
+    ],
+    "connectivity_goals": [
+      {
+        "path": [
+          "Bed",
+          "Door"
+        ],
+        "min_width": 90
+      },
+      {
+        "path": [
+          "Bed",
+          "Toilet"
+        ],
+        "min_width": 90
+      },
+      {
+        "path": [
+          "Sofa",
+          "Door"
+        ],
+        "min_width": 90
+      }
+    ],
+    "output_expectations": {
+      "return_format": "json",
+      "include_violation_list": true,
+      "include_path_polylines": true
+    }
+  },
+  "bedroom_transfer": {
+    "side_clear_space_preferred": 120,
+    "end_clear_space_min": 90,
+    "bed_height_recommended": [
+      46,
+      55
+    ],
+    "notes": "Side clear space aligns with wheelchair transfers; bed height close to wheelchair seat height improves transfers."
+  },
+  "validation_rules": {
+    "no_overlap": true,
+    "respect_fixed_items": true,
+    "ensure_reachability": true,
+    "check_turning_circles": true,
+    "continuous_accessible_path": true,
+    "allowed_tolerances_cm": 2
+  },
+  "furniture_object_schema": {
+    "required_fields": [
+      "id",
+      "type",
+      "width_cm",
+      "depth_cm",
+      "height_cm",
+      "x_cm",
+      "y_cm",
+      "rotation_deg",
+      "fixed"
+    ],
+    "optional_fields": [
+      "clearance_front_cm",
+      "clearance_sides_cm",
+      "transfer_side",
+      "mounting_height_cm",
+      "operable_force_N",
+      "notes"
+    ]
+  },
+  "hazard_avoidance": {
+    "keep_clear_from_cooktop_cm": 30,
+    "no_rugs_on_primary_paths": true,
+    "night_lighting_on_primary_path": true
+  }
+}

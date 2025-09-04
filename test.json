@@ -5,57 +5,75 @@
   },
   "furniture": [
     {
-      "name": "Bed",
-      "x": 610,
-      "y": 30,
-      "width": 180,
-      "height": 200,
-      "zHeight": "55",
-      "rotation": 0
-    },
-    {
       "name": "Sofa",
-      "x": 4.441176395925568,
-      "y": 400,
+      "x": 50,
+      "y": 50,
       "width": 200,
       "height": 90,
-      "zHeight": "85",
-      "rotation": 0
-    },
-    {
-      "name": "Wardrobe",
-      "x": 20,
-      "y": 30,
-      "width": 150,
-      "height": 60,
-      "zHeight": "200",
+      "zHeight": 85,
       "rotation": 0
     },
     {
       "name": "Study Table",
-      "x": 300,
-      "y": 220.15132082244767,
+      "x": 500,
+      "y": 450,
       "width": 120,
       "height": 70,
-      "zHeight": "75",
+      "zHeight": 75,
       "rotation": 0
     },
     {
       "name": "Study Chair",
-      "x": 450,
-      "y": 403.52558234347936,
+      "x": 530,
+      "y": 370,
       "width": 50,
       "height": 50,
-      "zHeight": "90",
+      "zHeight": 90,
       "rotation": 0
     },
     {
+      "name": "Bed",
+      "x": 150,
+      "y": 350,
+      "width": 180,
+      "height": 200,
+      "zHeight": 55,
+      "rotation": 0
+    },
+    {
+      "name": "Wardrobe",
+      "x": 0,
+      "y": 0,
+      "width": 150,
+      "height": 60,
+      "zHeight": 200,
+      "rotation": 0
+    },
+    {
+      "name": "Sofa",
+      "x": 600,
+      "y": 100,
+      "width": 90,
+      "height": 200,
+      "zHeight": 85,
+      "rotation": 90
+    },
+    {
       "name": "Bedside Table",
-      "x": 696.1034241514252,
-      "y": 423.47999943630384,
+      "x": 340,
+      "y": 500,
       "width": 45,
       "height": 45,
-      "zHeight": "60",
+      "zHeight": 60,
+      "rotation": 0
+    },
+    {
+      "name": "Wardrobe",
+      "x": 650,
+      "y": 0,
+      "width": 150,
+      "height": 60,
+      "zHeight": 200,
       "rotation": 0
     }
   ],
@@ -63,14 +81,14 @@
     {
       "type": "door",
       "wall": "bottom",
-      "position": 8,
+      "position": 377,
       "size": 90,
       "openingHeight": "210"
     },
     {
       "type": "window",
       "wall": "left",
-      "position": 449,
+      "position": 193,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
@@ -78,7 +96,7 @@
     {
       "type": "window",
       "wall": "right",
-      "position": 7,
+      "position": 217,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"

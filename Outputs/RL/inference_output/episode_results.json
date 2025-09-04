@@ -1,675 +1,675 @@
 [
   {
     "episode": 1,
-    "total_reward": -5.49341198239164,
-    "steps": 9,
-    "accessibility_score": 0.9473684210526315,
+    "total_reward": 67.47540118858896,
+    "steps": 153,
+    "accessibility_score": 0.9736842105263158,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 22,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 2,
+    "total_reward": 117.73250800631027,
+    "steps": 221,
+    "accessibility_score": 0.9818181818181818,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 3,
+    "total_reward": -7.498912377450979,
+    "steps": 4,
+    "accessibility_score": 0.975,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 2,
-    "total_reward": 1.9986919547466382,
-    "steps": 21,
-    "accessibility_score": 0.9142857142857143,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 17,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 3,
-    "total_reward": -0.8050659560071196,
-    "steps": 19,
-    "accessibility_score": 0.896551724137931,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 14,
-    "comprehensive_score": 0.03588025323275856
-  },
-  {
     "episode": 4,
-    "total_reward": 1.8689397406677486,
-    "steps": 24,
-    "accessibility_score": 0.9,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 15,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 5,
-    "total_reward": -9.479704154554263,
-    "steps": 1,
-    "accessibility_score": 0.9302325581395349,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 14,
-    "comprehensive_score": 0.0560887536337209
-  },
-  {
-    "episode": 6,
-    "total_reward": -7.63653915229885,
-    "steps": 4,
-    "accessibility_score": 0.9655172413793104,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 15,
-    "comprehensive_score": 0.0272595635775863
-  },
-  {
-    "episode": 7,
-    "total_reward": 0.3945686255627656,
-    "steps": 19,
-    "accessibility_score": 0.9444444444444444,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 17,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 8,
-    "total_reward": 1.217221848894809,
-    "steps": 21,
-    "accessibility_score": 0.9361702127659575,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 14,
-    "comprehensive_score": 0.05965134640957448
-  },
-  {
-    "episode": 9,
-    "total_reward": 3.680798367672507,
-    "steps": 24,
-    "accessibility_score": 0.9583333333333334,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 16,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 10,
-    "total_reward": -1.649604885057471,
-    "steps": 16,
-    "accessibility_score": 0.9310344827586207,
+    "total_reward": -6.414641998626374,
+    "steps": 6,
+    "accessibility_score": 0.978021978021978,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 21,
     "comprehensive_score": 0
   },
   {
-    "episode": 11,
-    "total_reward": -9.527669270833332,
-    "steps": 1,
-    "accessibility_score": 0.90625,
+    "episode": 5,
+    "total_reward": 20.52297041897343,
+    "steps": 47,
+    "accessibility_score": 0.99,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 18,
+    "total_violations": 20,
     "comprehensive_score": 0
   },
   {
-    "episode": 12,
-    "total_reward": 0.402160410680084,
-    "steps": 23,
-    "accessibility_score": 0.896551724137931,
+    "episode": 6,
+    "total_reward": 314.9088096526234,
+    "steps": 501,
+    "accessibility_score": 0.9759036144578314,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 19,
-    "comprehensive_score": 0
+    "total_violations": 15,
+    "comprehensive_score": 0.033491387424698815
   },
   {
-    "episode": 13,
-    "total_reward": -8.925236500850339,
+    "episode": 7,
+    "total_reward": -8.769227430555556,
     "steps": 2,
-    "accessibility_score": 0.9387755102040817,
+    "accessibility_score": 0.9777777777777777,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 16,
-    "comprehensive_score": 0
+    "total_violations": 15,
+    "comprehensive_score": 0.034615885416666714
   },
   {
-    "episode": 14,
-    "total_reward": 4.223040956439403,
-    "steps": 25,
-    "accessibility_score": 0.9545454545454546,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 19,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 15,
-    "total_reward": -8.375770970394736,
-    "steps": 3,
-    "accessibility_score": 0.9375,
+    "episode": 8,
+    "total_reward": 23.469020563391773,
+    "steps": 53,
+    "accessibility_score": 0.9777777777777777,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 17,
     "comprehensive_score": 0
   },
   {
-    "episode": 16,
-    "total_reward": -8.395507812499998,
-    "steps": 3,
-    "accessibility_score": 0.9375,
+    "episode": 9,
+    "total_reward": 50.15612956902053,
+    "steps": 97,
+    "accessibility_score": 0.987012987012987,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 10,
+    "total_reward": -8.109729330773122,
+    "steps": 3,
+    "accessibility_score": 0.9770114942528736,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 11,
+    "total_reward": 11.939098262357746,
+    "steps": 36,
+    "accessibility_score": 0.975609756097561,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 12,
+    "total_reward": -1.750470120973021,
+    "steps": 13,
+    "accessibility_score": 0.9861111111111112,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 13,
+    "total_reward": 143.95871849280857,
+    "steps": 246,
+    "accessibility_score": 0.9838709677419355,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.03827179939516134
+  },
+  {
+    "episode": 14,
+    "total_reward": 74.02828671671791,
+    "steps": 132,
+    "accessibility_score": 0.9903846153846154,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 15,
+    "total_reward": 48.3027581748586,
+    "steps": 97,
+    "accessibility_score": 0.9662921348314607,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 16,
+    "total_reward": 74.549525284244,
+    "steps": 139,
+    "accessibility_score": 0.9692307692307692,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 16,
     "comprehensive_score": 0
   },
   {
     "episode": 17,
-    "total_reward": -7.781729714912281,
-    "steps": 4,
-    "accessibility_score": 0.9473684210526315,
+    "total_reward": 9.214701827501376,
+    "steps": 30,
+    "accessibility_score": 0.984251968503937,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 18,
+    "total_violations": 19,
     "comprehensive_score": 0
   },
   {
     "episode": 18,
-    "total_reward": -9.425275653812056,
-    "steps": 1,
-    "accessibility_score": 0.9574468085106383,
+    "total_reward": -3.592209616976188,
+    "steps": 10,
+    "accessibility_score": 0.9894736842105263,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
     "episode": 19,
-    "total_reward": -7.3816974179964525,
-    "steps": 5,
-    "accessibility_score": 0.9148936170212766,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 20,
-    "total_reward": 4.110139510772488,
-    "steps": 23,
-    "accessibility_score": 0.9859154929577465,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 21,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 21,
-    "total_reward": -5.562021602985827,
-    "steps": 7,
-    "accessibility_score": 0.9871794871794872,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 20,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 22,
-    "total_reward": -5.605416497564933,
-    "steps": 7,
-    "accessibility_score": 0.96875,
+    "total_reward": -2.945313260985815,
+    "steps": 11,
+    "accessibility_score": 0.9908256880733946,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 23,
-    "total_reward": -2.8443683051841777,
-    "steps": 12,
-    "accessibility_score": 0.9565217391304348,
+    "episode": 20,
+    "total_reward": -8.081732302295919,
+    "steps": 3,
+    "accessibility_score": 0.9897959183673469,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
+    "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 24,
-    "total_reward": -4.667998641904452,
-    "steps": 9,
-    "accessibility_score": 0.9642857142857143,
+    "episode": 21,
+    "total_reward": 9.734157585045352,
+    "steps": 31,
+    "accessibility_score": 0.9753086419753086,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 22,
+    "total_reward": -8.182669974662163,
+    "steps": 3,
+    "accessibility_score": 0.972972972972973,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.03173300253378386
+  },
+  {
+    "episode": 23,
+    "total_reward": -9.398140285326086,
+    "steps": 1,
+    "accessibility_score": 0.9710144927536232,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.030557914402173925
+  },
+  {
+    "episode": 24,
+    "total_reward": 313.46550069894226,
+    "steps": 501,
+    "accessibility_score": 0.9868421052631579,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
     "comprehensive_score": 0
   },
   {
     "episode": 25,
-    "total_reward": -8.265405771683673,
-    "steps": 3,
-    "accessibility_score": 0.9591836734693877,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 20,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 26,
-    "total_reward": -7.6439283148604265,
-    "steps": 4,
-    "accessibility_score": 0.9642857142857143,
+    "total_reward": 170.25959763084649,
+    "steps": 286,
+    "accessibility_score": 0.9866666666666667,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 18,
     "comprehensive_score": 0
   },
   {
-    "episode": 27,
-    "total_reward": -4.162884910255018,
-    "steps": 10,
-    "accessibility_score": 0.9692307692307692,
+    "episode": 26,
+    "total_reward": 73.8489576780297,
+    "steps": 136,
+    "accessibility_score": 0.9743589743589743,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 19,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 27,
+    "total_reward": 11.20481402906739,
+    "steps": 34,
+    "accessibility_score": 0.9887640449438202,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
     "comprehensive_score": 0
   },
   {
     "episode": 28,
-    "total_reward": -3.740675759180788,
-    "steps": 10,
-    "accessibility_score": 0.9830508474576272,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 20,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 29,
-    "total_reward": 6.493923590438195,
-    "steps": 28,
-    "accessibility_score": 0.9558823529411765,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 30,
-    "total_reward": -5.136938582251083,
-    "steps": 8,
-    "accessibility_score": 0.974025974025974,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 31,
-    "total_reward": 21.409128185035247,
-    "steps": 50,
-    "accessibility_score": 0.9701492537313433,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 32,
-    "total_reward": -1.2201316550925938,
-    "steps": 15,
-    "accessibility_score": 0.9629629629629629,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 20,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 33,
-    "total_reward": -9.41334000254065,
-    "steps": 1,
-    "accessibility_score": 0.9634146341463414,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 34,
-    "total_reward": -4.050694523215364,
-    "steps": 10,
-    "accessibility_score": 0.968421052631579,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 35,
-    "total_reward": 8.572421878275664,
-    "steps": 23,
-    "accessibility_score": 0.9662921348314607,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 36,
-    "total_reward": -1.5534870564267784,
-    "steps": 13,
-    "accessibility_score": 0.9516129032258065,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 37,
-    "total_reward": -8.267083154965754,
-    "steps": 3,
-    "accessibility_score": 0.958904109589041,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 38,
-    "total_reward": -9.408351089015152,
-    "steps": 1,
-    "accessibility_score": 0.9659090909090909,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 39,
-    "total_reward": -7.10469250801282,
-    "steps": 5,
-    "accessibility_score": 0.9615384615384616,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 40,
-    "total_reward": -3.5393074240137636,
-    "steps": 11,
-    "accessibility_score": 0.9655172413793104,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 41,
-    "total_reward": -8.237375282379517,
-    "steps": 3,
-    "accessibility_score": 0.963855421686747,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 42,
-    "total_reward": -3.6555914311360347,
-    "steps": 11,
-    "accessibility_score": 0.9571428571428572,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 43,
-    "total_reward": 8.609080272387963,
-    "steps": 18,
-    "accessibility_score": 0.963855421686747,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 44,
-    "total_reward": -6.789164528917911,
-    "steps": 3,
-    "accessibility_score": 0.9552238805970149,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 45,
-    "total_reward": -2.5287810496794876,
-    "steps": 7,
-    "accessibility_score": 0.9538461538461539,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 46,
-    "total_reward": -4.5904169924683655,
-    "steps": 7,
-    "accessibility_score": 0.9508196721311475,
+    "total_reward": 11.557170329312916,
+    "steps": 34,
+    "accessibility_score": 0.9777777777777777,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 47,
-    "total_reward": 6.552759988750548,
-    "steps": 20,
-    "accessibility_score": 0.958904109589041,
+    "episode": 29,
+    "total_reward": 111.7703517121702,
+    "steps": 198,
+    "accessibility_score": 0.9801980198019802,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 19,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 30,
+    "total_reward": 9.749068272979118,
+    "steps": 32,
+    "accessibility_score": 0.979381443298969,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 31,
+    "total_reward": 22.734878711373675,
+    "steps": 53,
+    "accessibility_score": 0.9767441860465116,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 32,
+    "total_reward": 41.11103225341189,
+    "steps": 83,
+    "accessibility_score": 0.9797979797979798,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 16,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 33,
+    "total_reward": 51.12440307336609,
+    "steps": 99,
+    "accessibility_score": 0.9803921568627451,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 34,
+    "total_reward": 40.59709210626424,
+    "steps": 82,
+    "accessibility_score": 0.972972972972973,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 35,
+    "total_reward": 105.42700172974439,
+    "steps": 190,
+    "accessibility_score": 0.9705882352941176,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 21,
     "comprehensive_score": 0
   },
   {
-    "episode": 48,
-    "total_reward": -2.3727499713827847,
-    "steps": 13,
-    "accessibility_score": 0.9642857142857143,
+    "episode": 36,
+    "total_reward": 50.02021110120594,
+    "steps": 98,
+    "accessibility_score": 0.9789473684210527,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 21,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 37,
+    "total_reward": 26.15406630268283,
+    "steps": 59,
+    "accessibility_score": 0.9809523809523809,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 23,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 38,
+    "total_reward": 4.783775995587945,
+    "steps": 24,
+    "accessibility_score": 0.9767441860465116,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 39,
+    "total_reward": 11.315407164125908,
+    "steps": 35,
+    "accessibility_score": 0.971830985915493,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 19,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 40,
+    "total_reward": 20.90738776412242,
+    "steps": 51,
+    "accessibility_score": 0.9705882352941176,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 16,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 41,
+    "total_reward": 43.195608393191435,
+    "steps": 87,
+    "accessibility_score": 0.9770114942528736,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 42,
+    "total_reward": -6.966278452932099,
+    "steps": 5,
+    "accessibility_score": 0.9722222222222222,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 43,
+    "total_reward": 108.27200355273118,
+    "steps": 196,
+    "accessibility_score": 0.9805825242718447,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.036298733313106846
+  },
+  {
+    "episode": 44,
+    "total_reward": 11.416806377231277,
+    "steps": 35,
+    "accessibility_score": 0.9692307692307692,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 45,
+    "total_reward": 83.54246872150543,
+    "steps": 155,
+    "accessibility_score": 0.9692307692307692,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.029487680288461604
+  },
+  {
+    "episode": 46,
+    "total_reward": 12.047254786660393,
+    "steps": 37,
+    "accessibility_score": 0.96,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 47,
+    "total_reward": 80.67454925783898,
+    "steps": 151,
+    "accessibility_score": 0.9622641509433962,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 48,
+    "total_reward": 48.25184328714726,
+    "steps": 96,
+    "accessibility_score": 0.9710144927536232,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
     "comprehensive_score": 0
   },
   {
     "episode": 49,
-    "total_reward": -9.41709234775641,
-    "steps": 1,
-    "accessibility_score": 0.9615384615384616,
+    "total_reward": 14.574427097344545,
+    "steps": 44,
+    "accessibility_score": 0.9117647058823529,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 19,
+    "total_violations": 21,
     "comprehensive_score": 0
   },
   {
     "episode": 50,
-    "total_reward": -7.078912732233045,
-    "steps": 5,
-    "accessibility_score": 0.961038961038961,
+    "total_reward": 137.6712103545246,
+    "steps": 254,
+    "accessibility_score": 0.9746835443037974,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 21,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 51,
+    "total_reward": 43.2523948406123,
+    "steps": 89,
+    "accessibility_score": 0.9759036144578314,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 52,
+    "total_reward": 38.44675530504516,
+    "steps": 80,
+    "accessibility_score": 0.978021978021978,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 51,
-    "total_reward": -8.813671875,
-    "steps": 2,
+    "episode": 53,
+    "total_reward": 42.33868607678567,
+    "steps": 89,
+    "accessibility_score": 0.9615384615384616,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 54,
+    "total_reward": -2.505533854166666,
+    "steps": 13,
     "accessibility_score": 0.9666666666666667,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 19,
     "comprehensive_score": 0
   },
   {
-    "episode": 52,
-    "total_reward": -4.85119414930186,
-    "steps": 9,
-    "accessibility_score": 0.9508196721311475,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 21,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 53,
-    "total_reward": -1.7226872519841283,
-    "steps": 14,
-    "accessibility_score": 0.9682539682539683,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 19,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 54,
-    "total_reward": -5.582899305555555,
-    "steps": 4,
-    "accessibility_score": 0.9722222222222222,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
     "episode": 55,
-    "total_reward": -3.8839973502915024,
-    "steps": 6,
-    "accessibility_score": 0.9634146341463414,
+    "total_reward": -3.5667738475567976,
+    "steps": 11,
+    "accessibility_score": 0.9565217391304348,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 22,
     "comprehensive_score": 0
   },
   {
     "episode": 56,
-    "total_reward": -8.766360047043008,
-    "steps": 2,
-    "accessibility_score": 0.978494623655914,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 57,
-    "total_reward": -7.537999760656011,
-    "steps": 4,
-    "accessibility_score": 0.978021978021978,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 58,
-    "total_reward": 5.426723613463821,
-    "steps": 25,
-    "accessibility_score": 0.9789473684210527,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 59,
-    "total_reward": -8.172406546677214,
-    "steps": 3,
-    "accessibility_score": 0.9746835443037974,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 60,
-    "total_reward": -3.4910156249999993,
-    "steps": 6,
-    "accessibility_score": 0.9625,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 61,
-    "total_reward": -6.830852640086208,
-    "steps": 3,
-    "accessibility_score": 0.9482758620689655,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 62,
-    "total_reward": -8.922361051655251,
-    "steps": 1,
-    "accessibility_score": 0.958904109589041,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 63,
-    "total_reward": -8.899870763370647,
-    "steps": 1,
-    "accessibility_score": 0.9701492537313433,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 64,
-    "total_reward": -8.911597842261905,
-    "steps": 1,
-    "accessibility_score": 0.9642857142857143,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 22,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 65,
-    "total_reward": -9.427125792572465,
-    "steps": 1,
-    "accessibility_score": 0.9565217391304348,
+    "total_reward": 96.27604272325516,
+    "steps": 183,
+    "accessibility_score": 0.953125,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 20,
     "comprehensive_score": 0
   },
   {
-    "episode": 66,
-    "total_reward": -8.825793087121212,
-    "steps": 2,
-    "accessibility_score": 0.9636363636363636,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 25,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 67,
-    "total_reward": -8.858116319444445,
-    "steps": 2,
-    "accessibility_score": 0.9555555555555556,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 68,
-    "total_reward": -9.411597842261905,
-    "steps": 1,
-    "accessibility_score": 0.9642857142857143,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 25,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 69,
-    "total_reward": -8.21098400297619,
-    "steps": 3,
-    "accessibility_score": 0.9682539682539683,
-    "layout_efficiency": 0.6598307291666667,
-    "total_violations": 25,
-    "comprehensive_score": 0
-  },
-  {
-    "episode": 70,
-    "total_reward": -6.974818956906393,
-    "steps": 5,
+    "episode": 57,
+    "total_reward": 15.19975647177339,
+    "steps": 43,
     "accessibility_score": 0.9726027397260274,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 23,
+    "total_violations": 21,
     "comprehensive_score": 0
   },
   {
-    "episode": 71,
-    "total_reward": -7.0060749862330365,
-    "steps": 5,
-    "accessibility_score": 0.9577464788732394,
+    "episode": 58,
+    "total_reward": 44.31459762196134,
+    "steps": 88,
+    "accessibility_score": 0.9864864864864865,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 16,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 59,
+    "total_reward": 25.841146000506402,
+    "steps": 58,
+    "accessibility_score": 0.9746835443037974,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 60,
+    "total_reward": 10.143793854091115,
+    "steps": 35,
+    "accessibility_score": 0.9552238805970149,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 17,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 61,
+    "total_reward": -3.8747573808163693,
+    "steps": 10,
+    "accessibility_score": 0.9770114942528736,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 62,
+    "total_reward": 37.33744377798678,
+    "steps": 77,
+    "accessibility_score": 0.9746835443037974,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 15,
+    "comprehensive_score": 0.03275934533227853
+  },
+  {
+    "episode": 63,
+    "total_reward": 19.75348239886399,
+    "steps": 48,
+    "accessibility_score": 0.9770114942528736,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 18,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 64,
+    "total_reward": 54.21233402330675,
+    "steps": 103,
+    "accessibility_score": 0.9805825242718447,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 16,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 65,
+    "total_reward": -8.188212900765837,
+    "steps": 3,
+    "accessibility_score": 0.9719626168224299,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 22,
     "comprehensive_score": 0
   },
   {
-    "episode": 72,
-    "total_reward": -2.3997833668372337,
-    "steps": 13,
-    "accessibility_score": 0.9605263157894737,
+    "episode": 66,
+    "total_reward": -9.398421698017799,
+    "steps": 1,
+    "accessibility_score": 0.970873786407767,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 67,
+    "total_reward": 6.339093900091131,
+    "steps": 27,
+    "accessibility_score": 0.9714285714285714,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 68,
+    "total_reward": 44.86283064040798,
+    "steps": 91,
+    "accessibility_score": 0.9732142857142857,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 20,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 69,
+    "total_reward": -2.768855105755895,
+    "steps": 12,
+    "accessibility_score": 0.9714285714285714,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 19,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 70,
+    "total_reward": 27.373083462678984,
+    "steps": 62,
+    "accessibility_score": 0.9705882352941176,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 22,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 71,
+    "total_reward": 8.599480636647309,
+    "steps": 31,
+    "accessibility_score": 0.9690721649484536,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 21,
+    "comprehensive_score": 0
+  },
+  {
+    "episode": 72,
+    "total_reward": 27.77157660679117,
+    "steps": 63,
+    "accessibility_score": 0.9690721649484536,
+    "layout_efficiency": 0.6598307291666667,
+    "total_violations": 19,
     "comprehensive_score": 0
   },
   {
     "episode": 73,
-    "total_reward": -7.095583196271932,
-    "steps": 5,
-    "accessibility_score": 0.9605263157894737,
+    "total_reward": 29.22623044799159,
+    "steps": 66,
+    "accessibility_score": 0.9662921348314607,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
+    "total_violations": 21,
     "comprehensive_score": 0
   },
   {
     "episode": 74,
-    "total_reward": -1.2381712464080437,
-    "steps": 15,
-    "accessibility_score": 0.9655172413793104,
+    "total_reward": -3.473238081619245,
+    "steps": 11,
+    "accessibility_score": 0.967741935483871,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 24,
+    "total_violations": 21,
     "comprehensive_score": 0
   },
   {
     "episode": 75,
-    "total_reward": -5.806381746227033,
-    "steps": 7,
-    "accessibility_score": 0.9763779527559056,
+    "total_reward": 91.38900022559356,
+    "steps": 171,
+    "accessibility_score": 0.9647058823529412,
     "layout_efficiency": 0.6598307291666667,
     "total_violations": 22,
     "comprehensive_score": 0

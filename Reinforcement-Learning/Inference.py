@@ -2,7 +2,7 @@
 
 LAYOUT_FILE = "room-layout-1.json"              #  room layout 
 MODEL_PATH = "Outputs/RL/barrier_free_furniture_model_v9.zip"  
-CONSTRAINTS_PATH = "constraints/merged_barrier_free_constraints.json"  
+CONSTRAINTS_PATH = "constraints/constraints.json"  
 
 NUM_EPISODES = 75                              
 MAX_STEPS_PER_EPISODE = 700                   

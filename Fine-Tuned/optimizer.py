@@ -321,7 +321,7 @@ def main():
     
     # Specify your file paths here
     constraints_path = r"constraints/bedroom_barrier_free_constraints_consolidated.json"
-    layout_path = r"room-layout-2.json"
+    layout_path = r"room-layout-3.json"
     output_path = r"Outputs/FT/optimized_room_layout.json"
     report_path = r"Outputs/FT/optimization_report.json"
     

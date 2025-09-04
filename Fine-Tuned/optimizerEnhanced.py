@@ -2,13 +2,10 @@ import json
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.patches import Rectangle
-import numpy as np
 from google import genai
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List
 import math
-import random
 import copy
-import os
 
 class RoomLayoutOptimizer:
     def __init__(self, api_key: str):

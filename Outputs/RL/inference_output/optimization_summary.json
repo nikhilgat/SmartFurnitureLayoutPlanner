@@ -1,23 +1,23 @@
 {
   "optimization_summary": {
     "total_episodes": 75,
-    "best_episode": 8,
-    "best_comprehensive_score": 0.05965134640957448,
+    "best_episode": 13,
+    "best_comprehensive_score": 0.03827179939516134,
     "improvement_metrics": {
-      "accessibility_improvement": 0.004352030947775698,
+      "accessibility_improvement": 0.05205278592375373,
       "efficiency_improvement": 0.0,
-      "violations_reduction": 9
+      "violations_reduction": 8
     }
   },
   "final_metrics": {
-    "accessibility_score": 0.9361702127659575,
+    "accessibility_score": 0.9838709677419355,
     "layout_efficiency": 0.6598307291666667,
-    "total_violations": 14
+    "total_violations": 15
   },
   "statistics": {
-    "avg_accessibility": 0.9566067191186054,
-    "max_accessibility": 0.9871794871794872,
-    "min_violations": 14,
-    "avg_violations": 20.946666666666665
+    "avg_accessibility": 0.9743619553783757,
+    "max_accessibility": 0.9908256880733946,
+    "min_violations": 15,
+    "avg_violations": 18.466666666666665
   }
 }
