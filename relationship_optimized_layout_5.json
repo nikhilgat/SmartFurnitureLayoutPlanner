@@ -1,63 +1,79 @@
 {
-  "method": "Relationship-Aware Genetic Algorithm Layout",
+  "method": "Relationship-Aware Deterministic Layout",
   "room": {
-    "width": 800,
-    "height": 600
+    "width": 644,
+    "height": 426
   },
   "furniture": [
     {
       "name": "Bed",
-      "x": 0,
-      "y": 420,
-      "rotation": 90,
-      "width": 180,
-      "height": 200
+      "x": 478,
+      "y": 213,
+      "rotation": 270,
+      "width": 143,
+      "height": 166
+    },
+    {
+      "name": "Wardrobe",
+      "x": 478,
+      "y": 98.0,
+      "rotation": 0,
+      "width": 150,
+      "height": 60
+    },
+    {
+      "name": "Bedside Table",
+      "x": 161,
+      "y": 381,
+      "rotation": 0,
+      "width": 45,
+      "height": 45
     },
     {
       "name": "Sofa",
-      "x": 600,
+      "x": 322,
       "y": 0,
       "rotation": 0,
       "width": 200,
       "height": 90
     },
     {
+      "name": "Study Chair",
+      "x": 297,
+      "y": 376,
+      "rotation": 0,
+      "width": 50,
+      "height": 50
+    },
+    {
       "name": "Study Table",
-      "x": 0,
-      "y": 150,
+      "x": 161,
+      "y": 0,
       "rotation": 0,
       "width": 120,
       "height": 70
-    },
-    {
-      "name": "Study Chair",
-      "x": 35,
-      "y": 300,
-      "rotation": 180,
-      "width": 50,
-      "height": 50
     }
   ],
   "openings": [
     {
       "type": "door",
       "wall": "bottom",
-      "position": 411,
+      "position": 8,
       "size": 90,
       "openingHeight": "210"
     },
     {
       "type": "window",
-      "wall": "right",
-      "position": 367,
+      "wall": "left",
+      "position": 268,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
     },
     {
       "type": "window",
-      "wall": "left",
-      "position": 6,
+      "wall": "right",
+      "position": 7,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
@@ -70,5 +86,5 @@
     "Zone-based furniture grouping",
     "Partner-aware placement"
   ],
-  "note": "This layout prioritizes functional relationships between furniture items"
+  "note": "Optimized layout variation 5"
 }

@@ -1,0 +1,90 @@
+{
+  "method": "Relationship-Aware Deterministic Layout",
+  "room": {
+    "width": 644,
+    "height": 426
+  },
+  "furniture": [
+    {
+      "name": "Bed",
+      "x": 478,
+      "y": 280,
+      "rotation": 270,
+      "width": 143,
+      "height": 166
+    },
+    {
+      "name": "Bedside Table",
+      "x": 599,
+      "y": 180.0,
+      "rotation": 0,
+      "width": 45,
+      "height": 45
+    },
+    {
+      "name": "Wardrobe",
+      "x": 441,
+      "y": 0,
+      "rotation": 0,
+      "width": 150,
+      "height": 60
+    },
+    {
+      "name": "Sofa",
+      "x": 193,
+      "y": 0,
+      "rotation": 0,
+      "width": 200,
+      "height": 90
+    },
+    {
+      "name": "Study Chair",
+      "x": 161,
+      "y": 376,
+      "rotation": 0,
+      "width": 50,
+      "height": 50
+    },
+    {
+      "name": "Study Table",
+      "x": 544,
+      "y": 198,
+      "rotation": 90,
+      "width": 120,
+      "height": 70
+    }
+  ],
+  "openings": [
+    {
+      "type": "door",
+      "wall": "bottom",
+      "position": 8,
+      "size": 90,
+      "openingHeight": "210"
+    },
+    {
+      "type": "window",
+      "wall": "left",
+      "position": 268,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    },
+    {
+      "type": "window",
+      "wall": "right",
+      "position": 7,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    }
+  ],
+  "features": [
+    "Functional relationship optimization",
+    "Wheelchair accessibility compliance",
+    "Randomized variations for diverse solutions",
+    "Zone-based furniture grouping",
+    "Partner-aware placement"
+  ],
+  "note": "Optimized layout variation 2"
+}

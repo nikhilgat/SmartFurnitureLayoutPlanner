@@ -1,21 +1,37 @@
 {
-  "method": "Relationship-Aware Genetic Algorithm Layout",
+  "method": "Relationship-Aware Deterministic Layout",
   "room": {
-    "width": 800,
-    "height": 600
+    "width": 644,
+    "height": 426
   },
   "furniture": [
     {
+      "name": "Wardrobe",
+      "x": 494,
+      "y": 366,
+      "rotation": 180,
+      "width": 150,
+      "height": 60
+    },
+    {
       "name": "Bed",
-      "x": 0,
-      "y": 420,
-      "rotation": 90,
-      "width": 180,
-      "height": 200
+      "x": 145,
+      "y": 260,
+      "rotation": 180,
+      "width": 143,
+      "height": 166
+    },
+    {
+      "name": "Bedside Table",
+      "x": 343.0,
+      "y": 381,
+      "rotation": 0,
+      "width": 45,
+      "height": 45
     },
     {
       "name": "Sofa",
-      "x": 600,
+      "x": 348,
       "y": 0,
       "rotation": 0,
       "width": 200,
@@ -23,17 +39,17 @@
     },
     {
       "name": "Study Table",
-      "x": 0,
-      "y": 150,
+      "x": 161,
+      "y": 0,
       "rotation": 0,
       "width": 120,
       "height": 70
     },
     {
       "name": "Study Chair",
-      "x": 35,
-      "y": 300,
-      "rotation": 180,
+      "x": 0,
+      "y": 213,
+      "rotation": 0,
       "width": 50,
       "height": 50
     }
@@ -42,22 +58,22 @@
     {
       "type": "door",
       "wall": "bottom",
-      "position": 411,
+      "position": 8,
       "size": 90,
       "openingHeight": "210"
     },
     {
       "type": "window",
-      "wall": "right",
-      "position": 367,
+      "wall": "left",
+      "position": 268,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
     },
     {
       "type": "window",
-      "wall": "left",
-      "position": 6,
+      "wall": "right",
+      "position": 7,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
@@ -66,9 +82,9 @@
   "features": [
     "Functional relationship optimization",
     "Wheelchair accessibility compliance",
-    "Deterministic and repeatable results",
+    "Randomized variations for diverse solutions",
     "Zone-based furniture grouping",
     "Partner-aware placement"
   ],
-  "note": "This layout prioritizes functional relationships between furniture items"
+  "note": "Optimized layout variation 3"
 }

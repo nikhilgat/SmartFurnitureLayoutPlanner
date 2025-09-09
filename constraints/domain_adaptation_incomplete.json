@@ -1,0 +1,269 @@
+[
+  {
+    "instruction": "Arrange furniture in a 4x3m living room for wheelchair accessibility.",
+    "input": "Furniture: Sofa (180x80), Coffee table (120x60), TV cabinet (150x45), Armchair (90x85).\nConstraints: 90cm clearance paths, 150cm turning areas, 120cm path width.",
+    "output": "Position sofa against north wall with 150cm front clearance for wheelchair turning. Place TV cabinet on opposite south wall maintaining 180-350cm viewing distance. Coffee table centered but offset to allow 120cm circulation path. Armchair positioned southeast corner with 150cm front access clearance."
+  },
+  {
+    "instruction": "Design barrier-free bedroom layout for elderly user with mobility aids.",
+    "input": "Room: 3.5x4m bedroom. Furniture: Queen bed (200x160), Wardrobe (180x60), Bedside table (50x40), Chair (60x55).\nConstraints: Bed requires 150cm left access, 120cm right access, wardrobe needs 150cm front clearance.",
+    "output": "Center bed along west wall leaving 150cm clearance on left side, 120cm on right. Place bedside table within 30-80cm reach on right side. Position wardrobe on north wall with 150cm front access. Chair near east window with clear 90cm pathway connection."
+  },
+  {
+    "instruction": "Optimize kitchen-dining area for wheelchair user cooking and dining.",
+    "input": "Space: 5x3m kitchen-dining. Items: Kitchen counter (240x60), Dining table (140x90), 4 chairs (45x50), Refrigerator (60x60), Stove (60x60).\nConstraints: Counter needs 150cm front clearance, under-rideable sections, table requires wheelchair space.",
+    "output": "Align counter along north wall with 150cm front clearance. Position stove and refrigerator with 150cm front access each. Dining table centered with one side open for wheelchair access (no chair). Remaining 3 chairs positioned with 60-150cm spacing from table edges."
+  },
+  {
+    "instruction": "Create accessible bathroom layout with grab bars and clearances.",
+    "input": "Bathroom: 2.5x2m. Fixtures: Toilet, Washbasin (80x50), Shower (120x90).\nConstraints: Toilet needs 150cm front, 90cm side clearance, washbasin under-rideable, shower 150x150cm area.",
+    "output": "Position toilet southeast corner with 150cm front clearance toward center, 90cm left side clearance. Install washbasin on north wall with under-rideable design (80cm max height, 90cm width, 55cm depth). Shower occupies northwest corner with 150x150cm minimum area plus 150cm front approach clearance."
+  },
+  {
+    "instruction": "Arrange home office for user with limited mobility and wheelchair access.",
+    "input": "Office: 3x3.5m. Furniture: Desk (150x75), Office chair, Bookshelf (200x40), Filing cabinet (40x60).\nConstraints: Desk requires under-rideable design, 150cm approach clearance, bookshelf within reach range.",
+    "output": "Position desk along south wall with under-rideable design (80cm max height, 90cm knee clearance). Maintain 150cm front approach clearance. Place bookshelf on east wall within 200cm of desk for comfortable access. Filing cabinet adjacent to desk within 120cm reach distance."
+  },
+  {
+    "instruction": "Design accessible guest bedroom with universal design principles.",
+    "input": "Room: 4x3m guest room. Items: Twin bed (190x90), Dresser (120x50), Small table (80x50), Chair (55x60).\nConstraints: Bed needs bilateral access, dresser requires full front access, 90cm pathway width minimum.",
+    "output": "Center twin bed along north wall with 90cm clearance on both sides. Position dresser on west wall with 150cm front clearance. Small table serves as bedside table within 30-80cm of bed. Chair positioned near south window maintaining 90cm circulation pathway throughout room."
+  },
+  {
+    "instruction": "Optimize living-dining combo for family with wheelchair user.",
+    "input": "Space: 6x4m open plan. Furniture: Sectional sofa (250x180), Coffee table (110x70), Dining table (160x100), 6 chairs, Sideboard (180x45).\nConstraints: 120cm pathways, 180x180cm wheelchair encounter areas, conversation grouping required.",
+    "output": "Position sectional in northwest corner with 150cm front clearance. Coffee table offset to maintain 120cm circulation path. Dining area in southeast with table allowing one wheelchair space (remove one chair). Sideboard along east wall. Create 180x180cm encounter area in center for wheelchair turning and social interaction."
+  },
+  {
+    "instruction": "Arrange compact studio apartment for elderly accessibility.",
+    "input": "Studio: 5x3m. Items: Murphy bed (140x200), Kitchenette counter (180x60), Small dining table (100x70), 2 chairs, Wardrobe (100x60).\nConstraints: Murphy bed clearance, counter accessibility, turning radius requirements.",
+    "output": "Murphy bed against west wall with 150cm clearance when deployed. Kitchenette counter along north wall with 150cm front access and under-rideable sections. Dining table positioned for dual function as workspace, maintaining wheelchair access. Wardrobe in southeast corner with 150cm front clearance."
+  },
+  {
+    "instruction": "Design barrier-free master bedroom with en-suite access.",
+    "input": "Bedroom: 4.5x4m with en-suite door. Furniture: King bed (200x180), Two bedside tables (50x40), Dresser (160x55), Armchair (85x80).\nConstraints: Bed bilateral access, clear path to bathroom, dresser accessibility.",
+    "output": "Center king bed with 150cm left access, 120cm right access. Bedside tables positioned within 30-80cm reach. Clear 120cm pathway from bed to en-suite door. Dresser along north wall with 150cm front clearance. Armchair positioned for reading with adequate lighting and circulation."
+  },
+  {
+    "instruction": "Create accessible dining room for multi-generational family.",
+    "input": "Dining room: 4x4m. Items: Dining table (200x100), 8 chairs, China cabinet (150x40), Sideboard (160x50).\nConstraints: Wheelchair space at table, serving access, 90cm circulation minimum.",
+    "output": "Center dining table allowing 2 wheelchair spaces by removing 2 chairs and maintaining 120cm clearance. China cabinet on east wall with 150cm front access for display viewing. Sideboard positioned for serving access within 250cm of table. Maintain 90cm circulation paths around all furniture."
+  },
+  {
+    "instruction": "Optimize small bathroom for aging in place modifications.",
+    "input": "Bathroom: 2x2.5m. Fixtures: Toilet, Pedestal sink (60x45), Shower-tub combo (150x75).\nConstraints: Grab bar installation space, turning radius, safety clearances.",
+    "output": "Position toilet with 150cm front clearance and 90cm side clearance for grab bar installation. Replace pedestal sink with wall-mounted under-rideable design. Maintain 150cm turning diameter in center. Shower-tub positioned to allow 150cm front approach with grab bar mounting surfaces available."
+  },
+  {
+    "instruction": "Arrange children's accessible playroom with therapy considerations.",
+    "input": "Playroom: 4x3.5m. Items: Play table (120x80), Storage cubes (40x40), Soft seating area, Therapy equipment space.\nConstraints: Wheelchair child access, therapy equipment clearances, supervision sightlines.",
+    "output": "Position play table centrally with one side open for wheelchair access. Storage cubes along walls within comfortable reach range (38-122cm height). Soft seating area in corner for rest. Reserve northwest section for therapy equipment with 150cm clearances. Maintain clear sightlines for supervision."
+  },
+  {
+    "instruction": "Design accessible home entry and coat storage area.",
+    "input": "Entry: 2x3m foyer. Items: Bench (100x40), Coat hooks, Shoe storage (80x35), Mirror (80x60).\nConstraints: 90cm door clearance, 150cm turning space, accessible storage heights.",
+    "output": "Maintain 150cm turning diameter in center of foyer. Position bench along side wall with 150cm front clearance. Install coat hooks at multiple heights (85-137cm) for various users. Shoe storage below bench at accessible height. Mirror mounted 100cm from floor for seated users."
+  },
+  {
+    "instruction": "Create barrier-free laundry room with accessible appliances.",
+    "input": "Laundry: 2.5x2m. Items: Front-loading washer (60x60), Dryer (60x60), Folding counter (120x60), Storage cabinet.\nConstraints: Appliance front access, counter under-rideable, storage within reach.",
+    "output": "Position washer and dryer side by side with 150cm front clearance for door opening and wheelchair access. Install under-rideable folding counter (max 80cm height) with 90cm width clearance. Storage cabinet with shelving between 38-137cm height range for universal accessibility."
+  },
+  {
+    "instruction": "Optimize bedroom for user with visual impairment and mobility aids.",
+    "input": "Bedroom: 3.5x3m. Furniture: Double bed (190x140), Wardrobe (150x50), Bedside table, Chair (60x65).\nConstraints: Clear navigation paths, consistent furniture placement, tactile accessibility.",
+    "output": "Position bed consistently along north wall with 120cm clearance on both sides for navigation safety. Bedside table at consistent 30cm distance from bed. Wardrobe along west wall with 150cm front clearance and tactile hardware. Chair positioned away from main circulation path to avoid obstacles."
+  },
+  {
+    "instruction": "Design accessible kitchen island workspace for wheelchair cooking.",
+    "input": "Kitchen: 4x3m with island space. Items: Island (180x90), Bar stools (2), Pendant lighting, Storage.\nConstraints: Under-rideable island design, knee clearance, accessible storage heights.",
+    "output": "Center kitchen island with under-rideable design: 90cm knee clearance width, 55cm depth, 80cm maximum height. Position for 150cm circulation around all sides. Install accessible storage between 38-137cm height. Bar stools removable for wheelchair access. Pendant lighting provides task illumination without head obstacles."
+  },
+  {
+    "instruction": "Arrange accessible home theater seating for wheelchair inclusion.",
+    "input": "Theater room: 5x4m. Items: 3-seat sofa, 2 recliners, Coffee table, Equipment cabinet (120x45).\nConstraints: Wheelchair seating positions, sightline considerations, access to controls.",
+    "output": "Create tiered seating arrangement with designated wheelchair positions integrated among regular seating. Maintain 130-150cm frontal approach clearance and 150x90cm lateral clearance for wheelchair positions. Position equipment cabinet with 150cm front access for universal control reach. Coffee table positioned for shared access without blocking wheelchair circulation."
+  },
+  {
+    "instruction": "Create barrier-free craft room with adjustable work surfaces.",
+    "input": "Craft room: 3.5x3m. Items: Work table (150x90), Storage units (multiple), Task chair, Supply cart.\nConstraints: Adjustable height requirements, material accessibility, wheelchair accommodation.",
+    "output": "Install height-adjustable work table (70-80cm range) with under-rideable design for wheelchair access. Position storage units with shelving at multiple accessible heights (38-137cm). Supply cart mobile for flexible positioning. Maintain 150cm turning radius in center. Task lighting provides 750 lux for detailed work."
+  },
+  {
+    "instruction": "Design accessible master bathroom with separate shower and tub.",
+    "input": "Bathroom: 3x3.5m. Fixtures: Toilet, Double vanity (180x55), Walk-in shower (120x120), Soaking tub (170x80).\nConstraints: Independent shower access, vanity under-rideable sections, safety features.",
+    "output": "Position walk-in shower in corner with 150x150cm internal area plus 150cm approach clearance. Install toilet with 150cm front and 90cm side clearance for safety bars. Double vanity with one under-rideable section (90cm width, 55cm depth, 80cm height). Soaking tub positioned with 150cm front clearance and grab bar mounting surfaces."
+  },
+  {
+    "instruction": "Optimize small apartment galley kitchen for wheelchair accessibility.",
+    "input": "Galley kitchen: 3.5x1.8m. Items: Counter (240x60 total), Refrigerator (60x60), Stove (60x60), Dishwasher (60x60).\nConstraints: Narrow space navigation, appliance accessibility, storage reach.",
+    "output": "Design counters with under-rideable sections at key work areas (sink, primary prep). Position appliances with 150cm front clearance where possible, minimum 120cm in narrow sections. Install pull-out storage between 38-137cm height. Maintain minimum 90cm circulation path through galley length."
+  },
+  {
+    "instruction": "Arrange accessible guest suite with sitting area.",
+    "input": "Suite: 5x3.5m. Items: Queen bed (200x160), Sitting area (loveseat + chair), Dresser (140x50), Work desk (120x60).\nConstraints: Multiple access routes, furniture grouping, universal design principles.",
+    "output": "Position queen bed with 150cm left access, 120cm right access. Create sitting area with loveseat and chair arranged for 120-240cm conversation distance. Dresser along wall with 150cm front clearance. Work desk with under-rideable design and 150cm approach clearance. Maintain 90cm pathways connecting all areas."
+  },
+  {
+    "instruction": "Create barrier-free sunroom with plant display and seating.",
+    "input": "Sunroom: 4x3m. Items: Plant shelving (multi-level), Seating (2 chairs), Side table, Watering station.\nConstraints: Plant care accessibility, seating comfort, environmental controls access.",
+    "output": "Install plant shelving with levels between 38-137cm height for universal access. Position seating to allow 150cm front clearance and conversation grouping (120-240cm apart). Side table within 80cm reach of both chairs. Watering station at accessible counter height (80cm max) with under-rideable design."
+  },
+  {
+    "instruction": "Design accessible teenage bedroom with study and storage needs.",
+    "input": "Bedroom: 3.5x4m. Items: Single bed (190x90), Study desk (140x70), Bookshelf (180x35), Storage chest, Bean bag.\nConstraints: Study ergonomics, storage accessibility, social space for friends.",
+    "output": "Position single bed along wall with 90cm bilateral access. Study desk with under-rideable design (80cm height, 90cm knee clearance) and 150cm front approach. Bookshelf within 200cm of desk for study access. Storage chest doubles as seating. Bean bag positioned for casual socializing without blocking circulation paths."
+  },
+  {
+    "instruction": "Optimize accessible powder room for guests with mobility aids.",
+    "input": "Powder room: 1.5x2m. Fixtures: Toilet, Wall-mounted sink (70x45).\nConstraints: Tight space maneuvering, grab bar mounting, door swing clearance.",
+    "output": "Position toilet with maximum available clearances: 150cm front where possible, minimum 90cm side clearance. Install wall-mounted sink at 80cm height with under-rideable design. Ensure 150cm turning diameter by utilizing corner space efficiently. Door swing outward to maximize internal maneuvering space. Provide grab bar mounting reinforcement."
+  },
+  {
+    "instruction": "Arrange accessible art studio with easel and storage.",
+    "input": "Art studio: 4x3.5m. Items: Adjustable easel, Supply storage (multiple units), Work table (120x80), Stool.\nConstraints: Creative workflow accessibility, supply organization, lighting for art work.",
+    "output": "Position adjustable easel with 150cm approach clearance and height adjustment 70-120cm. Organize supply storage at accessible heights (38-137cm) grouped by frequency of use. Work table with under-rideable design for detailed work. Mobile stool for flexibility. Maintain 150cm turning radius for equipment maneuvering."
+  },
+  {
+    "instruction": "Create barrier-free music room with piano and seating.",
+    "input": "Music room: 4x4m. Items: Upright piano (150x60), Music stand, Storage bench, Listening chair.\nConstraints: Piano bench accessibility, music storage reach, acoustic considerations.",
+    "output": "Position piano against wall with 150cm front clearance for bench and wheelchair access. Adjustable music stand for various user heights. Storage bench with accessible lid operation within 120cm of piano. Listening chair positioned for optimal acoustics with 150cm front clearance. Maintain circulation paths for instrument transport."
+  },
+  {
+    "instruction": "Design accessible breakfast nook with built-in seating.",
+    "input": "Nook: 2.5x2.5m corner space. Items: Built-in bench (L-shaped), Table (120x80), Storage underneath.\nConstraints: Wheelchair access to table, under-bench storage accessibility.",
+    "output": "Design L-shaped built-in bench with one section removable for wheelchair access. Table height 72-76cm with under-rideable design on wheelchair side. Under-bench storage with accessible hardware and heights 38-80cm. Maintain 150cm approach clearance to wheelchair accessible side."
+  },
+  {
+    "instruction": "Optimize accessible library/reading room with multiple seating options.",
+    "input": "Library: 4x3.5m. Items: Bookshelf wall unit, Reading chair, Ottoman, Side table, Floor lamp.\nConstraints: Book accessibility, reading comfort, lighting adequacy.",
+    "output": "Install bookshelf with adjustable shelving between 38-137cm height. Position reading chair with 150cm front clearance and side table within 45cm side reach. Ottoman positioned for leg support without blocking access. Floor lamp provides 500 lux reading light from 35-50cm distance. Maintain clear pathways to all book sections."
+  },
+  {
+    "instruction": "Arrange accessible family room with entertainment center.",
+    "input": "Family room: 5x4m. Items: Sectional sofa (300x200), Entertainment center (200x50), Game table (100x100), Storage ottoman.\nConstraints: TV viewing distances, game accessibility, family interaction space.",
+    "output": "Position sectional with wheelchair accessible section and 275-410cm TV viewing distance (55-inch screen). Entertainment center on opposite wall with 150cm front access for media controls. Game table with removable chairs for wheelchair access. Storage ottoman mobile for flexible seating. Create 180x180cm central interaction area."
+  },
+  {
+    "instruction": "Create barrier-free mudroom with sports equipment storage.",
+    "input": "Mudroom: 2x3m. Items: Storage lockers (4 units), Bench (150x40), Hooks (multiple heights), Shoe storage.\nConstraints: Equipment accessibility, wet gear management, quick access needs.",
+    "output": "Install storage lockers with accessible heights (38-137cm) and easy-open hardware. Position bench with 150cm front clearance for sitting and equipment access. Mount hooks at multiple heights (85-105cm, 137cm) for various users and equipment. Shoe storage with pull-out design for easy access from seated position."
+  },
+  {
+    "instruction": "Design accessible home gym with adaptive equipment space.",
+    "input": "Home gym: 4x4m. Items: Exercise equipment (various), Weights, Yoga mats, Mirror wall.\nConstraints: Equipment transfer accessibility, safety clearances, adaptive equipment accommodation.",
+    "output": "Create central open space with 180x180cm turning area for wheelchair transfers. Position fixed equipment with 150cm approach clearances. Install weight storage at accessible heights (38-137cm) with easy-grip handles. Mirror wall at appropriate height for seated exercises. Designate adaptive equipment zone with power access and clear floor space."
+  },
+  {
+    "instruction": "Optimize accessible sewing room with cutting table and storage.",
+    "input": "Sewing room: 3.5x3m. Items: Sewing machine table, Cutting table (150x90), Thread storage, Fabric storage, Pressing station.\nConstraints: Work surface heights, storage organization, wheelchair maneuvering.",
+    "output": "Install height-adjustable sewing table (70-80cm) with under-rideable design. Cutting table at 80cm height with 150cm approach clearance on long side. Thread storage within 38-137cm height range with visible organization. Fabric storage with pull-out access. Pressing station at accessible counter height with safety features."
+  },
+  {
+    "instruction": "Arrange accessible elderly care bedroom with medical equipment space.",
+    "input": "Care bedroom: 4x3.5m. Items: Hospital bed, Bedside table, Medical equipment area, Visitor chair, Storage.\nConstraints: Caregiver access, medical equipment clearances, emergency access.",
+    "output": "Position hospital bed with 150cm clearance on both long sides for caregiver access and medical equipment. Bedside table on wheels for flexible positioning. Designate medical equipment zone with power access and 150cm clearances. Visitor chair positioned for conversation without blocking emergency access paths."
+  },
+  {
+    "instruction": "Create barrier-free hobby room for model building and crafts.",
+    "input": "Hobby room: 3x3.5m. Items: Work bench (120x75), Storage cabinets, Task lighting, Ventilation unit, Tool storage.\nConstraints: Detailed work ergonomics, ventilation requirements, tool accessibility.",
+    "output": "Install height-adjustable work bench with under-rideable design and task lighting providing 750 lux. Position storage cabinets with accessible heights (38-137cm) and clear hardware. Tool storage with magnetic strips and drawer organizers at reachable heights. Ventilation unit positioned to not interfere with work space accessibility."
+  },
+  {
+    "instruction": "Design accessible outdoor patio dining area.",
+    "input": "Patio: 4x3m outdoor space. Items: Outdoor dining table (160x90), 6 chairs, Umbrella, Side table, Grill access.\nConstraints: Weather protection, furniture stability, grill safety clearances.",
+    "output": "Position dining table with one side open for wheelchair access, others with weather-resistant chairs spaced 60-150cm apart. Umbrella provides coverage without head hazards. Side table within serving distance of both dining and grill areas. Maintain 150cm clearance around grill for safety and accessibility."
+  },
+  {
+    "instruction": "Optimize accessible walk-in closet with multiple storage types.",
+    "input": "Walk-in closet: 2.5x3m. Items: Hanging rods (multiple heights), Shelving, Drawer units, Shoe storage, Mirror.\nConstraints: Reachability ranges, clothing organization, wheelchair navigation.",
+    "output": "Install double-height hanging system: 107cm and 180cm rods. Shelving between 38-137cm height for accessibility. Drawer units with easy-pull hardware at waist height. Shoe storage with angled shelves for visibility. Central turning space 150cm diameter. Mirror positioned for seated and standing users (100cm from floor)."
+  },
+  {
+    "instruction": "Arrange accessible computer workstation for extended use.",
+    "input": "Office space: 3x2.5m. Items: Computer desk (140x80), Ergonomic chair, Monitor arm, Keyboard tray, Storage unit.\nConstraints: Ergonomic positioning, eye strain prevention, repetitive stress prevention.",
+    "output": "Install height-adjustable computer desk (70-76cm) with under-rideable design. Monitor positioned 50-70cm from user with adjustable arm. Keyboard tray at elbow height with wrist support. Storage unit with frequently used items within 60cm comfortable reach. Maintain 150cm approach and egress clearances."
+  },
+  {
+    "instruction": "Create barrier-free meditation and yoga space.",
+    "input": "Meditation room: 3x3m. Items: Yoga mats (storage), Meditation cushions, Small altar/shelf, Floor cushions, Sound system.\nConstraints: Floor access considerations, storage accessibility, peaceful arrangement.",
+    "output": "Create open central floor space with 180cm diameter for movement and positioning. Yoga mat storage at accessible height (38-80cm) with easy retrieval. Meditation cushions with firm support for transfer assistance. Small altar/shelf at multiple height options for various users. Sound system controls within comfortable reach range."
+  },
+  {
+    "instruction": "Design accessible pantry with deep storage solutions.",
+    "input": "Pantry: 1.5x2.5m. Items: Deep shelving, Pull-out drawers, Bulk storage, Step stool storage.\nConstraints: Deep shelf accessibility, heavy item management, inventory visibility.",
+    "output": "Install pull-out drawer systems for deep storage accessibility. Shelving heights between 38-137cm with frequently used items at optimal reach levels. Bulk storage containers with easy-grip handles at lower levels. Lazy Susan systems for corner access. Step stool stored accessibly but remove need through proper design height distribution."
+  },
+  {
+    "instruction": "Optimize accessible nursery for parents with mobility limitations.",
+    "input": "Nursery: 3.5x3m. Items: Crib, Changing table, Rocking chair, Storage (clothes, toys), Nursing area.\nConstraints: Baby care accessibility, safety considerations, parent comfort needs.",
+    "output": "Position crib with 150cm approach clearance on both long sides. Height-adjustable changing table (76-85cm) with safety rails and storage underneath. Rocking chair with firm support and 150cm front clearance. Storage organized by frequency of use within comfortable reach ranges. Nursing area with supportive seating and side table."
+  },
+  {
+    "instruction": "Arrange accessible home bar and entertainment area.",
+    "input": "Bar area: 3x2.5m. Items: Bar counter (180x45), Bar stools (3), Back bar storage, Ice maker, Glassware storage.\nConstraints: Service accessibility, glassware safety, social interaction space.",
+    "output": "Design bar counter with under-rideable section (90cm width, 55cm depth, 80cm height) and standard height section. Removable bar stools for wheelchair access. Back bar storage within 38-137cm reach range with secure glassware sections. Ice maker accessible from wheelchair height. Maintain 150cm circulation space for social interaction."
+  },
+  {
+    "instruction": "Create barrier-free workshop with tool organization.",
+    "input": "Workshop: 4x3m. Items: Work bench (150x75), Tool storage, Parts organizer, Assembly area, Safety equipment.\nConstraints: Tool accessibility, work surface adaptability, safety compliance.",
+    "output": "Install height-adjustable work bench (70-85cm) with under-rideable design and good lighting. Tool storage with pegboard and drawer systems at accessible heights (38-137cm). Parts organizer with clear bins and easy access. Assembly area with 180cm turning radius. Safety equipment mounted at multiple heights and clearly marked."
+  },
+  {
+    "instruction": "Design accessible guest powder room with luxury touches.",
+    "input": "Powder room: 2x1.8m. Items: Floating vanity (90x50), Toilet, Decorative mirror, Hand towel storage, Artwork.\nConstraints: Compact luxury design, accessibility compliance, guest comfort.",
+    "output": "Install floating vanity at 80cm height with under-rideable design and luxury finishes. Position toilet with maximum available clearances and concealed grab bar reinforcement. Mirror at 100cm height for universal use. Hand towel storage within easy reach. Artwork positioned to not obstruct accessibility features while enhancing ambiance."
+  },
+  {
+    "instruction": "Optimize accessible teenagers' shared bedroom with privacy needs.",
+    "input": "Shared bedroom: 4x4m. Items: 2 twin beds, 2 desks, Shared storage, Privacy screen, Entertainment area.\nConstraints: Individual accessibility, shared spaces, privacy accommodation.",
+    "output": "Position twin beds with 120cm between for privacy screen placement and individual access. Each desk with under-rideable design (80cm height) and 150cm approach clearance. Shared storage organized by zones with accessible heights (38-137cm). Privacy screen mobile for flexible arrangement. Entertainment area accessible to both users with comfortable seating."
+  },
+  {
+    "instruction": "Arrange accessible dining room for formal entertaining.",
+    "input": "Formal dining: 5x4m. Items: Dining table (240x110), 10 chairs, China cabinet (180x45), Sideboard (200x50), Chandelier.\nConstraints: Wheelchair guest accommodation, serving accessibility, elegant presentation.",
+    "output": "Position dining table with 2 removable chairs for wheelchair spaces maintaining elegant symmetry. China cabinet and sideboard placed for display and serving access within 250cm of table. Chandelier height appropriate for seated users while providing adequate illumination. Maintain 90cm circulation paths while preserving formal arrangement aesthetic."
+  },
+  {
+    "instruction": "Create barrier-free children's bathroom with growth accommodation.",
+    "input": "Children's bath: 2x2.5m. Items: Toilet, Bathtub (150x70), Single vanity (100x45), Storage, Step stool.\nConstraints: Child safety, growth adaptability, caregiver assistance space.",
+    "output": "Install toilet with 150cm front clearance for caregiver assistance. Bathtub with 150cm front approach and grab bar preparation. Vanity height adjustable or with platform options, under-rideable design. Storage at multiple heights for growing children and caregivers. Step stool storage integrated but designed to encourage independence."
+  },
+  {
+    "instruction": "Design accessible craft room for wheelchair user with extensive supply storage.",
+    "input": "Craft room: 4x3.5m. Items: Multiple work surfaces, Extensive storage, Cutting station, Pressing area, Display space.\nConstraints: Workflow efficiency, supply organization, creative inspiration display.",
+    "output": "Create U-shaped work flow with height-adjustable surfaces (70-80cm) and under-rideable design. Storage organized by project type within 38-137cm heights with clear containers and labels. Cutting station with self-healing mat and ruler systems. Pressing area with safety features. Display space for inspiration at eye level for seated position (100-140cm)."
+  },
+  {
+    "instruction": "Optimize accessible master suite with sitting area and walk-in closet.",
+    "input": "Master suite: 6x4m. Items: King bed, Sitting area (2 chairs, table), Walk-in closet entry, TV area.\nConstraints: Multiple zone accessibility, privacy considerations, luxury comfort.",
+    "output": "Position king bed with 150cm bilateral access and clear path to walk-in closet. Sitting area with chairs spaced for conversation (120-240cm) and shared table within reach. TV positioned for viewing from bed and sitting area (275-410cm distance). Maintain 120cm pathways between all zones while preserving intimate atmosphere."
+  },
+  {
+    "instruction": "Arrange accessible home theater with multiple seating types.",
+    "input": "Theater: 5x4.5m. Items: Sectional seating, Recliners (2), Theater chairs (4), Equipment rack, Snack station.\nConstraints: Sightline optimization, wheelchair integration, equipment accessibility.",
+    "output": "Create tiered arrangement with wheelchair positions integrated throughout rather than segregated. Maintain 130-150cm frontal and 150x90cm lateral clearances for wheelchair spaces. Equipment rack accessible from main seating area. Snack station at accessible counter height with under-rideable design. Sound system controls within universal reach ranges."
+  },
+  {
+    "instruction": "Create barrier-free library study area with reference access.",
+    "input": "Study area: 4x3m. Items: Study desk (160x80), Reference bookshelf, Comfortable reading chair, Filing system, Task lighting.\nConstraints: Research workflow, book accessibility, extended use comfort.",
+    "output": "Position study desk with under-rideable design and 150cm approach clearance. Reference bookshelf within 200cm with adjustable shelving (38-137cm heights). Reading chair with 150cm front clearance and adequate task lighting (500 lux). Filing system with accessible drawer heights and easy-pull hardware. Mobile book cart for transport assistance."
+  },
+  {
+    "instruction": "Design accessible living room with conversation and media zones.",
+    "input": "Living room: 5x4m. Items: Sofa (250x100), Armchair (85x80), Coffee table (110x70), Media console (180x45), Side tables (2).\nConstraints: 120cm pathways, 180x180cm wheelchair encounter areas, clear media viewing lines.",
+    "output": "Position sofa along north wall with 150cm front clearance. Armchair in southeast corner with 150cm front access clearance. Coffee table centered but offset to allow 120cm circulation path. Media console on south wall with clear sightlines from all seating. Side tables within 30-80cm reach of seating for convenience."
+  },
+  {
+    "instruction": "Arrange accessible dining area for family gatherings.",
+    "input": "Dining area: 4x3.5m. Items: Dining table (200x100), 8 chairs, Buffet (160x50), Display cabinet (150x40).\nConstraints: Wheelchair space at table, serving access, 90cm circulation minimum.",
+    "output": "Center dining table allowing 2 wheelchair spaces by removing 2 chairs and maintaining 120cm clearance. Buffet along east wall with 150cm front access for serving. Display cabinet on west wall with accessible shelving heights (38-137cm). Maintain 90cm circulation paths around all furniture."
+  },
+  {
+    "instruction": "Create barrier-free living room layout for wheelchair user.",
+    "input": "Room: 5x4m living room. Furniture: Sofa (220x90), Coffee table (100x60), Armchair (80x75), TV stand (150x40).\nConstraints: 120cm pathways, wheelchair turning radius, conversation grouping.",
+    "output": "Place sofa against north wall with 150cm front clearance. Coffee table offset to maintain 120cm circulation path. Armchair positioned for conversation grouping (120-240cm apart). TV stand on south wall with clear sightlines from all seating. Create 180x180cm encounter area in center for wheelchair turning and social interaction."
+  }
+]
+
+ 

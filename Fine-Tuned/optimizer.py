@@ -313,15 +313,18 @@ Return the optimized layout JSON now:"""
         
         return report
 
-# Example usage
+
+from config import Config
+
 def main():
-    # Initialize optimizer with your API key
-    API_KEY = "AIzaSyBKXNL1iJw3vsIFo1crgGo25JbGfsaKzr8"
+    API_KEY = Config.OPENAI_API_KEY
+    if not API_KEY:
+        raise ValueError("API_KEY environment variable not set. Please set it before running.")
     optimizer = RoomLayoutOptimizer(API_KEY)
     
-    # Specify your file paths here
+    # Specify file paths here
     constraints_path = r"constraints/bedroom_barrier_free_constraints_consolidated.json"
-    layout_path = r"room-layout-3.json"
+    layout_path = r"Input-Layouts/room-layout-1.json"
     output_path = r"Outputs/FT/optimized_room_layout.json"
     report_path = r"Outputs/FT/optimization_report.json"
     
@@ -332,20 +335,16 @@ def main():
     print("Starting room layout optimization...")
     print(f"Room dimensions: {layout['room']['width']}cm x {layout['room']['height']}cm")
     print(f"Number of furniture items: {len(layout['furniture'])}")
-    
-    # Optimize layout
+
     optimized_layout = optimizer.optimize_layout(layout, constraints)
     
-    # Generate report
     report = optimizer.generate_optimization_report(layout, optimized_layout, constraints)
     
-    # Save results
     optimizer.save_layout(optimized_layout, output_path)
     
     with open(report_path, 'w') as f:
         json.dump(report, f, indent=2)
     
-    # Print summary
     print("\n" + "="*50)
     print("OPTIMIZATION COMPLETE")
     print("="*50)
