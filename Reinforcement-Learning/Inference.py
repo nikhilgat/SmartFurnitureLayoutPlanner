@@ -1,6 +1,6 @@
 # ============================================================================
 
-LAYOUT_FILE = "room-layout-1.json"              #  room layout 
+LAYOUT_FILE = "Input-Layouts/room-layout-1.json"              #  room layout 
 MODEL_PATH = "Outputs/RL/barrier_free_furniture_model_v9.zip"  
 CONSTRAINTS_PATH = "constraints/constraints.json"  
 

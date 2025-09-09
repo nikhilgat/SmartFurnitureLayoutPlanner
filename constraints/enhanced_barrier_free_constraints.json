@@ -277,7 +277,6 @@
           "Nightstand"
         ],
         "optional_partners": [
-          "Wardrobe",
           "Dresser",
           "Bench"
         ],
@@ -429,7 +428,6 @@
           "Dresser"
         ],
         "optional_furniture": [
-          "Wardrobe",
           "Armchair",
           "Bench",
           "Vanity"

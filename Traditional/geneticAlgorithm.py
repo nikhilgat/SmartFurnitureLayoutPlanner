@@ -6,7 +6,7 @@ from typing import List, Dict, Tuple
 import copy
 
 
-with open("room-layout-1.json", "r") as f:
+with open("Input-Layouts/room-layout-4.json", "r") as f:
     config = json.load(f)
 
 
@@ -41,12 +41,14 @@ class EnhancedDeterministicBarrierFreePlanner:
         self.wall_preferences = {
             "Bed": ["against_wall"],
             "Wardrobe": ["against_wall"], 
-            "Sofa": ["against_wall", "corner"],
+            "Sofa": ["against_wall"],
             "Desk": ["against_wall"],
             "TV Cabinet": ["against_wall"],
             "Toilet": ["corner"],
             "Washbasin": ["against_wall"]
         }
+        
+        self.door_clearance = 150  # Added for door maneuvering space
     
     def _create_furniture_groups(self) -> Dict:
         """Create functional furniture groups based on relationships"""
@@ -165,6 +167,52 @@ class EnhancedDeterministicBarrierFreePlanner:
         
         return zones
     
+    def create_opening_clearance_zones(self) -> List[Dict]:
+        """Create clearance zones for doors to prevent blocking"""
+        zones = []
+        extra = 30  # Extra width for latch side, etc.
+        for opening in openings:
+            if opening.get("type", "door").lower() != "door":
+                continue  # No large clearance for windows to allow furniture in front
+            opening_rect = self.get_opening_rect(opening)
+            wall = opening["wall"].lower() if "wall" in opening else None
+            if wall == "bottom":
+                zone = {
+                    "x": opening_rect["x"] - extra,
+                    "y": opening_rect["y"],
+                    "width": opening_rect["width"] + 2 * extra,
+                    "height": self.door_clearance,
+                    "type": "door_clearance"
+                }
+            elif wall == "top":
+                zone = {
+                    "x": opening_rect["x"] - extra,
+                    "y": opening_rect["y"] - self.door_clearance + opening_rect["height"],
+                    "width": opening_rect["width"] + 2 * extra,
+                    "height": self.door_clearance,
+                    "type": "door_clearance"
+                }
+            elif wall == "left":
+                zone = {
+                    "x": opening_rect["x"],
+                    "y": opening_rect["y"] - extra,
+                    "width": self.door_clearance,
+                    "height": opening_rect["height"] + 2 * extra,
+                    "type": "door_clearance"
+                }
+            elif wall == "right":
+                zone = {
+                    "x": opening_rect["x"] - self.door_clearance + opening_rect["width"],
+                    "y": opening_rect["y"] - extra,
+                    "width": self.door_clearance,
+                    "height": opening_rect["height"] + 2 * extra,
+                    "type": "door_clearance"
+                }
+            else:
+                continue
+            zones.append(zone)
+        return zones
+    
     def check_rectangle_overlap(self, rect1: Dict, rect2: Dict) -> bool:
         """Check if two rectangles overlap"""
         return not (rect1["x"] + rect1["width"] <= rect2["x"] or
@@ -228,6 +276,12 @@ class EnhancedDeterministicBarrierFreePlanner:
             if self.check_rectangle_overlap(furniture_rect, opening_rect):
                 return False
         
+        # Check overlaps with opening clearances (added to prevent blocking doors)
+        opening_clearances = self.create_opening_clearance_zones()
+        for zone in opening_clearances:
+            if self.check_rectangle_overlap(furniture_rect, zone):
+                return False
+        
         return True
     
     def get_partner_positions(self, primary_furniture: Dict, partner: Dict) -> List[Dict]:
@@ -265,89 +319,184 @@ class EnhancedDeterministicBarrierFreePlanner:
         return positions
     
     def _get_facing_positions(self, primary: Dict, partner: Dict, dist: float, pw: float, ph: float, sw: float, sh: float) -> List[Dict]:
-        """Get positions where partner faces the primary furniture"""
         positions = []
         px, py = primary["x"], primary["y"]
-        
         close_dist = min(dist, 80)
-        positions.append({"x": px + (pw - sw) // 2, "y": py + ph + close_dist, "rotation": 180})
-        positions.append({"x": px + (pw - sw) // 2, "y": py - close_dist - sh, "rotation": 0})
-        positions.append({"x": px + pw + close_dist, "y": py + (ph - sh) // 2, "rotation": 270})
-        positions.append({"x": px - close_dist - sw, "y": py + (ph - sh) // 2, "rotation": 90})
-        
+
+        def is_valid_rotation(furniture_name, rotation):
+            norm_name = self.normalize_furniture_name(furniture_name)
+            if norm_name in ["Wardrobe", "Sofa"]:
+                return True  # Validated in get_wall_positions
+            return True
+
+        candidate_positions = [
+            {"x": px + (pw - sw) // 2, "y": py + ph + close_dist, "rotation": 180},
+            {"x": px + (pw - sw) // 2, "y": py - close_dist - sh, "rotation": 0},
+            {"x": px + pw + close_dist, "y": py + (ph - sh) // 2, "rotation": 270},
+            {"x": px - close_dist - sw, "y": py + (ph - sh) // 2, "rotation": 90},
+        ]
+
+        for pos in candidate_positions:
+            if is_valid_rotation(partner["name"], pos["rotation"]):
+                positions.append(pos)
+
         return positions
-    
+
+
     def _get_adjacent_positions(self, primary: Dict, partner: Dict, dist: float, pw: float, ph: float, sw: float, sh: float) -> List[Dict]:
-        """Get positions where partner is adjacent to primary furniture"""
         positions = []
         px, py = primary["x"], primary["y"]
-        
         close_dist = min(dist, 60)
-        positions.append({"x": px + pw + close_dist, "y": py, "rotation": 0})
-        positions.append({"x": px + pw + close_dist, "y": py + ph - sh, "rotation": 0})
-        positions.append({"x": px - close_dist - sw, "y": py, "rotation": 0})
-        positions.append({"x": px - close_dist - sw, "y": py + ph - sh, "rotation": 0})
-        positions.append({"x": px, "y": py + ph + close_dist, "rotation": 0})
-        positions.append({"x": px + pw - sw, "y": py + ph + close_dist, "rotation": 0})
-        positions.append({"x": px, "y": py - close_dist - sh, "rotation": 0})
-        positions.append({"x": px + pw - sw, "y": py - close_dist - sh, "rotation": 0})
-        
+
+        def is_valid_rotation(furniture_name, rotation):
+            norm_name = self.normalize_furniture_name(furniture_name)
+            if norm_name in ["Wardrobe", "Sofa"]:
+                return True  # Validated in get_wall_positions
+            return True
+
+        candidate_positions = [
+            {"x": px + pw + close_dist, "y": py, "rotation": 0},
+            {"x": px + pw + close_dist, "y": py + ph - sh, "rotation": 0},
+            {"x": px - close_dist - sw, "y": py, "rotation": 0},
+            {"x": px - close_dist - sw, "y": py + ph - sh, "rotation": 0},
+            {"x": px, "y": py + ph + close_dist, "rotation": 0},
+            {"x": px + pw - sw, "y": py + ph + close_dist, "rotation": 0},
+            {"x": px, "y": py - close_dist - sh, "rotation": 0},
+            {"x": px + pw - sw, "y": py - close_dist - sh, "rotation": 0},
+        ]
+
+        for pos in candidate_positions:
+            if is_valid_rotation(partner["name"], pos["rotation"]):
+                positions.append(pos)
+
         return positions
+
     
     def _get_parallel_positions(self, primary: Dict, partner: Dict, dist: float, pw: float, ph: float, sw: float, sh: float) -> List[Dict]:
-        """Get positions where partner is parallel to primary furniture"""
         positions = []
         px, py = primary["x"], primary["y"]
-        
-        positions.append({"x": px, "y": py + ph + dist, "rotation": 0})
-        positions.append({"x": px + (pw - sw), "y": py + ph + dist, "rotation": 0})
-        positions.append({"x": px, "y": py - dist - sh, "rotation": 0})
-        positions.append({"x": px + (pw - sw), "y": py - dist - sh, "rotation": 0})
-        
+
+        def is_valid_rotation(furniture_name, rotation):
+            norm_name = self.normalize_furniture_name(furniture_name)
+            if norm_name in ["Wardrobe", "Sofa"]:
+                return True  # Validated in get_wall_positions
+            return True
+
+        candidate_positions = [
+            {"x": px, "y": py + ph + dist, "rotation": 0},
+            {"x": px + (pw - sw), "y": py + ph + dist, "rotation": 0},
+            {"x": px, "y": py - dist - sh, "rotation": 0},
+            {"x": px + (pw - sw), "y": py - dist - sh, "rotation": 0},
+        ]
+
+        for pos in candidate_positions:
+            if is_valid_rotation(partner["name"], pos["rotation"]):
+                positions.append(pos)
+
         return positions
+
     
     def get_wall_positions(self, furniture: Dict) -> List[Dict]:
-        """Get deterministic wall positions for furniture"""
-        w, h = self.get_furniture_dimensions(furniture)
+        """Get deterministic wall positions for furniture, ensuring wardrobe and sofa face away from walls"""
         positions = []
         
-        wall_positions = [
-            {"x": 0, "y": ROOM_HEIGHT//4, "rotation": 0},
-            {"x": 0, "y": ROOM_HEIGHT//2, "rotation": 0},
-            {"x": 0, "y": ROOM_HEIGHT*3//4 - h, "rotation": 0},
-            {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT//4, "rotation": 0},
-            {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT//2, "rotation": 0},
-            {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT*3//4 - h, "rotation": 0},
-            {"x": ROOM_WIDTH//4, "y": 0, "rotation": 0},
-            {"x": ROOM_WIDTH//2 - w//2, "y": 0, "rotation": 0},
-            {"x": ROOM_WIDTH*3//4 - w, "y": 0, "rotation": 0},
-            {"x": ROOM_WIDTH//4, "y": ROOM_HEIGHT - h, "rotation": 0},
-            {"x": ROOM_WIDTH//2 - w//2, "y": ROOM_HEIGHT - h, "rotation": 0},
-            {"x": ROOM_WIDTH*3//4 - w, "y": ROOM_HEIGHT - h, "rotation": 0},
-        ]
-        
-        corner_positions = [
-            {"x": 0, "y": 0, "rotation": 0},
-            {"x": ROOM_WIDTH - w, "y": 0, "rotation": 0},
-            {"x": 0, "y": ROOM_HEIGHT - h, "rotation": 0},
-            {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT - h, "rotation": 0},
-        ]
-        
+        orig_w = furniture["width"]
+        orig_h = furniture["height"]
         norm_name = self.normalize_furniture_name(furniture["name"])
         preferences = self.wall_preferences.get(norm_name, [])
+        needs_face_away = norm_name in ["Wardrobe", "Sofa"]
         
-        if "against_wall" in preferences:
+        if "against_wall" not in preferences:
+            # Default positions with rotation 0
+            wall_positions = [
+                {"x": 0, "y": ROOM_HEIGHT//4, "rotation": 0},
+                {"x": 0, "y": ROOM_HEIGHT//2, "rotation": 0},
+                {"x": 0, "y": ROOM_HEIGHT*3//4 - orig_h, "rotation": 0},
+                {"x": ROOM_WIDTH - orig_w, "y": ROOM_HEIGHT//4, "rotation": 0},
+                {"x": ROOM_WIDTH - orig_w, "y": ROOM_HEIGHT//2, "rotation": 0},
+                {"x": ROOM_WIDTH - orig_w, "y": ROOM_HEIGHT*3//4 - orig_h, "rotation": 0},
+                {"x": ROOM_WIDTH//4, "y": 0, "rotation": 0},
+                {"x": ROOM_WIDTH//2 - orig_w//2, "y": 0, "rotation": 0},
+                {"x": ROOM_WIDTH*3//4 - orig_w, "y": 0, "rotation": 0},
+                {"x": ROOM_WIDTH//4, "y": ROOM_HEIGHT - orig_h, "rotation": 0},
+                {"x": ROOM_WIDTH//2 - orig_w//2, "y": ROOM_HEIGHT - orig_h, "rotation": 0},
+                {"x": ROOM_WIDTH*3//4 - orig_w, "y": ROOM_HEIGHT - orig_h, "rotation": 0},
+            ]
             positions.extend(wall_positions)
-        if "corner" in preferences:
-            positions.extend(corner_positions)
+        else:
+            # Wall-specific rotations for facing away
+            wall_configs = [
+                ("left", 90),  # front right
+                ("right", 270),  # front left
+                ("bottom", 0),  # front top
+                ("top", 180),  # front bottom
+            ]
+            
+            y_positions = [ROOM_HEIGHT//4, ROOM_HEIGHT//2, ROOM_HEIGHT*3//4]
+            x_positions = [ROOM_WIDTH//4, ROOM_WIDTH//2, ROOM_WIDTH*3//4]
+            
+            for wall, rot in wall_configs:
+                w = orig_h if rot in [90, 270] else orig_w
+                h = orig_w if rot in [90, 270] else orig_h
+                
+                if wall == "left":
+                    x = 0
+                    for yp in y_positions:
+                        y = min(yp, ROOM_HEIGHT - h)
+                        positions.append({"x": x, "y": y, "rotation": rot})
+                elif wall == "right":
+                    x = ROOM_WIDTH - w
+                    for yp in y_positions:
+                        y = min(yp, ROOM_HEIGHT - h)
+                        positions.append({"x": x, "y": y, "rotation": rot})
+                elif wall == "bottom":
+                    y = 0
+                    for xp in x_positions:
+                        x = min(xp, ROOM_WIDTH - w)
+                        positions.append({"x": x, "y": y, "rotation": rot})
+                elif wall == "top":
+                    y = ROOM_HEIGHT - h
+                    for xp in x_positions:
+                        x = min(xp, ROOM_WIDTH - w)
+                        positions.append({"x": x, "y": y, "rotation": rot})
+        
+        # Add corners if preferred
+        if "corner" in preferences or needs_face_away:
+            corner_configs = [
+                ("bottom_left", [0, 90]),
+                ("bottom_right", [0, 270]),
+                ("top_left", [180, 90]),
+                ("top_right", [180, 270]),
+            ]
+            for corner, rots in corner_configs:
+                for rot in rots:
+                    w = orig_h if rot in [90, 270] else orig_w
+                    h = orig_w if rot in [90, 270] else orig_h
+                    if corner == "bottom_left":
+                        x, y = 0, 0
+                    elif corner == "bottom_right":
+                        x, y = ROOM_WIDTH - w, 0
+                    elif corner == "top_left":
+                        x, y = 0, ROOM_HEIGHT - h
+                    elif corner == "top_right":
+                        x, y = ROOM_WIDTH - w, ROOM_HEIGHT - h
+                    positions.append({"x": x, "y": y, "rotation": rot})
         
         if not positions:
-            positions = wall_positions + corner_positions
-            
+            # Fallback
+            w = orig_w
+            h = orig_h
+            fallback_positions = [
+                {"x": 0, "y": 0, "rotation": 0},
+                {"x": ROOM_WIDTH - w, "y": 0, "rotation": 0},
+                {"x": 0, "y": ROOM_HEIGHT - h, "rotation": 0},
+                {"x": ROOM_WIDTH - w, "y": ROOM_HEIGHT - h, "rotation": 0},
+            ]
+            positions.extend(fallback_positions)
+        
         return positions
     
     def score_position(self, furniture: Dict, layout: List[Dict]) -> float:
-        """Score a furniture position based on multiple criteria"""
         score = 0
         norm_name = self.normalize_furniture_name(furniture["name"])
         w, h = self.get_furniture_dimensions(furniture)
@@ -370,112 +519,44 @@ class EnhancedDeterministicBarrierFreePlanner:
             (furniture['x'] + w >= ROOM_WIDTH - 10 and furniture['y'] <= 10) or
             (furniture['x'] <= 10 and furniture['y'] + h >= ROOM_HEIGHT - 10) or
             (furniture['x'] + w >= ROOM_WIDTH - 10 and furniture['y'] + h >= ROOM_HEIGHT - 10)):
-            if norm_name in ['Toilet', 'Wardrobe', 'Desk']:
-                corner_bonus = 40
+            corner_bonus += 20
         score += corner_bonus
-        
-        # Center avoidance for large furniture
-        if norm_name in ['Bed', 'Sofa', 'Wardrobe']:
-            center_x = ROOM_WIDTH / 2
-            center_y = ROOM_HEIGHT / 2
-            furniture_center_x = furniture['x'] + w / 2
-            furniture_center_y = furniture['y'] + h / 2
-            distance_from_center = math.hypot(furniture_center_x - center_x, furniture_center_y - center_y)
-            center_avoidance_bonus = min(50, distance_from_center / 10)
-            score += center_avoidance_bonus
-        
-        # Relationship bonus
-        relationship_bonus = 0
-        functional_pairs = self.relationships["functional_pairs"]
-        
-        if norm_name in functional_pairs:
-            constraints = functional_pairs[norm_name]
-            for partner_type in constraints.get("required_partners", []):
-                partners = [f for f in layout if self.normalize_furniture_name(f["name"]) == partner_type]
-                if partners:
-                    closest_partner = min(partners, key=lambda p: self.calculate_distance(furniture, p))
-                    distance = self.calculate_distance(furniture, closest_partner)
-                    min_dist = constraints.get("min_distance", 30)
-                    max_dist = constraints.get("max_distance", 200)
-                    optimal_dist = (min_dist + max_dist) / 2
-                    if min_dist <= distance <= max_dist:
-                        distance_score = 150 - abs(distance - optimal_dist) / optimal_dist * 75
-                        relationship_bonus += max(75, distance_score)
-                    else:
-                        relationship_bonus -= 50
-            score += relationship_bonus
         
         return score
     
-    def calculate_distance(self, furniture1: Dict, furniture2: Dict) -> float:
-        """Calculate distance between two furniture items (center-to-center)"""
-        w1, h1 = self.get_furniture_dimensions(furniture1)
-        w2, h2 = self.get_furniture_dimensions(furniture2)
-        center1_x = furniture1["x"] + w1 / 2
-        center1_y = furniture1["y"] + h1 / 2
-        center2_x = furniture2["x"] + w2 / 2
-        center2_y = furniture2["y"] + h2 / 2
-        return math.hypot(center1_x - center2_x, center1_y - center2_y)
+    def calculate_distance(self, f1: Dict, f2: Dict) -> float:
+        f1_w, f1_h = self.get_furniture_dimensions(f1)
+        f2_w, f2_h = self.get_furniture_dimensions(f2)
+        f1_center = (f1["x"] + f1_w / 2, f1["y"] + f1_h / 2)
+        f2_center = (f2["x"] + f2_w / 2, f2["y"] + f2_h / 2)
+        return math.hypot(f1_center[0] - f2_center[0], f1_center[1] - f2_center[1])
     
     def has_wheelchair_access(self, furniture: Dict, layout: List[Dict]) -> bool:
-        """Check if furniture has sufficient wheelchair access"""
         clearance_zones = self.create_clearance_zones(furniture)
         for zone in clearance_zones:
-            for other in layout:
-                if other == furniture:
+            for existing in layout:
+                if existing == furniture:
                     continue
-                other_w, other_h = self.get_furniture_dimensions(other)
-                other_rect = {"x": other["x"], "y": other["y"], "width": other_w, "height": other_h}
-                if self.check_rectangle_overlap(zone, other_rect):
+                existing_rect = {
+                    "x": existing["x"], "y": existing["y"],
+                    "width": self.get_furniture_dimensions(existing)[0],
+                    "height": self.get_furniture_dimensions(existing)[1]
+                }
+                if self.check_rectangle_overlap(zone, existing_rect):
                     return False
         return True
     
     def evaluate_layout(self, layout: List[Dict]) -> float:
-        """Evaluate the overall layout score"""
         score = 0
         for furniture in layout:
             score += self.score_position(furniture, layout)
-        score += self.calculate_space_efficiency(layout)
-        score += self.evaluate_circulation(layout)
         return score
     
-    def calculate_space_efficiency(self, layout: List[Dict]) -> float:
-        """Calculate space efficiency score"""
-        total_furniture_area = sum(
-            self.get_furniture_dimensions(f)[0] * self.get_furniture_dimensions(f)[1] 
-            for f in layout
-        )
-        room_area = ROOM_WIDTH * ROOM_HEIGHT
-        utilization_ratio = total_furniture_area / room_area
-        if 0.25 <= utilization_ratio <= 0.4:
-            return 100
-        elif utilization_ratio < 0.25:
-            return 50
-        else:
-            return max(0, 100 - (utilization_ratio - 0.4) * 200)
-    
-    def evaluate_circulation(self, layout: List[Dict]) -> float:
-        """Evaluate circulation space"""
-        center_rect = {
-            'x': ROOM_WIDTH * 0.3,
-            'y': ROOM_HEIGHT * 0.3,
-            'width': ROOM_WIDTH * 0.4,
-            'height': ROOM_HEIGHT * 0.4
-        }
-        blocking_count = 0
-        for furniture in layout:
-            w, h = self.get_furniture_dimensions(furniture)
-            furniture_rect = {'x': furniture['x'], 'y': furniture['y'], 'width': w, 'height': h}
-            if self.check_rectangle_overlap(center_rect, furniture_rect):
-                blocking_count += 1
-        return max(0, 100 - blocking_count * 25)
-    
     def analyze_relationships(self, layout: List[Dict]) -> Dict:
-        """Analyze relationship compliance in the layout"""
         analysis = {
             "functional_groups": {},
-            "missing_relationships": [],
             "optimal_relationships": [],
+            "missing_relationships": [],
             "suboptimal_relationships": []
         }
         
@@ -667,8 +748,7 @@ def visualize_layout(before_layout: List[Dict], after_layout: List[Dict], planne
                 "work_zone": 'lightyellow',
                 "bathroom_zone": 'lightcyan',
                 "storage_zone": 'plum',
-                "miscellaneous": 'lightgray'
-            }
+                "miscellaneous": 'lightgray'}
             rect = patches.Rectangle((furniture["x"], furniture["y"]), w, h,
                                    linewidth=2, edgecolor='black',
                                    facecolor=group_colors.get(group, 'lightgray'), alpha=0.8)
@@ -680,13 +760,25 @@ def visualize_layout(before_layout: List[Dict], after_layout: List[Dict], planne
                    markersize=10 if planner.has_wheelchair_access(furniture, layout) else 8, alpha=0.8)
         
         for opening in openings:
-            opening_rect = planner.get_opening_rect(opening)
-            door_rect = patches.Rectangle(
-                (opening_rect["x"], opening_rect["y"]), opening_rect["width"], opening_rect["height"],
-                linewidth=3, edgecolor='green', facecolor='lightgreen', alpha=0.6)
-            ax.add_patch(door_rect)
-            ax.text(opening_rect["x"] + opening_rect["width"]/2, opening_rect["y"] + opening_rect["height"]/2,
+
+            if opening.get("type", "door").lower() == "door":
+                opening_rect = planner.get_opening_rect(opening)
+                door_rect = patches.Rectangle(
+                    (opening_rect["x"], opening_rect["y"]), opening_rect["width"], opening_rect["height"],
+                    linewidth=3, edgecolor='green', facecolor='lightgreen', alpha=0.6)
+                ax.add_patch(door_rect)
+                ax.text(opening_rect["x"] + opening_rect["width"]/2, opening_rect["y"] + opening_rect["height"]/2,
                    'DOOR', ha='center', va='center', fontweight='bold', color='darkgreen')
+            
+            elif opening.get("type", "window").lower() == "window":
+                opening_rect = planner.get_opening_rect(opening)
+                window_rect = patches.Rectangle(
+                    (opening_rect["x"], opening_rect["y"]), opening_rect["width"], opening_rect["height"],
+                    linewidth=3, edgecolor='blue', facecolor='lightblue', alpha=0.6)
+                ax.add_patch(window_rect)
+                ax.text(opening_rect["x"] + opening_rect["width"]/2, opening_rect["y"] + opening_rect["height"]/2,
+                       'WINDOW', ha='center', va='center', fontweight='bold', color='darkblue')
+            
         
         ax.set_xlabel("Width (cm)")
         ax.set_ylabel("Height (cm)")
@@ -699,7 +791,7 @@ def visualize_layout(before_layout: List[Dict], after_layout: List[Dict], planne
         plt.Line2D([0], [0], marker='*', color='g', markersize=10, linestyle='None', label='Wheelchair Accessible'),
         plt.Line2D([0], [0], marker='*', color='r', markersize=8, linestyle='None', label='Limited Access')
     ]
-    fig.legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(0.5, 0.02), ncol=3)
+    fig.legend(handles=legend_elements, loc='upper center', bbox_to_anchor=(0.5, 0.09), ncol=3, fancybox=True, shadow=True)
     
     plt.tight_layout()
     plt.show()
