@@ -266,7 +266,7 @@ MIT License. See `LICENSE` in the repo. ([GitHub][1])
 
 ## A note on provenance
 
-This documentation reflects the **actual repository layout and filenames** visible on GitHub at the time of writing (folders: *Traditional*, *Reinforcement-Learning*, *Fine-Tuned*, *Input-Layouts*, *Outputs*, *constraints*, *untrack*; files including `best_barrier_free_layout.png`, `optimized_barrier_free_layout.json`, and multiple `room-layout-*.json`). If your internal script names differ, adapt the example commands accordingly, or share the exact filenames and I’ll align the README one-to-one. ([GitHub][1])
+This documentation reflects the **actual repository layout and filenames** visible on GitHub at the time of writing (folders: *Traditional*, *Reinforcement-Learning*, *Fine-Tuned*, *Input-Layouts*, *Outputs*, *constraints*, *untrack*; files including `best_barrier_free_layout.png`, `optimized_barrier_free_layout.json`, and multiple `room-layout-*.json`). ([GitHub][1])
 
 ---
 
