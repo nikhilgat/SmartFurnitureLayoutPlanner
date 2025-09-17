@@ -4,36 +4,30 @@ from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model
 import numpy as np
+import random
 
 class JSONTrainingDataCreator:
     def __init__(self):
         self.room_sizes = [(800, 600), (900, 700), (1000, 800), (750, 550)]
         self.furniture_types = {
             "beds": [
-                {"name": "King Bed", "width": 180, "height": 200},
-                {"name": "Queen Bed", "width": 160, "height": 200},
-                {"name": "Double Bed", "width": 140, "height": 200},
-                {"name": "Single Bed", "width": 90, "height": 200}
+                {"name": "Bed", "width": 180, "height": 200},
             ],
             "storage": [
                 {"name": "Wardrobe", "width": 150, "height": 60},
-                {"name": "Dresser", "width": 120, "height": 50},
-                {"name": "Closet", "width": 100, "height": 60}
             ],
             "seating": [
                 {"name": "Chair", "width": 50, "height": 50},
-                {"name": "Armchair", "width": 80, "height": 80},
                 {"name": "Sofa", "width": 200, "height": 90}
             ],
             "tables": [
                 {"name": "Bedside Table", "width": 45, "height": 45},
-                {"name": "Study Table", "width": 120, "height": 70},
-                {"name": "Desk", "width": 100, "height": 60}
+                {"name": "Study Table", "width": 120, "height": 70}
             ]
         }
         self.clearance_requirements = [74, 81, 88, 95]  # 110cm, 120cm, 130cm, 140cm in pixels
     
-    def generate_random_layout(self, room_width, room_height, num_furniture=4):
+    def generate_random_layout(self, room_width, room_height, num_furniture=8):
         """Generate a random (potentially suboptimal) furniture layout."""
         furniture_list = []
         all_furniture = []
@@ -60,50 +54,100 @@ class JSONTrainingDataCreator:
         
         return furniture_list
     
-    def optimize_layout(self, room_width, room_height, furniture_list, min_clearance):
-        """Apply optimization rules to create an optimized layout."""
-        optimized_furniture = []
+    def optimize_layout(self, room_width, room_height, furniture_list, min_clearance, openings=None):
+        """Enhanced optimization with relations, multiples, collisions, and openings."""
+        if openings is None:
+            openings = []
         
-        for furniture in furniture_list:
-            optimized_item = furniture.copy()
-            name = furniture["name"].lower()
-            
-            if "bed" in name:
-                # Place bed along north wall with clearance
-                optimized_item["x"] = min_clearance
-                optimized_item["y"] = min_clearance
-                
-            elif "wardrobe" in name or "closet" in name or "dresser" in name:
-                # Place storage along opposite wall
-                optimized_item["x"] = room_width - furniture["width"] - min_clearance
-                optimized_item["y"] = min_clearance
-                
-            elif "chair" in name or "sofa" in name:
-                # Place seating with good access
-                if "sofa" in name:
-                    optimized_item["x"] = (room_width - furniture["width"]) // 2
-                    optimized_item["y"] = room_height // 2
-                else:
-                    optimized_item["x"] = min_clearance
-                    optimized_item["y"] = room_height - furniture["height"] - min_clearance
-                    
-            elif "table" in name or "desk" in name:
-                if "bedside" in name:
-                    # Place bedside table next to bed
-                    optimized_item["x"] = min_clearance + 200  # bed width + small gap
-                    optimized_item["y"] = min_clearance
-                else:
-                    # Place desk/table along wall
-                    optimized_item["x"] = room_width // 2 - furniture["width"] // 2
-                    optimized_item["y"] = min_clearance
-            
-            # Ensure furniture stays within room bounds
-            optimized_item["x"] = max(min_clearance, min(optimized_item["x"], room_width - furniture["width"] - min_clearance))
-            optimized_item["y"] = max(min_clearance, min(optimized_item["y"], room_height - furniture["height"] - min_clearance))
-            
-            optimized_furniture.append(optimized_item)
+        # Define avoidance zones (simple buffers around openings)
+        avoid_zones = []  # List of (x_min, x_max, y_min, y_max)
+        for opening in openings:
+            if opening["type"] == "door" and opening["wall"] == "bottom":
+                avoid_zones.append((opening["position"] - opening["size"]/2 - min_clearance,
+                                    opening["position"] + opening["size"]/2 + min_clearance,
+                                    room_height - min_clearance, room_height))
+            elif opening["type"] == "window" and opening["wall"] == "left":
+                avoid_zones.append((0, min_clearance, opening["position"] - opening["size"]/2,
+                                    opening["position"] + opening["size"]/2))
+            # Add more for right/top as needed
         
-        return optimized_furniture
+        # Group relations (e.g., study pair)
+        pairs = {}
+        unpaired = []
+        study_table_idx = None
+        study_chair_idx = None
+        for i, furn in enumerate(furniture_list):
+            name_lower = furn["name"].lower()
+            if "study table" in name_lower:
+                study_table_idx = i
+            elif "study chair" in name_lower:
+                study_chair_idx = i
+            else:
+                unpaired.append(i)
+        
+        if study_table_idx is not None and study_chair_idx is not None:
+            pairs[("study_pair", study_table_idx, study_chair_idx)] = True
+            unpaired.remove(study_table_idx)
+            unpaired.remove(study_chair_idx)
+        
+        # Base placements (with creativity)
+        base_placements = {
+            "bed": lambda w, h: (min_clearance, min_clearance) if random.random() > 0.2 else (min_clearance, h // 2),  # 20% east wall
+            "wardrobe": lambda w, h: (w - furn["width"] - min_clearance, min_clearance),
+            "sofa": lambda w, h: ((w - furn["width"]) // 2, h // 2),
+            "study table": lambda w, h: (w // 2 - furn["width"] // 2, min_clearance),
+            "study chair": lambda w, h: None,  # Handled in pair
+            "bedside table": lambda w, h: (min_clearance + 180 + 10, min_clearance),  # Next to bed
+        }
+        
+        optimized_furniture = [None] * len(furniture_list)
+        
+        # Place pairs first
+        for pair_key, idx1, idx2 in pairs:
+            if pair_key == "study_pair":
+                table_furn = furniture_list[idx1]
+                chair_furn = furniture_list[idx2]
+                # Place table, then chair adjacent (right, 10px gap)
+                px, py = base_placements["study table"](room_width, room_height)
+                # Avoid zones
+                while any(px > z[0] and px < z[1] and py > z[2] and py < z[3] for z in avoid_zones):
+                    px += 50  # Shift right
+                optimized_furniture[idx1] = table_furn.copy(); optimized_furniture[idx1]["x"], optimized_furniture[idx1]["y"] = px, py
+                optimized_furniture[idx2] = chair_furn.copy(); 
+                optimized_furniture[idx2]["x"], optimized_furniture[idx2]["y"] = px + table_furn["width"] + 10, py
+        
+        # Place unpaired
+        placed_positions = set()  # For collision check
+        for i in unpaired:
+            furn = furniture_list[i]
+            name_lower = furn["name"].lower()
+            key = next((k for k in base_placements if k in name_lower), "sofa")  # Default to sofa
+            px, py = base_placements[key](room_width, room_height)
+            
+            # Handle multiples (offset if same name already placed)
+            count = sum(1 for f in furniture_list[:i] if f["name"] == furn["name"])
+            if count > 0:
+                px += count * 100  # Offset right/down
+                py += count * 50 if count > 1 else 0
+            
+            # Avoid zones and collisions
+            attempts = 0
+            while (attempts < 5 and
+                (any(px > z[0] and px < z[1] and py > z[2] and py < z[3] for z in avoid_zones) or
+                    any(abs(px - opx) < 50 and abs(py - opy) < 50 for opx, opy in placed_positions))):
+                px += random.randint(-50, 50)
+                py += random.randint(-50, 50)
+                attempts += 1
+            
+            # Bounds
+            px = max(min_clearance, min(px, room_width - furn["width"] - min_clearance))
+            py = max(min_clearance, min(py, room_height - furn["height"] - min_clearance))
+            
+            optimized_furniture[i] = furn.copy()
+            optimized_furniture[i]["x"], optimized_furniture[i]["y"] = px, py
+            placed_positions.add((px, py))
+        
+        return [f for f in optimized_furniture if f is not None]
     
     def create_training_example(self):
         """Create a single training example with input and optimized layouts."""

@@ -1,23 +1,59 @@
 {
   "optimization_summary": {
     "violations_before": 11,
-    "violations_after": 11,
-    "improvement": 0,
+    "violations_after": 6,
+    "improvement": 5,
     "optimization_successful": false
   },
   "remaining_violations": [
-    "Insufficient path width (60cm) between Sofa and Bed. Required: 120cm",
-    "Insufficient path width (56cm) between Sofa and Wardrobe. Required: 120cm",
-    "Insufficient path width (27cm) between Sofa and Wardrobe. Required: 120cm",
-    "Insufficient path width (79cm) between Study Table and Bedside Table. Required: 120cm",
-    "Insufficient path width (83cm) between Study Table and Wardrobe. Required: 120cm",
-    "Insufficient path width (53cm) between Bed and Sofa. Required: 120cm",
-    "Insufficient path width (48cm) between Bed and Wardrobe. Required: 120cm",
-    "Insufficient path width (60cm) between Sofa and Wardrobe. Required: 120cm",
-    "Bed has insufficient front clearance (62cm). Required: 150cm",
-    "Wardrobe has insufficient front clearance (56cm). Required: 150cm",
-    "Wardrobe has insufficient front clearance (48cm). Required: 150cm"
+    "Insufficient path width (0cm) between Bed and Bedside Table. Required: 120cm",
+    "Insufficient path width (110cm) between Study Table and Sofa. Required: 120cm",
+    "Insufficient path width (0cm) between Study Chair and Sofa. Required: 120cm",
+    "Insufficient path width (20cm) between Sofa and Sofa. Required: 120cm",
+    "Bed has insufficient front clearance (0cm). Required: 150cm",
+    "Wardrobe has insufficient front clearance (0cm). Required: 150cm"
   ],
-  "furniture_movements": [],
-  "total_items_moved": 0
+  "furniture_movements": [
+    {
+      "furniture": "Sofa",
+      "distance_moved": 261.44,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Study Table",
+      "distance_moved": 538.78,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Study Chair",
+      "distance_moved": 580.41,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Bed",
+      "distance_moved": 418.3,
+      "rotation_changed": true
+    },
+    {
+      "furniture": "Wardrobe",
+      "distance_moved": 587.96,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Sofa",
+      "distance_moved": 128.32,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Bedside Table",
+      "distance_moved": 434.91,
+      "rotation_changed": false
+    },
+    {
+      "furniture": "Wardrobe",
+      "distance_moved": 183.85,
+      "rotation_changed": true
+    }
+  ],
+  "total_items_moved": 8
 }

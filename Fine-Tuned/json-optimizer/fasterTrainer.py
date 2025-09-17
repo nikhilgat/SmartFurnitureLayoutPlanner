@@ -2,7 +2,7 @@ import json
 import random
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments, Trainer, DataCollatorForLanguageModeling
-from peft import LoraConfig, get_peft_model
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 import torch
 
 class FastJSONTrainer:
@@ -81,6 +81,9 @@ class FastJSONTrainer:
             device_map="auto",
             torch_dtype=torch.float16  # Use half precision
         )
+
+        # Prepare for LoRA training
+        self.model = prepare_model_for_kbit_training(self.model)
         
         # Smaller LoRA configuration for faster training
         lora_config = LoraConfig(
@@ -156,7 +159,7 @@ class FastJSONTrainer:
             dataloader_pin_memory=False,
             # Speed optimizations
             save_total_limit=1,  # Keep only latest checkpoint
-            evaluation_strategy="no",  # Skip evaluation during training
+            eval_strategy="no",  # Skip evaluation during training
             load_best_model_at_end=False,
             # Memory optimizations
             gradient_checkpointing=True,
