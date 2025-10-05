@@ -1,0 +1,328 @@
+{
+  "din_requirements": {
+    "turning_space_standard": {
+      "requirement_name": "Minimum turning space with walker",
+      "measurement": 120,
+      "mandatory": true,
+      "wheelchair_specific": false,
+      "reference": "DIN 18040-2, 5.4",
+      "description": "Minimum 120x120cm clear space for turning with walking aids"
+    },
+    "turning_space_wheelchair": {
+      "requirement_name": "Wheelchair turning circle",
+      "measurement": 150,
+      "mandatory": true,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 5.4 (R)",
+      "description": "Minimum 150x150cm clear turning space for wheelchair users"
+    },
+    "bed_clearance_primary_standard": {
+      "requirement_name": "Bed access - primary side (standard)",
+      "measurement": 120,
+      "mandatory": true,
+      "wheelchair_specific": false,
+      "reference": "DIN 18040-2, 5.4",
+      "description": "120cm clearance along one long side of bed"
+    },
+    "bed_clearance_secondary_standard": {
+      "requirement_name": "Bed access - secondary side (standard)",
+      "measurement": 90,
+      "mandatory": true,
+      "wheelchair_specific": false,
+      "reference": "DIN 18040-2, 5.4",
+      "description": "90cm clearance along other long side of bed"
+    },
+    "bed_clearance_primary_wheelchair": {
+      "requirement_name": "Bed access - primary side (wheelchair)",
+      "measurement": 150,
+      "mandatory": true,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 5.4 (R)",
+      "description": "150cm clearance on main access side for wheelchair transfer"
+    },
+    "bed_clearance_secondary_wheelchair": {
+      "requirement_name": "Bed access - secondary side (wheelchair)",
+      "measurement": 120,
+      "mandatory": true,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 5.4 (R)",
+      "description": "120cm clearance on opposite side"
+    },
+    "furniture_clearance_standard": {
+      "requirement_name": "General furniture front clearance",
+      "measurement": 90,
+      "mandatory": true,
+      "wheelchair_specific": false,
+      "reference": "DIN 18040-2, 5.4",
+      "description": "90cm minimum in front of wardrobes, desks, etc."
+    },
+    "furniture_clearance_wheelchair": {
+      "requirement_name": "Furniture clearance for wheelchair",
+      "measurement": 150,
+      "mandatory": true,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 5.4 (R)",
+      "description": "150cm clearance for wheelchair approach to furniture"
+    },
+    "pathway_minimum": {
+      "requirement_name": "Minimum pathway width",
+      "measurement": 120,
+      "mandatory": true,
+      "wheelchair_specific": false,
+      "reference": "DIN 18040-2, 4.3.2",
+      "description": "120cm minimum for movement corridors"
+    },
+    "pathway_preferred": {
+      "requirement_name": "Preferred pathway width",
+      "measurement": 150,
+      "mandatory": false,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 4.3.2",
+      "description": "150cm preferred for comfortable wheelchair movement"
+    },
+    "door_clearance": {
+      "requirement_name": "Door maneuvering space",
+      "measurement": 150,
+      "mandatory": true,
+      "wheelchair_specific": true,
+      "reference": "DIN 18040-2, 4.3.3",
+      "description": "150cm clearance at doors for wheelchair maneuvering"
+    }
+  },
+  "furniture_relationships": [
+    {
+      "primary": "Bed",
+      "companion": [
+        "Bedside Table",
+        "Nightstand"
+      ],
+      "relationship_type": "adjacent",
+      "min_distance": 20,
+      "max_distance": 60,
+      "preferred_distance": 30,
+      "description": "Bedside table must be within arm's reach (30-50cm) from bed"
+    },
+    {
+      "primary": "Bed",
+      "companion": [
+        "Wardrobe",
+        "Closet",
+        "Dresser"
+      ],
+      "relationship_type": "nearby",
+      "min_distance": 150,
+      "max_distance": 400,
+      "preferred_distance": 200,
+      "description": "Wardrobe near bed but with proper circulation clearance"
+    },
+    {
+      "primary": "Study Table",
+      "companion": [
+        "Study Chair",
+        "Desk Chair",
+        "Chair"
+      ],
+      "relationship_type": "adjacent",
+      "min_distance": 5,
+      "max_distance": 20,
+      "preferred_distance": 10,
+      "description": "Chair positioned directly at desk for functional use"
+    },
+    {
+      "primary": "Desk",
+      "companion": [
+        "Study Chair",
+        "Desk Chair",
+        "Chair"
+      ],
+      "relationship_type": "adjacent",
+      "min_distance": 5,
+      "max_distance": 20,
+      "preferred_distance": 10,
+      "description": "Chair placement for desk ergonomics and accessibility"
+    },
+    {
+      "primary": "Sofa",
+      "companion": [
+        "Coffee Table",
+        "Side Table"
+      ],
+      "relationship_type": "adjacent",
+      "min_distance": 40,
+      "max_distance": 80,
+      "preferred_distance": 50,
+      "description": "Table within comfortable reach from seated position"
+    },
+    {
+      "primary": "Armchair",
+      "companion": [
+        "Side Table",
+        "Lamp"
+      ],
+      "relationship_type": "adjacent",
+      "min_distance": 30,
+      "max_distance": 70,
+      "preferred_distance": 40,
+      "description": "Side table for personal items within reach"
+    }
+  ],
+  "design_zones": [
+    {
+      "name": "Sleep Zone",
+      "furniture_types": [
+        "Bed",
+        "Bedside Table",
+        "Nightstand"
+      ],
+      "min_area": 75000,
+      "preferred_location": "corner",
+      "clearance_required": 150,
+      "priority": 5,
+      "description": "Primary rest area - bed with bilateral or unilateral access per DIN"
+    },
+    {
+      "name": "Storage Zone",
+      "furniture_types": [
+        "Wardrobe",
+        "Closet",
+        "Dresser"
+      ],
+      "min_area": 30000,
+      "preferred_location": "wall",
+      "clearance_required": 150,
+      "priority": 4,
+      "description": "Clothing and personal item storage with full wheelchair access"
+    },
+    {
+      "name": "Work/Activity Zone",
+      "furniture_types": [
+        "Desk",
+        "Study Table",
+        "Study Chair",
+        "Chair"
+      ],
+      "min_area": 27000,
+      "preferred_location": "window",
+      "clearance_required": 120,
+      "priority": 3,
+      "description": "Workspace with natural light access when available"
+    },
+    {
+      "name": "Seating Zone",
+      "furniture_types": [
+        "Sofa",
+        "Armchair",
+        "Coffee Table",
+        "Side Table"
+      ],
+      "min_area": 50000,
+      "preferred_location": "door_opposite",
+      "clearance_required": 120,
+      "priority": 3,
+      "description": "Comfortable seating area for relaxation and visitors"
+    },
+    {
+      "name": "Circulation Zone",
+      "furniture_types": [],
+      "min_area": 22500,
+      "preferred_location": "center",
+      "clearance_required": 150,
+      "priority": 5,
+      "description": "Central clear area for wheelchair turning (150x150cm per DIN)"
+    }
+  ],
+  "clearance_matrix": {
+    "Bed": {
+      "primary_side": 150,
+      "secondary_side": 120,
+      "foot": 90,
+      "head": 90
+    },
+    "Wardrobe": {
+      "front": 150,
+      "sides": 20
+    },
+    "Closet": {
+      "front": 150,
+      "sides": 20
+    },
+    "Dresser": {
+      "front": 120,
+      "sides": 30
+    },
+    "Desk": {
+      "front": 150,
+      "back": 80,
+      "sides": 60
+    },
+    "Study Table": {
+      "front": 150,
+      "back": 80,
+      "sides": 60
+    },
+    "Sofa": {
+      "front": 120,
+      "back": 50,
+      "sides": 80
+    },
+    "Armchair": {
+      "front": 100,
+      "back": 40,
+      "sides": 60
+    },
+    "Chair": {
+      "all": 60
+    },
+    "Bedside Table": {
+      "all": 40
+    }
+  },
+  "design_principles": {
+    "accessibility": {
+      "priority": 10,
+      "rules": [
+        "Wheelchair turning space (150x150cm) must always be available",
+        "Primary pathways must be minimum 120cm, preferably 150cm",
+        "Bed must have 150cm clearance on primary access side",
+        "All furniture must have appropriate front clearance",
+        "Door swing areas must remain clear"
+      ]
+    },
+    "functionality": {
+      "priority": 9,
+      "rules": [
+        "Related furniture must be grouped (bed+nightstand, desk+chair)",
+        "Frequently used items should be easily accessible",
+        "Work areas should have natural light when possible",
+        "Storage should be distributed logically"
+      ]
+    },
+    "ergonomics": {
+      "priority": 8,
+      "rules": [
+        "Bedside table within 30-50cm of bed",
+        "Desk chair positioned for comfortable use",
+        "Seating areas allow easy reach to tables",
+        "Clearances accommodate mobility aids"
+      ]
+    },
+    "safety": {
+      "priority": 10,
+      "rules": [
+        "Clear pathways without obstacles",
+        "Adequate space for emergency access",
+        "No furniture blocking exits",
+        "Stable furniture placement"
+      ]
+    },
+    "aesthetics": {
+      "priority": 6,
+      "rules": [
+        "Balanced room layout",
+        "Visual harmony in furniture placement",
+        "Proper use of space",
+        "Consideration of views and natural light"
+      ]
+    }
+  }
+}
