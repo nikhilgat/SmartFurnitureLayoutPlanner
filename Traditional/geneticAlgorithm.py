@@ -6,7 +6,7 @@ from typing import List, Dict, Tuple
 import copy
 
 
-with open("Input-Layouts/room-layout-6.json", "r") as f:
+with open("Input-Layouts/room-layout-1.json", "r") as f:
     config = json.load(f)
 
 
