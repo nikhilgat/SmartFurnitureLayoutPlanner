@@ -1,8 +1,0 @@
-{
-  "model_id": "meta-llama/Llama-3.2-3B-Instruct",
-  "dataset_size": 1800,
-  "epochs": 3,
-  "lora_rank": 16,
-  "quantization": "4-bit",
-  "final_loss": "N/A"
-}

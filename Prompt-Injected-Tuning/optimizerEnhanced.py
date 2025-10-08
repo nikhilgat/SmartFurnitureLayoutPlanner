@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.patches import Rectangle
-from google import genai
+import google.generativeai as genai
 from typing import Dict, List
 import math
 import copy
@@ -15,7 +15,7 @@ class RoomLayoutOptimizer:
         Args:
             api_key (str): Your Google AI Studio API key
         """
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.configure(api_key=api_key)
         self.model_name = "gemini-2.0-flash-exp"
         
     def load_constraints(self, constraints_path: str) -> Dict:
@@ -765,7 +765,7 @@ def main():
     
     # File paths
     constraints_path = r"constraints/enhanced_barrier_free_constraints.json"
-    layout_path = r"room-layout-2.json"
+    layout_path = r"Input-Layouts/room-layout-3.json"
     output_path = r"Outputs/FT/optimized_room_layout.json"
     report_path = r"Outputs/FT/optimization_report.json"
     original_viz_path = r"Outputs/Ft/original_layout_visualization.png"

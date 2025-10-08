@@ -3,3 +3,7 @@ __pycache__
 Untrack/
 
 .env
+
+qwen-layout-optimizer/
+
+qwen-layout-optimizer-final/

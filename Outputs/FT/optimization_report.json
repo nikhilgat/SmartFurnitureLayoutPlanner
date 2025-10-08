@@ -1,59 +1,34 @@
 {
   "optimization_summary": {
-    "violations_before": 11,
+    "violations_before": 6,
     "violations_after": 6,
-    "improvement": 5,
-    "optimization_successful": false
+    "improvement": 0,
+    "optimization_successful": false,
+    "improvement_percentage": 0.0
   },
+  "original_violations": [
+    "Insufficient path width (81cm) between Sofa and Study Chair. Required: 120cm",
+    "Insufficient path width (103cm) between Sofa and Bed. Required: 120cm",
+    "Insufficient path width (15cm) between Study Table and Study Chair. Required: 120cm",
+    "Insufficient path width (28cm) between Bed and Bedside Table. Required: 120cm",
+    "Insufficient path width (79cm) between Wardrobe and Bedside Table. Required: 120cm",
+    "Bed has insufficient front clearance (103cm). Required: 150cm"
+  ],
   "remaining_violations": [
-    "Insufficient path width (0cm) between Bed and Bedside Table. Required: 120cm",
-    "Insufficient path width (110cm) between Study Table and Sofa. Required: 120cm",
-    "Insufficient path width (0cm) between Study Chair and Sofa. Required: 120cm",
-    "Insufficient path width (20cm) between Sofa and Sofa. Required: 120cm",
-    "Bed has insufficient front clearance (0cm). Required: 150cm",
-    "Wardrobe has insufficient front clearance (0cm). Required: 150cm"
+    "Insufficient path width (81cm) between Sofa and Study Chair. Required: 120cm",
+    "Insufficient path width (103cm) between Sofa and Bed. Required: 120cm",
+    "Insufficient path width (15cm) between Study Table and Study Chair. Required: 120cm",
+    "Insufficient path width (28cm) between Bed and Bedside Table. Required: 120cm",
+    "Insufficient path width (79cm) between Wardrobe and Bedside Table. Required: 120cm",
+    "Bed has insufficient front clearance (103cm). Required: 150cm"
   ],
-  "furniture_movements": [
-    {
-      "furniture": "Sofa",
-      "distance_moved": 261.44,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Study Table",
-      "distance_moved": 538.78,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Study Chair",
-      "distance_moved": 580.41,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Bed",
-      "distance_moved": 418.3,
-      "rotation_changed": true
-    },
-    {
-      "furniture": "Wardrobe",
-      "distance_moved": 587.96,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Sofa",
-      "distance_moved": 128.32,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Bedside Table",
-      "distance_moved": 434.91,
-      "rotation_changed": false
-    },
-    {
-      "furniture": "Wardrobe",
-      "distance_moved": 183.85,
-      "rotation_changed": true
-    }
-  ],
-  "total_items_moved": 8
+  "furniture_movements": [],
+  "total_items_moved": 0,
+  "recommendations": [
+    "Consider rearranging furniture to create wider pathways for wheelchair accessibility",
+    "Ensure furniture with front access requirements has adequate space for approach",
+    "Position study chair to allow easy access and exit from the desk area",
+    "Consider removing or replacing some furniture items if space constraints persist",
+    "Explore wall-mounted solutions for some items to free up floor space"
+  ]
 }

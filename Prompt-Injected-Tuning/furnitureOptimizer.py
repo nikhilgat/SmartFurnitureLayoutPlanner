@@ -1,5 +1,5 @@
 import json
-from google import genai
+import google.generativeai as genai
 from typing import Dict, List, Tuple, Any
 import math
 
@@ -11,7 +11,7 @@ class RoomLayoutOptimizer:
         Args:
             api_key (str): Your Google AI Studio API key
         """
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.configure(api_key=api_key)
         self.model_name = "gemini-2.5-flash"
         
     def load_constraints(self, constraints_path: str) -> Dict:
