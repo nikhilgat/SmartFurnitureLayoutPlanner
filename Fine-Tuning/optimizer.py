@@ -12,7 +12,7 @@ class LayoutOptimizer:
         self.openings = input_layout['openings']
         
         # Grid resolution (cm)
-        self.grid_step = 10
+        self.grid_step = 1
         
         # Furniture priority (remove in reverse order)
         self.priority = ['Bed', 'Wardrobe', 'Bedside', 'Study', 'Sofa']

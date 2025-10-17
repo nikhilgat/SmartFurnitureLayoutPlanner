@@ -6,10 +6,15 @@ from validator import LayoutValidator
 import os
 
 class InteractiveLayoutOptimizer:
-    def __init__(self, model_path="./qwen-layout-optimizer-final"):
+    def __init__(self, model_path="./Fine-Tuning/qwen-layout-optimizer-version-1"):
         print("="*60)
         print("LOADING MODEL - Please wait...")
         print("="*60)
+        
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        print(f"\n[DEVICE] Using: {self.device}")
+        if self.device == "cuda":
+            print(f"[DEVICE] GPU: {torch.cuda.get_device_name(0)}")
         
         print("\n[1/3] Loading tokenizer...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -18,12 +23,22 @@ class InteractiveLayoutOptimizer:
         base_model = AutoModelForCausalLM.from_pretrained(
             "Qwen/Qwen2.5-Math-7B-Instruct",
             device_map="auto",
-            torch_dtype=torch.float16
+            dtype=torch.float16 if self.device == "cuda" else torch.float32
         )
         
         print("[3/3] Loading fine-tuned adapter...")
         self.model = PeftModel.from_pretrained(base_model, model_path)
+        
+        # Merge adapter weights for faster inference
+        print("[OPTIMIZATION] Merging adapter weights...")
+        self.model = self.model.merge_and_unload()
+        
+        # Ensure model is on the correct device
+        print(f"[OPTIMIZATION] Moving model to {self.device}...")
+        self.model = self.model.to(self.device)
         self.model.eval()
+        
+        print("[INFO] Skipping torch.compile to ensure GPU execution")
         
         print("\n" + "="*60)
         print("MODEL READY!")
@@ -50,25 +65,42 @@ class InteractiveLayoutOptimizer:
             tokenize=False, 
             add_generation_prompt=True
         )
-        inputs = self.tokenizer(text, return_tensors="pt").to(self.model.device)
+        
+        # Explicitly move inputs to the same device as model
+        inputs = self.tokenizer(text, return_tensors="pt")
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
         input_length = inputs['input_ids'].shape[1]
         
-        # Generate
+        # Generate with optimizations
         with torch.no_grad():
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=1024,
-                temperature=0.3,
-                do_sample=False,
-                pad_token_id=self.tokenizer.eos_token_id,
-                eos_token_id=self.tokenizer.eos_token_id
-            )
+            # Use torch.cuda.amp for mixed precision if on GPU
+            if self.device == "cuda":
+                with torch.amp.autocast('cuda'):
+                    outputs = self.model.generate(
+                        **inputs,
+                        max_new_tokens=1024,  # Reduced from 1024 for faster generation
+                        do_sample=False,
+                        pad_token_id=self.tokenizer.eos_token_id,
+                        eos_token_id=self.tokenizer.eos_token_id,
+                        use_cache=True,  # Enable KV cache
+                        num_beams=1,  # Greedy decoding (fastest)
+                    )
+            else:
+                outputs = self.model.generate(
+                    **inputs,
+                    max_new_tokens=1024,
+                    do_sample=False,
+                    pad_token_id=self.tokenizer.eos_token_id,
+                    eos_token_id=self.tokenizer.eos_token_id,
+                    use_cache=True,
+                    num_beams=1,
+                )
         
         # Extract only generated tokens
         generated_tokens = outputs[0][input_length:]
+        print(f"Generated {len(generated_tokens)} tokens (limit was 1024)")
         response = self.tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
         
-        # Parse JSON
         try:
             output_layout = json.loads(response)
             return output_layout, None
@@ -127,9 +159,16 @@ def main():
             print(f"ERROR loading file: {e}")
             continue
         
+        # Time the generation
+        import time
+        start_time = time.time()
+        
         # Generate output
         print("Generating optimized layout...")
         output_layout, error = optimizer.optimize_layout(input_layout)
+        
+        elapsed = time.time() - start_time
+        print(f"Generation took {elapsed:.2f} seconds")
         
         if error:
             print(f"\nERROR: {error}")

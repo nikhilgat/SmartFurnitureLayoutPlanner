@@ -1,0 +1,111 @@
+{
+  "room": {
+    "width": 800,
+    "height": 600
+  },
+  "furniture": [
+    {
+      "name": "Bed",
+      "x": 457,
+      "y": 390,
+      "width": 180,
+      "height": 168,
+      "zHeight": "55",
+      "rotation": 180,
+      "imgLeft": "-2.90323px",
+      "imgTop": "-5.80645px",
+      "imgWidth": "185.806px",
+      "imgHeight": "185.806px"
+    },
+    {
+      "name": "Bedside Table",
+      "x": 322,
+      "y": 545,
+      "width": 45,
+      "height": 23,
+      "zHeight": "60",
+      "rotation": 180,
+      "imgLeft": "0px",
+      "imgTop": "-11.25px",
+      "imgWidth": "45px",
+      "imgHeight": "45px"
+    },
+    {
+      "name": "Wardrobe",
+      "x": 10,
+      "y": 124,
+      "width": 150,
+      "height": 89,
+      "zHeight": "200",
+      "rotation": 0,
+      "imgLeft": "0px",
+      "imgTop": "-30.4688px",
+      "imgWidth": "150px",
+      "imgHeight": "150px"
+    },
+    {
+      "name": "Study Table",
+      "x": 30,
+      "y": 406,
+      "width": 120,
+      "height": 53,
+      "zHeight": "75",
+      "rotation": 270,
+      "imgLeft": "0px",
+      "imgTop": "-33.75px",
+      "imgWidth": "120px",
+      "imgHeight": "120px"
+    },
+    {
+      "name": "Study Chair",
+      "x": 160,
+      "y": 416,
+      "width": 50,
+      "height": 50,
+      "zHeight": "90",
+      "rotation": 270,
+      "imgLeft": "0px",
+      "imgTop": "0px",
+      "imgWidth": "50px",
+      "imgHeight": "50px"
+    },
+    {
+      "name": "Sofa",
+      "x": 590,
+      "y": 55,
+      "width": 200,
+      "height": 100,
+      "zHeight": "85",
+      "rotation": 0,
+      "imgLeft": "0px",
+      "imgTop": "-50px",
+      "imgWidth": "200px",
+      "imgHeight": "200px"
+    }
+  ],
+  "openings": [
+    {
+      "type": "door",
+      "wall": "top",
+      "position": 369,
+      "size": 90,
+      "openingHeight": "210"
+    },
+    {
+      "type": "window",
+      "wall": "left",
+      "position": 441,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    },
+    {
+      "type": "window",
+      "wall": "right",
+      "position": 438,
+      "size": 120,
+      "openingHeight": "100",
+      "heightFromGround": "90"
+    }
+  ]
+}
