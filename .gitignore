@@ -4,6 +4,8 @@ Untrack/
 
 .env
 
-qwen-layout-optimizer/
+.vscode/
 
-qwen-layout-optimizer-final/
+layouts.db
+
+

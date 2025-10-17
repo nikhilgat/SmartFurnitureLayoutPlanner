@@ -17,21 +17,56 @@
       overflow: hidden;
     }
 
-    #canvas {
+    #canvas-container {
       background: radial-gradient(circle at center, #1e293b 0%, #0f172a 80%);
       padding: 2rem;
       height: calc(100vh - 80px);
       overflow: auto;
+      display: flex;
+      gap: 2rem;
     }
 
-    #room-container {
+    #canvas-container.single-view {
+      justify-content: center;
+      align-items: center;
+    }
+
+    #canvas-container.side-by-side {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    #canvas-container.top-bottom {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .canvas-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      min-width: 0;
+    }
+
+    .canvas-label {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #60a5fa;
+      padding: 0.5rem 1rem;
+      background: rgba(30, 41, 59, 0.8);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    #room-container, #optimized-room-container {
       background-color: #1e293b;
       position: relative;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 2px #334155;
       border-radius: 12px;
       overflow: visible;
       transform-origin: center center;
-      margin: auto;
     }
 
     .furniture {
@@ -166,6 +201,93 @@
       display: none;
     }
 
+    /* Model Loading Progress Bar */
+    #model-loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.95);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+
+    #model-loading-overlay.hidden {
+      display: none;
+    }
+
+    .loading-content {
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .loading-content h2 {
+      color: #60a5fa;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      height: 12px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      transition: width 0.3s ease;
+      border-radius: 12px;
+    }
+
+    .loading-stage {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Optimization Status */
+    #optimization-status {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(30, 41, 59, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      min-width: 300px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    #optimization-status.hidden {
+      transform: translateY(150%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     /* Floating Sidebar Styles */
     #floating-sidebar {
       position: fixed;
@@ -267,12 +389,18 @@
       font-size: 14px;
     }
 
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
     #load-btn {
       background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
     }
     
-    #load-btn:hover {
+    #load-btn:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     }
@@ -282,7 +410,7 @@
       color: white;
     }
     
-    #save-btn:hover {
+    #save-btn:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
     }
@@ -297,10 +425,24 @@
       box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
     }
 
-    #delete-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      box-shadow: none;
+    #optimize-btn {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+    }
+    
+    #optimize-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+
+    #show-optimized-btn {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+    }
+    
+    #show-optimized-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
     }
 
     header {
@@ -381,7 +523,37 @@
       display: none;
     }
 
-    /* Scrollbar styling for sidebar */
+    /* View Toggle Buttons */
+    .view-toggle {
+      display: flex;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+
+    .view-toggle button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .view-toggle button.active {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .view-toggle button:hover:not(.active) {
+      background: rgba(255,255,255,0.05);
+      color: #e2e8f0;
+    }
+
+    /* Scrollbar styling */
     #floating-sidebar::-webkit-scrollbar {
       width: 8px;
     }
@@ -413,9 +585,37 @@
   </style>
 </head>
 <body class="font-sans bg-gray-900 text-gray-100">
+  <!-- Model Loading Overlay -->
+  <div id="model-loading-overlay">
+    <div class="loading-content">
+      <h2>Loading AI Model...</h2>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="model-progress-bar" style="width: 0%"></div>
+      </div>
+      <div class="loading-stage" id="model-loading-stage">Initializing...</div>
+      <div style="margin-top: 1rem; color: #64748b; font-size: 0.75rem;">
+        This may take a few minutes on first load
+      </div>
+    </div>
+  </div>
+
+  <!-- Optimization Status Toast -->
+  <div id="optimization-status" class="hidden">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="spinner"></div>
+      <div>
+        <div style="font-weight: 600; color: #e2e8f0;" id="opt-status-title">Optimizing Layout...</div>
+        <div style="font-size: 0.875rem; color: #94a3b8; margin-top: 0.25rem;" id="opt-status-message">Processing your layout</div>
+      </div>
+    </div>
+    <div class="progress-bar-container" style="margin-top: 0.75rem;">
+      <div class="progress-bar" id="opt-progress-bar" style="width: 0%"></div>
+    </div>
+  </div>
+
   <!-- Toggle Sidebar Button -->
   <button id="toggle-sidebar" title="Toggle Furniture Catalog">
-    📋
+    Catalog
   </button>
 
   <!-- Floating Sidebar -->
@@ -446,6 +646,12 @@
       <div id="contextual-settings"></div>
 
       <div class="flex items-center space-x-3">
+        <!-- View Toggle (hidden by default) -->
+        <div id="view-toggle-container" class="view-toggle" style="display: none;">
+          <button id="view-side-by-side">Side by Side</button>
+          <button id="view-top-bottom" class="active">Top & Bottom</button>
+        </div>
+
         <div class="toggle-container">
           <span class="text-sm text-slate-300 font-medium">Show Dimensions</span>
           <label class="relative inline-flex items-center cursor-pointer">
@@ -457,13 +663,24 @@
         </div>
         
         <input type="file" id="load-layout-input" class="hidden" accept=".json">
-        <button id="load-btn" class="btn">📂 Load</button>
-        <button id="save-btn" class="btn">💾 Save</button>
-        <button id="delete-btn" class="btn" disabled>🗑️ Delete</button>
+        <button id="load-btn" class="btn">Load</button>
+        <button id="save-btn" class="btn">Save</button>
+        <button id="optimize-btn" class="btn">Optimize Layout</button>
+        <button id="show-optimized-btn" class="btn" disabled>Show Optimized</button>
+        <button id="delete-btn" class="btn" disabled>Delete</button>
       </div>
     </header>
 
-    <div id="canvas" class="flex-1 flex items-center justify-center"></div>
+    <div id="canvas-container" class="single-view">
+      <div class="canvas-section" id="original-canvas-section">
+        <div class="canvas-label">Original Layout</div>
+        <div id="canvas"></div>
+      </div>
+      <div class="canvas-section" id="optimized-canvas-section" style="display: none;">
+        <div class="canvas-label">Optimized Layout</div>
+        <div id="optimized-canvas"></div>
+      </div>
+    </div>
   </main>
 
   <script src="/static/js/app.js"></script>

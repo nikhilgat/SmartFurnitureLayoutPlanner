@@ -1,9 +1,17 @@
+// Global state
+let currentJobId = null;
+let optimizedLayoutData = null;
+let currentViewMode = 'top-bottom'; // 'side-by-side' or 'top-bottom'
+
 document.addEventListener('DOMContentLoaded', async () => {
     const furnitureList = document.getElementById('furniture-list');
     const architecturalList = document.getElementById('architectural-list');
     const canvas = document.getElementById('canvas');
+    const optimizedCanvas = document.getElementById('optimized-canvas');
     const deleteBtn = document.getElementById('delete-btn');
     const saveBtn = document.getElementById('save-btn');
+    const optimizeBtn = document.getElementById('optimize-btn');
+    const showOptimizedBtn = document.getElementById('show-optimized-btn');
     const toggleDimsSwitch = document.getElementById('toggle-dims-switch');
     const loadBtn = document.getElementById('load-btn');
     const loadLayoutInput = document.getElementById('load-layout-input');
@@ -12,7 +20,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closeSidebarBtn = document.getElementById('close-sidebar');
     const floatingSidebar = document.getElementById('floating-sidebar');
     
+    // View toggle buttons
+    const viewToggleContainer = document.getElementById('view-toggle-container');
+    const viewSideBySideBtn = document.getElementById('view-side-by-side');
+    const viewTopBottomBtn = document.getElementById('view-top-bottom');
+    
     let roomContainer;
+    let optimizedRoomContainer;
     let selectedObject = null;
     let objectCounter = 0;
     const furnitureRatios = {};
@@ -32,7 +46,248 @@ document.addEventListener('DOMContentLoaded', async () => {
         { name: 'Window', type: 'window', image: '/static/images/window.png', width: 120, openingHeight: 100 }
     ];
 
-    // Toggle sidebar functionality
+    // ==================== MODEL LOADING ====================
+    
+    async function checkModelStatus() {
+        try {
+            const response = await fetch('/api/model-status');
+            const status = await response.json();
+            return status;
+        } catch (error) {
+            console.error('Error checking model status:', error);
+            return null;
+        }
+    }
+
+    async function pollModelLoading() {
+        const overlay = document.getElementById('model-loading-overlay');
+        const progressBar = document.getElementById('model-progress-bar');
+        const stageText = document.getElementById('model-loading-stage');
+
+        while (true) {
+            const status = await checkModelStatus();
+            
+            if (status) {
+                progressBar.style.width = `${status.progress}%`;
+                stageText.textContent = status.stage;
+
+                if (status.error) {
+                    stageText.textContent = `Error: ${status.error}`;
+                    stageText.style.color = '#ef4444';
+                    break;
+                }
+
+                if (status.is_loaded) {
+                    overlay.classList.add('hidden');
+                    optimizeBtn.disabled = false;
+                    console.log('Model loaded successfully!');
+                    break;
+                }
+            }
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
+
+    // Start polling for model status
+    pollModelLoading();
+
+    // ==================== OPTIMIZATION ====================
+
+    async function optimizeCurrentLayout() {
+        const layoutData = captureCurrentLayout();
+        
+        if (!layoutData || layoutData.furniture.length === 0) {
+            alert('Please add some furniture to your layout before optimizing.');
+            return;
+        }
+
+        try {
+            // Disable optimize button
+            optimizeBtn.disabled = true;
+            optimizeBtn.textContent = '⏳ Optimizing...';
+
+            // Show optimization status
+            const statusToast = document.getElementById('optimization-status');
+            statusToast.classList.remove('hidden');
+
+            // Submit optimization request
+            const response = await fetch('/api/optimize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ layout: layoutData })
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                throw new Error(result.error || 'Optimization failed');
+            }
+
+            currentJobId = result.job_id;
+            console.log('Optimization submitted:', result);
+
+            // Poll for optimization status
+            pollOptimizationStatus(currentJobId);
+
+        } catch (error) {
+            console.error('Optimization error:', error);
+            alert(`Optimization failed: ${error.message}`);
+            optimizeBtn.disabled = false;
+            optimizeBtn.textContent = '✨ Optimize Layout';
+            document.getElementById('optimization-status').classList.add('hidden');
+        }
+    }
+
+    async function pollOptimizationStatus(jobId) {
+        const statusToast = document.getElementById('optimization-status');
+        const statusTitle = document.getElementById('opt-status-title');
+        const statusMessage = document.getElementById('opt-status-message');
+        const progressBar = document.getElementById('opt-progress-bar');
+
+        while (true) {
+            try {
+                const response = await fetch(`/api/optimization-status/${jobId}`);
+                const status = await response.json();
+
+                progressBar.style.width = `${status.progress || 0}%`;
+
+                if (status.status === 'queued') {
+                    statusMessage.textContent = 'Waiting in queue...';
+                } else if (status.status === 'processing') {
+                    statusMessage.textContent = 'AI is optimizing your layout...';
+                } else if (status.status === 'completed') {
+                    statusTitle.textContent = '✅ Optimization Complete!';
+                    statusMessage.textContent = `Found ${status.violations_count || 0} violations`;
+                    progressBar.style.width = '100%';
+                    
+                    // Store optimized layout
+                    optimizedLayoutData = status.output_layout;
+                    
+                    // Enable show optimized button
+                    showOptimizedBtn.disabled = false;
+                    
+                    // Re-enable optimize button
+                    optimizeBtn.disabled = false;
+                    optimizeBtn.textContent = '✨ Optimize Layout';
+
+                    // Hide status after 3 seconds
+                    setTimeout(() => {
+                        statusToast.classList.add('hidden');
+                    }, 3000);
+                    
+                    break;
+                } else if (status.status === 'failed') {
+                    statusTitle.textContent = '❌ Optimization Failed';
+                    statusMessage.textContent = status.error || 'Unknown error';
+                    statusTitle.style.color = '#ef4444';
+                    
+                    optimizeBtn.disabled = false;
+                    optimizeBtn.textContent = '✨ Optimize Layout';
+
+                    setTimeout(() => {
+                        statusToast.classList.add('hidden');
+                    }, 5000);
+                    
+                    break;
+                }
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+            } catch (error) {
+                console.error('Error polling optimization status:', error);
+                break;
+            }
+        }
+    }
+
+    function captureCurrentLayout() {
+        if (!roomContainer) return null;
+
+        const layoutData = {
+            room: {
+                width: roomContainer.offsetWidth,
+                height: roomContainer.offsetHeight
+            },
+            furniture: [],
+            openings: []
+        };
+
+        roomContainer.querySelectorAll('.furniture').forEach(obj => {
+            layoutData.furniture.push({
+                name: obj.dataset.name,
+                x: obj.offsetLeft,
+                y: obj.offsetTop,
+                width: obj.offsetWidth,
+                height: obj.offsetHeight,
+                zHeight: parseInt(obj.dataset.zHeight),
+                rotation: getRotationAngle(obj)
+            });
+        });
+
+        roomContainer.querySelectorAll('.wall-feature').forEach(obj => {
+            const isVertical = obj.classList.contains('on-vertical-wall');
+            const opening = {
+                type: obj.dataset.name,
+                wall: obj.dataset.wall,
+                position: isVertical ? obj.offsetTop : obj.offsetLeft,
+                size: isVertical ? obj.offsetHeight : obj.offsetWidth,
+                openingHeight: parseInt(obj.dataset.openingHeight)
+            };
+            if (opening.type === 'window') {
+                opening.heightFromGround = parseInt(obj.dataset.heightFromGround);
+            }
+            layoutData.openings.push(opening);
+        });
+
+        return layoutData;
+    }
+
+    function showOptimizedLayout() {
+        if (!optimizedLayoutData) {
+            alert('No optimized layout available.');
+            return;
+        }
+
+        // Show the optimized canvas section
+        document.getElementById('optimized-canvas-section').style.display = 'flex';
+        
+        // Update canvas container layout
+        const canvasContainer = document.getElementById('canvas-container');
+        canvasContainer.classList.remove('single-view');
+        canvasContainer.classList.add(currentViewMode);
+
+        // Show view toggle
+        viewToggleContainer.style.display = 'flex';
+
+        // Build optimized layout
+        buildLayoutFromJSON(optimizedLayoutData, optimizedCanvas, true);
+    }
+
+    // View mode switching
+    viewSideBySideBtn.addEventListener('click', () => {
+        currentViewMode = 'side-by-side';
+        const canvasContainer = document.getElementById('canvas-container');
+        canvasContainer.classList.remove('top-bottom');
+        canvasContainer.classList.add('side-by-side');
+        viewSideBySideBtn.classList.add('active');
+        viewTopBottomBtn.classList.remove('active');
+    });
+
+    viewTopBottomBtn.addEventListener('click', () => {
+        currentViewMode = 'top-bottom';
+        const canvasContainer = document.getElementById('canvas-container');
+        canvasContainer.classList.remove('side-by-side');
+        canvasContainer.classList.add('top-bottom');
+        viewTopBottomBtn.classList.add('active');
+        viewSideBySideBtn.classList.remove('active');
+    });
+
+    optimizeBtn.addEventListener('click', optimizeCurrentLayout);
+    showOptimizedBtn.addEventListener('click', showOptimizedLayout);
+
+    // ==================== SIDEBAR TOGGLE ====================
+    
     toggleSidebarBtn.addEventListener('click', () => {
         floatingSidebar.classList.toggle('hidden');
     });
@@ -40,6 +295,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     closeSidebarBtn.addEventListener('click', () => {
         floatingSidebar.classList.add('hidden');
     });
+
+    // ==================== FURNITURE BOUNDS ====================
 
     async function precomputeBounds() {
         const promises = furnitureCatalog.map(item => new Promise(resolve => {
@@ -143,7 +400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return true;
     }
 
-    function isOverlapping(movingObj, potentialState) {
+    function isOverlapping(movingObj, potentialState, containerElement) {
         const clone = document.createElement('div');
         clone.style.position = 'absolute';
         clone.style.left = `${potentialState.x}px`;
@@ -151,7 +408,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         clone.style.width = `${potentialState.width}px`;
         clone.style.height = `${potentialState.height}px`;
         clone.style.transform = `rotate(${potentialState.rotation}deg)`;
-        const otherObjects = [...roomContainer.querySelectorAll('.furniture')].filter(
+        const otherObjects = [...containerElement.querySelectorAll('.furniture')].filter(
             child => child.id !== (movingObj && movingObj.id)
         );
         for (let other of otherObjects) {
@@ -194,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         architecturalCatalog.forEach(item => architecturalList.appendChild(createSidebarItem(item)));
     }
 
-    function addFurnitureEventListeners(obj) {
+    function addFurnitureEventListeners(obj, containerElement) {
         const rotateHandle = obj.querySelector('.rotate-handle');
         const resizeHandle = obj.querySelector('.resize-handle');
 
@@ -219,8 +476,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const h = obj.offsetHeight;
                         const rotatedHalfWidth = (Math.abs(Math.cos(angleRad)) * w + Math.abs(Math.sin(angleRad)) * h) / 2;
                         const rotatedHalfHeight = (Math.abs(Math.sin(angleRad)) * w + Math.abs(Math.cos(angleRad)) * h) / 2;
-                        newCenterX = Math.max(rotatedHalfWidth, Math.min(newCenterX, roomContainer.offsetWidth - rotatedHalfWidth));
-                        newCenterY = Math.max(rotatedHalfHeight, Math.min(newCenterY, roomContainer.offsetHeight - rotatedHalfHeight));
+                        newCenterX = Math.max(rotatedHalfWidth, Math.min(newCenterX, containerElement.offsetWidth - rotatedHalfWidth));
+                        newCenterY = Math.max(rotatedHalfHeight, Math.min(newCenterY, containerElement.offsetHeight - rotatedHalfHeight));
                         const potentialState = { 
                             x: newCenterX - w / 2, 
                             y: newCenterY - h / 2, 
@@ -228,7 +485,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             height: h, 
                             rotation: getRotationAngle(obj) 
                         };
-                        if (!isOverlapping(obj, potentialState)) {
+                        if (!isOverlapping(obj, potentialState, containerElement)) {
                             obj.style.left = `${potentialState.x}px`;
                             obj.style.top = `${potentialState.y}px`;
                             obj.classList.remove('colliding');
@@ -271,7 +528,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     height: newHeight, 
                     rotation: getRotationAngle(obj) 
                 };
-                if (!isOverlapping(obj, potentialState)) {
+                if (!isOverlapping(obj, potentialState, containerElement)) {
                     obj.style.width = `${Math.max(20, newWidth)}px`;
                     obj.style.height = `${Math.max(20, newHeight)}px`;
                     updateFurnitureDimensionLabel(obj);
@@ -329,7 +586,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     rotation: finalRotation 
                 };
                 
-                if (!isOverlapping(obj, potentialState)) {
+                if (!isOverlapping(obj, potentialState, containerElement)) {
                     rotateHandle.classList.toggle('snapped', isSnapped);
                     obj.style.transform = `rotate(${finalRotation}deg)`;
                     updateFurnitureDimensionLabel(obj);
@@ -352,7 +609,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    function addWallFeatureEventListeners(obj) {
+    function addWallFeatureEventListeners(obj, containerElement) {
         let action = null;
         let startMousePos, startObjPos, startSize;
         const isVertical = obj.classList.contains('on-vertical-wall');
@@ -397,11 +654,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (action === 'drag') {
                 if (isVertical) {
                     let newTop = startObjPos + delta;
-                    newTop = Math.max(0, Math.min(newTop, roomContainer.offsetHeight - obj.offsetHeight));
+                    newTop = Math.max(0, Math.min(newTop, containerElement.offsetHeight - obj.offsetHeight));
                     obj.style.top = `${newTop}px`;
                 } else {
                     let newLeft = startObjPos + delta;
-                    newLeft = Math.max(0, Math.min(newLeft, roomContainer.offsetWidth - obj.offsetWidth));
+                    newLeft = Math.max(0, Math.min(newLeft, containerElement.offsetWidth - obj.offsetWidth));
                     obj.style.left = `${newLeft}px`;
                 }
             } else {
@@ -450,24 +707,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function updateRoomDimensions() {
-        const display = roomContainer.querySelector('.room-dimension');
-        if (display) display.textContent = `${roomContainer.offsetWidth} x ${roomContainer.offsetHeight} cm`;
+    function updateRoomDimensions(containerElement) {
+        const display = containerElement.querySelector('.room-dimension');
+        if (display) display.textContent = `${containerElement.offsetWidth} x ${containerElement.offsetHeight} cm`;
     }
 
-    function updateWallFeaturesPosition() {
-        roomContainer.querySelectorAll('.wall-feature').forEach(obj => {
+    function updateWallFeaturesPosition(containerElement) {
+        containerElement.querySelectorAll('.wall-feature').forEach(obj => {
             const wall = obj.dataset.wall;
             const isVertical = obj.classList.contains('on-vertical-wall');
             
-            if (wall === 'bottom') obj.style.top = `${roomContainer.offsetHeight - 5}px`;
-            else if (wall === 'right') obj.style.left = `${roomContainer.offsetWidth - 5}px`;
+            if (wall === 'bottom') obj.style.top = `${containerElement.offsetHeight - 5}px`;
+            else if (wall === 'right') obj.style.left = `${containerElement.offsetWidth - 5}px`;
             
             if (!isVertical) {
-                const maxLeft = roomContainer.offsetWidth - obj.offsetWidth;
+                const maxLeft = containerElement.offsetWidth - obj.offsetWidth;
                 if (obj.offsetLeft > maxLeft) obj.style.left = `${maxLeft}px`;
             } else {
-                const maxTop = roomContainer.offsetHeight - obj.offsetHeight;
+                const maxTop = containerElement.offsetHeight - obj.offsetHeight;
                 if (obj.offsetTop > maxTop) obj.style.top = `${maxTop}px`;
             }
         });
@@ -548,7 +805,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return { name: closest, position: position };
     }
 
-    function createFurnitureObject(itemData, pos, loaded = false) {
+    function createFurnitureObject(itemData, pos, loaded = false, containerElement) {
         objectCounter++;
         const obj = document.createElement('div');
         obj.id = `object-${objectCounter}`;
@@ -573,14 +830,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         img.draggable = false;
         obj.appendChild(img);
 
-        roomContainer.appendChild(obj);
-        addFurnitureEventListeners(obj);
+        containerElement.appendChild(obj);
+        addFurnitureEventListeners(obj, containerElement);
         updateFurnitureDimensionLabel(obj);
         
         if (!loaded) selectObject(obj);
     }
 
-    function createWallFeature(type, options = {}) {
+    function createWallFeature(type, options = {}, containerElement) {
         objectCounter++;
         const feature = document.createElement('div');
         feature.id = `object-${objectCounter}`;
@@ -613,45 +870,45 @@ document.addEventListener('DOMContentLoaded', async () => {
             feature.style.height = `${wallThickness}px`;
             const position = Math.max(0, Math.min(
                 options.position || 100, 
-                roomContainer.offsetWidth - (options.size || 120)
+                containerElement.offsetWidth - (options.size || 120)
             ));
             feature.style.left = `${position}px`;
             feature.style.top = wall === 'top' 
                 ? `-${wallThickness / 2}px` 
-                : `${roomContainer.offsetHeight - wallThickness / 2}px`;
+                : `${containerElement.offsetHeight - wallThickness / 2}px`;
         } else {
             feature.classList.add('on-vertical-wall');
             feature.style.height = `${options.size || (type === 'door' ? 90 : 120)}px`;
             feature.style.width = `${wallThickness}px`;
             const position = Math.max(0, Math.min(
                 options.position || 100, 
-                roomContainer.offsetHeight - (options.size || 120)
+                containerElement.offsetHeight - (options.size || 120)
             ));
             feature.style.top = `${position}px`;
             feature.style.left = wall === 'left' 
                 ? `-${wallThickness / 2}px` 
-                : `${roomContainer.offsetWidth - wallThickness / 2}px`;
+                : `${containerElement.offsetWidth - wallThickness / 2}px`;
         }
 
-        roomContainer.appendChild(feature);
-        addWallFeatureEventListeners(feature);
+        containerElement.appendChild(feature);
+        addWallFeatureEventListeners(feature, containerElement);
         updateWallFeatureDimensionLabel(feature);
         selectObject(feature);
     }
 
-    function handleDrop(e) {
+    function handleDrop(e, containerElement) {
         e.preventDefault();
         const itemData = JSON.parse(e.dataTransfer.getData('text/plain'));
-        const roomRect = roomContainer.getBoundingClientRect();
+        const roomRect = containerElement.getBoundingClientRect();
         const x = e.clientX - roomRect.left;
         const y = e.clientY - roomRect.top;
         
         if (itemData.type === 'door' || itemData.type === 'window') {
-            const closestWall = findClosestWall(x, y, roomContainer.offsetWidth, roomContainer.offsetHeight);
+            const closestWall = findClosestWall(x, y, containerElement.offsetWidth, containerElement.offsetHeight);
             createWallFeature(itemData.type, { 
                 wall: closestWall.name, 
                 position: closestWall.position - (itemData.width / 2) 
-            });
+            }, containerElement);
         } else {
             const pos = { 
                 x: x - (itemData.width / 2), 
@@ -667,22 +924,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 height: itemData.height, 
                 rotation: 0 
             };
-            if (!isOverlapping(null, checkState)) {
-                createFurnitureObject(itemData, pos);
+            if (!isOverlapping(null, checkState, containerElement)) {
+                createFurnitureObject(itemData, pos, false, containerElement);
             } else {
                 console.warn("Cannot place object here: Overlap detected.");
             }
         }
     }
 
-    function addRoomResizeListener(handle, position) {
+    function addRoomResizeListener(handle, position, containerElement) {
         handle.addEventListener('mousedown', e => {
             e.stopPropagation();
             let isResizing = true;
             const startX = e.clientX;
             const startY = e.clientY;
-            const startWidth = roomContainer.offsetWidth;
-            const startHeight = roomContainer.offsetHeight;
+            const startWidth = containerElement.offsetWidth;
+            const startHeight = containerElement.offsetHeight;
             document.body.style.cursor = handle.style.cursor;
             
             function resizeMove(e) {
@@ -697,10 +954,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (position.includes('bottom')) newHeight += dy;
                 if (position.includes('top')) newHeight -= dy;
                 
-                roomContainer.style.width = `${Math.max(200, newWidth)}px`;
-                roomContainer.style.height = `${Math.max(200, newHeight)}px`;
-                updateRoomDimensions();
-                updateWallFeaturesPosition();
+                containerElement.style.width = `${Math.max(200, newWidth)}px`;
+                containerElement.style.height = `${Math.max(200, newHeight)}px`;
+                updateRoomDimensions(containerElement);
+                updateWallFeaturesPosition(containerElement);
             }
             
             function resizeEnd() {
@@ -715,43 +972,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // FIXED: Clean save without img* properties
     function saveLayout() {
-        const layoutData = { 
-            room: { 
-                width: roomContainer.offsetWidth, 
-                height: roomContainer.offsetHeight 
-            }, 
-            furniture: [], 
-            openings: [] 
-        };
-        
-        roomContainer.querySelectorAll('.furniture').forEach(obj => {
-            layoutData.furniture.push({ 
-                name: obj.dataset.name, 
-                x: obj.offsetLeft, 
-                y: obj.offsetTop, 
-                width: obj.offsetWidth, 
-                height: obj.offsetHeight, 
-                zHeight: obj.dataset.zHeight, 
-                rotation: getRotationAngle(obj)
-            });
-        });
-        
-        roomContainer.querySelectorAll('.wall-feature').forEach(obj => {
-            const isVertical = obj.classList.contains('on-vertical-wall');
-            const opening = { 
-                type: obj.dataset.name, 
-                wall: obj.dataset.wall, 
-                position: isVertical ? obj.offsetTop : obj.offsetLeft, 
-                size: isVertical ? obj.offsetHeight : obj.offsetWidth, 
-                openingHeight: obj.dataset.openingHeight 
-            };
-            if (opening.type === 'window') {
-                opening.heightFromGround = obj.dataset.heightFromGround;
-            }
-            layoutData.openings.push(opening);
-        });
+        const layoutData = captureCurrentLayout();
         
         const blob = new Blob([JSON.stringify(layoutData, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
@@ -761,13 +983,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         URL.revokeObjectURL(a.href);
     }
 
-    // FIXED: Load without expecting img* properties
-    function buildLayoutFromJSON(data) {
+    function buildLayoutFromJSON(data, targetCanvas, isOptimized = false) {
         deselectAll();
-        canvas.innerHTML = '';
-        initializeApp(data.room.width, data.room.height);
+        targetCanvas.innerHTML = '';
+        initializeApp(data.room.width, data.room.height, targetCanvas, isOptimized);
         
-        (data.openings || []).forEach(o => createWallFeature(o.type, o));
+        const container = isOptimized ? optimizedRoomContainer : roomContainer;
+        
+        (data.openings || []).forEach(o => createWallFeature(o.type, o, container));
         
         (data.furniture || []).forEach(f => {
             const catalogItem = furnitureCatalog.find(item => item.name === f.name);
@@ -781,37 +1004,43 @@ document.addEventListener('DOMContentLoaded', async () => {
                     height: f.height
                 };
                 itemData.zHeight = f.zHeight;
-                createFurnitureObject(itemData, pos, true);
+                createFurnitureObject(itemData, pos, true, container);
             }
         });
         
         deselectAll();
     }
 
-    function initializeApp(width = 800, height = 600) {
-        canvas.innerHTML = '';
-        roomContainer = document.createElement('div');
-        roomContainer.id = 'room-container';
-        roomContainer.style.width = `${width}px`;
-        roomContainer.style.height = `${height}px`;
-        roomContainer.style.backgroundImage = "linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)";
-        roomContainer.style.backgroundSize = "40px 40px";
-        canvas.appendChild(roomContainer);
+    function initializeApp(width = 800, height = 600, targetCanvas = canvas, isOptimized = false) {
+        targetCanvas.innerHTML = '';
+        const container = document.createElement('div');
+        container.id = isOptimized ? 'optimized-room-container' : 'room-container';
+        container.style.width = `${width}px`;
+        container.style.height = `${height}px`;
+        container.style.backgroundImage = "linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)";
+        container.style.backgroundSize = "40px 40px";
+        targetCanvas.appendChild(container);
+        
+        if (isOptimized) {
+            optimizedRoomContainer = container;
+        } else {
+            roomContainer = container;
+        }
         
         const roomDimDisplay = document.createElement('div');
         roomDimDisplay.className = 'dimension-display room-dimension';
-        roomContainer.appendChild(roomDimDisplay);
-        updateRoomDimensions();
+        container.appendChild(roomDimDisplay);
+        updateRoomDimensions(container);
         
         ['top-left', 'top-right', 'bottom-left', 'bottom-right'].forEach(pos => {
             const handle = document.createElement('div');
             handle.className = `handle room-handle ${pos}`;
-            roomContainer.appendChild(handle);
-            addRoomResizeListener(handle, pos);
+            container.appendChild(handle);
+            addRoomResizeListener(handle, pos, container);
         });
         
-        roomContainer.addEventListener('dragover', e => e.preventDefault());
-        roomContainer.addEventListener('drop', handleDrop);
+        container.addEventListener('dragover', e => e.preventDefault());
+        container.addEventListener('drop', e => handleDrop(e, container));
     }
 
     deleteBtn.addEventListener('click', () => {
@@ -833,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const reader = new FileReader();
             reader.onload = (re) => {
                 try {
-                    buildLayoutFromJSON(JSON.parse(re.target.result));
+                    buildLayoutFromJSON(JSON.parse(re.target.result), canvas, false);
                 } catch (err) {
                     alert('Error: Could not load layout from file.');
                     console.error(err);
