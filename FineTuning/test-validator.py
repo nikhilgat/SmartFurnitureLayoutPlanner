@@ -3,7 +3,7 @@ import json
 from validator import LayoutValidator
 
 # Load your sample layout
-with open('packed.json') as f:
+with open('room-layout-optimized.json') as f:
     layout = json.load(f)
 
 validator = LayoutValidator(layout)

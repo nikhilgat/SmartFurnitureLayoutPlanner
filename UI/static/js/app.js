@@ -531,6 +531,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!isOverlapping(obj, potentialState, containerElement)) {
                     obj.style.width = `${Math.max(20, newWidth)}px`;
                     obj.style.height = `${Math.max(20, newHeight)}px`;
+                    const img = obj.querySelector('img');
+                    const scaleX = newWidth / startWidth;
+                    const scaleY = newHeight / startHeight;
+                    img.style.transformOrigin = 'center center';
+                    img.style.transform = `translate(-50%, -50%) scale(${scaleX}, ${scaleY})`;
+                    img.style.position = 'absolute';
+                    img.style.left = '50%';
+                    img.style.top = '50%';
+
                     updateFurnitureDimensionLabel(obj);
                     obj.classList.remove('colliding');
                 } else {
@@ -815,9 +824,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         obj.style.left = `${pos.x}px`;
         obj.style.top = `${pos.y}px`;
         obj.style.transform = `rotate(${pos.rotation || 0}deg)`;
-        obj.style.width = `${pos.width || itemData.width}px`;
-        obj.style.height = `${pos.height || itemData.height}px`;
 
+        // Append handles and dim display first
         obj.innerHTML = `
             <div class="handle resize-handle"></div>
             <div class="handle rotate-handle"></div>
@@ -827,12 +835,67 @@ document.addEventListener('DOMContentLoaded', async () => {
         const img = document.createElement('img');
         img.src = itemData.image;
         img.alt = itemData.name;
+        img.style.position = 'absolute';
+        img.style.top = '0';
+        img.style.left = '0';
         img.draggable = false;
         obj.appendChild(img);
 
+        // Use precomputed bounds to set size and position
+        const bounds = furnitureBounds[itemData.name];
+        if (bounds) {
+            const scale = (pos.width || itemData.width) / bounds.width;
+            obj.style.width = `${pos.width || itemData.width}px`;
+            obj.style.height = `${pos.height || (bounds.height * scale)}px`;
+            // Position img to crop to tight bounds
+            img.style.width = `${img.naturalWidth * scale}px`;
+            img.style.height = `${img.naturalHeight * scale}px`;
+            img.style.left = `${-bounds.minX * scale}px`;
+            img.style.top = `${-bounds.minY * scale}px`;
+        } else {
+            // Fallback
+            obj.style.width = `${pos.width || itemData.width}px`;
+            obj.style.height = `${pos.height || itemData.height}px`;
+        }
+
+        img.onload = () => {
+            if (!bounds) {
+                // Recompute if not precomputed
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCanvas.width = img.naturalWidth;
+                tempCanvas.height = img.naturalHeight;
+                tempCtx.drawImage(img, 0, 0);
+                const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+                const data = imageData.data;
+                let minX = tempCanvas.width, minY = tempCanvas.height, maxX = 0, maxY = 0;
+                for (let y = 0; y < tempCanvas.height; y++) {
+                    for (let x = 0; x < tempCanvas.width; x++) {
+                        const i = (y * tempCanvas.width + x) * 4;
+                        if (data[i + 3] > 0) {
+                            minX = Math.min(minX, x);
+                            minY = Math.min(minY, y);
+                            maxX = Math.max(maxX, x);
+                            maxY = Math.max(maxY, y);
+                        }
+                    }
+                }
+                const bWidth = maxX - minX + 1;
+                const bHeight = maxY - minY + 1;
+                const scale = (pos.width || itemData.width) / bWidth;
+                obj.style.width = `${pos.width || itemData.width}px`;
+                obj.style.height = `${bHeight * scale}px`;
+                img.style.width = `${img.naturalWidth * scale}px`;
+                img.style.height = `${img.naturalHeight * scale}px`;
+                img.style.left = `${-minX * scale}px`;
+                img.style.top = `${-minY * scale}px`;
+                furnitureBounds[itemData.name] = { minX, minY, width: bWidth, height: bHeight, naturalScale: scale };
+            }
+            updateFurnitureDimensionLabel(obj);
+        };
+
         containerElement.appendChild(obj);
         addFurnitureEventListeners(obj, containerElement);
-        updateFurnitureDimensionLabel(obj);
         
         if (!loaded) selectObject(obj);
     }
@@ -910,18 +973,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 position: closestWall.position - (itemData.width / 2) 
             }, containerElement);
         } else {
+            // Calculate adjusted height based on bounds
+            const bounds = furnitureBounds[itemData.name];
+            const adjHeight = bounds ? (itemData.width / bounds.width) * bounds.height : itemData.height;
+
             const pos = { 
                 x: x - (itemData.width / 2), 
-                y: y - (itemData.height / 2), 
+                y: y - (adjHeight / 2),  // ✅ Use adjHeight
                 rotation: 0,
                 width: itemData.width,
-                height: itemData.height
+                height: adjHeight  // ✅ Use adjHeight
             };
             const checkState = { 
                 x: pos.x, 
                 y: pos.y, 
                 width: itemData.width, 
-                height: itemData.height, 
+                height: adjHeight, 
                 rotation: 0 
             };
             if (!isOverlapping(null, checkState, containerElement)) {

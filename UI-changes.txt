@@ -1,0 +1,26 @@
+the UI seems goos but there are still areas for improvement.
+
+the catalogue could be made better as it seems to be not proper full UI.
+
+the font can be changed and made better.
+
+the buttons can be made Uniform except the delete button.
+
+the show dimension does not move the white circle.
+
+the show optimimezed will work and no where is the indication to click it.
+
+after optmimzation, it needs to prompt to click the button.
+
+after another layout is loaded, there is a bug of the pop up still showing as optimization completed.
+
+showing the layout side by side seems to be enough and there is no need of another extra button to switch views.
+
+the catalogue button is visible after clicking it so it needs to be subtly hidden
+
+adjusting the dimension should be shown in the beginning,
+
+the furniture objects need to have a true to the png bounding box
+
+should add a section beneath the layouts shown as to what were the violations that were fixed later on in the optimimzed layout.
+

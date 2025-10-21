@@ -3,7 +3,7 @@ import json
 from optimizer import LayoutOptimizer
 
 # Load input layout
-with open('Fine-Tuning/layouts/room-layout (33).json') as f:
+with open('FineTuning/layouts/room-layout (43).json') as f:
     layout = json.load(f)
 
 # Optimize

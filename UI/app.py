@@ -11,13 +11,10 @@ import time
 
 app = Flask(__name__)
 
-# Initialize database
 db = LayoutDatabase()
 
-# Initialize model manager
 model_manager = get_model_manager()
 
-# Start loading the model in the background when Flask starts
 print("\n" + "="*60)
 print("STARTING FLASK SERVER")
 print("Initiating background model loading...")
@@ -79,18 +76,15 @@ def optimize_layout():
         layout_data = data['layout']
         notes = data.get('notes', None)
         
-        # Check if model is loaded
         if not model_manager.is_loaded:
             return jsonify({
                 'success': False,
                 'error': 'Model is still loading. Please wait.'
             }), 503
         
-        # Save original layout to database
         original_layout_id = db.save_original_layout(layout_data, notes)
         print(f"[API] Saved original layout with ID: {original_layout_id}")
         
-        # Create placeholder for optimized layout (status: pending)
         optimized_layout_id = db.save_optimized_layout(
             original_layout_id=original_layout_id,
             layout_data=None,
@@ -98,13 +92,10 @@ def optimize_layout():
         )
         print(f"[API] Created optimized layout placeholder with ID: {optimized_layout_id}")
         
-        # Submit to optimization queue
         job_id = model_manager.submit_optimization(layout_data, original_layout_id)
         print(f"[API] Submitted optimization job: {job_id}")
         
-        # Store optimized_layout_id in job tracking (for later update)
-        # We'll need to update the database once optimization completes
-        
+
         return jsonify({
             'success': True,
             'original_layout_id': original_layout_id,
@@ -138,13 +129,10 @@ def optimization_status(job_id):
     try:
         status = model_manager.get_optimization_status(job_id)
         
-        # If completed, update database
         if status['status'] == 'completed' and 'output_layout' in status:
-            # Find the optimized_layout_id from the database
             original_layout_id = status['original_layout_id']
             optimized_layouts = db.get_optimized_by_original(original_layout_id)
             
-            # Update the most recent pending one
             for opt in optimized_layouts:
                 if opt['status'] == 'pending':
                     db.update_optimization_status(
@@ -158,7 +146,6 @@ def optimization_status(job_id):
                     status['optimized_layout_id'] = opt['id']
                     break
         
-        # If failed, update database
         elif status['status'] == 'failed':
             original_layout_id = status['original_layout_id']
             optimized_layouts = db.get_optimized_by_original(original_layout_id)
