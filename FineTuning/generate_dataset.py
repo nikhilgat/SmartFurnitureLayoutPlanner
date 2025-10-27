@@ -2,7 +2,7 @@ import json
 import random
 import os
 import sys
-from optimizer import LayoutOptimizer
+from FineTuning.optimizer import LayoutOptimizer
 from validator import LayoutValidator
 
 def generate_random_layout():

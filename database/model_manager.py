@@ -90,7 +90,7 @@ class ModelManager:
             base_model = AutoModelForCausalLM.from_pretrained(
                 "Qwen/Qwen2.5-Math-7B-Instruct",
                 device_map="auto",
-                torch_dtype=torch.float16,  # Always use float16 for GPU
+                dtype=torch.float16,  # Always use float16 for GPU
                 low_cpu_mem_usage=True,
                 max_memory={0: "15GB", "cpu": "30GB"}  # Adjust based on your GPU
             )
@@ -134,6 +134,11 @@ class ModelManager:
             self.is_loading = False
             self.loading_stage = f"Error: {str(e)}"
             print(f"\n[ERROR] Failed to load model: {e}")
+
+        print("[WARMUP] Running a short dummy generation...")
+        _ = self.model.generate(**self.tokenizer("warmup", return_tensors="pt").to(self.device), max_new_tokens=5)
+        torch.cuda.synchronize()
+        print("[WARMUP] Done.")
     
     def get_loading_status(self):
         """Get current loading status"""

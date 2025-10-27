@@ -21,7 +21,7 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     load_in_4bit=True,
     device_map="auto",
-    torch_dtype=torch.float16
+    dtype=torch.float16
 )
 
 print("Preparing model for training...")

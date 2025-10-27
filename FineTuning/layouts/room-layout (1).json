@@ -6,55 +6,55 @@
   "furniture": [
     {
       "name": "Bed",
-      "x": 28,
-      "y": 67,
+      "x": 76,
+      "y": 424,
       "width": 160,
-      "height": 200,
+      "height": 150,
       "zHeight": "55",
       "rotation": 0
     },
     {
-      "name": "Study Table",
-      "x": 426,
-      "y": 103,
-      "width": 120,
-      "height": 80,
-      "zHeight": "75",
-      "rotation": 0
-    },
-    {
       "name": "Wardrobe",
-      "x": 150,
-      "y": 340,
+      "x": 294,
+      "y": 475,
       "width": 150,
-      "height": 60,
+      "height": 89,
       "zHeight": "200",
       "rotation": 0
     },
     {
-      "name": "Bedside Table",
-      "x": 280,
-      "y": 70,
-      "width": 60,
-      "height": 60,
-      "zHeight": "60",
-      "rotation": 0
-    },
-    {
       "name": "Study Chair",
-      "x": 463,
-      "y": 294,
+      "x": 579,
+      "y": 503,
       "width": 50,
       "height": 50,
       "zHeight": "42",
       "rotation": 0
     },
     {
+      "name": "Bedside Table",
+      "x": 491,
+      "y": 489,
+      "width": 60,
+      "height": 30,
+      "zHeight": "60",
+      "rotation": 0
+    },
+    {
+      "name": "Study Table",
+      "x": 313,
+      "y": 43,
+      "width": 120,
+      "height": 53,
+      "zHeight": "75",
+      "rotation": 0
+    },
+    {
       "name": "Sofa",
-      "x": 511,
-      "y": 429,
+      "x": 288,
+      "y": 314,
       "width": 160,
-      "height": 110,
+      "height": 80,
       "zHeight": "85",
       "rotation": 0
     }
@@ -63,22 +63,22 @@
     {
       "type": "door",
       "wall": "bottom",
-      "position": 331,
+      "position": 314,
       "size": 90,
       "openingHeight": "210"
     },
     {
       "type": "window",
-      "wall": "left",
-      "position": 209,
+      "wall": "right",
+      "position": 153,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"
     },
     {
       "type": "window",
-      "wall": "right",
-      "position": 188,
+      "wall": "left",
+      "position": 147,
       "size": 120,
       "openingHeight": "100",
       "heightFromGround": "90"

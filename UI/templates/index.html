@@ -36,11 +36,6 @@
       align-items: flex-start;
     }
 
-    #canvas-container.top-bottom {
-      flex-direction: column;
-      align-items: center;
-    }
-
     .canvas-section {
       flex: 1;
       display: flex;
@@ -467,18 +462,10 @@
       position: relative;
       width: 44px;
       height: 24px;
-      background: #4b5563;
       border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: #4b5563;
+      transition: background-color 0.2s;
     }
-
-    .toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
     .toggle-slider {
       position: absolute;
       top: 2px;
@@ -489,22 +476,15 @@
       border-radius: 50%;
       transition: all 0.2s;
     }
-
-    .toggle-switch input:checked ~ .toggle-slider {
+    input.peer:checked ~ .toggle-slider {
       transform: translateX(20px);
+      background: #3b82f6;
     }
-
-    .toggle-switch input:checked ~ .toggle-slider {
-      background: white;
-    }
-
-    .toggle-switch input:checked {
+    input.peer:checked + .toggle-switch {
       background: #3b82f6;
     }
 
-    #toggle-dims-switch:checked + .toggle-switch {
-      background: #3b82f6;
-    }
+
 
     #contextual-settings {
       display: flex;
@@ -646,24 +626,17 @@
         <!-- View Toggle (hidden by default) -->
         <div id="view-toggle-container" class="view-toggle" style="display: none;">
           <button id="view-side-by-side">Side by Side</button>
-          <button id="view-top-bottom" class="active">Top & Bottom</button>
         </div>
 
-        <div class="toggle-container">
-          <span class="text-sm text-slate-300 font-medium">Show Dimensions</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="toggle-dims-switch" class="sr-only" checked>
-            <div class="toggle-switch">
-              <div class="toggle-slider"></div>
-            </div>
-          </label>
-        </div>
-        
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-dims-switch" class="sr-only peer" checked>
+          <div class="toggle-slider peer-checked:translate-x-[20px] peer-checked:bg-blue-500"></div>
+        </label>
+
         <input type="file" id="load-layout-input" class="hidden" accept=".json">
         <button id="load-btn" class="btn">Load</button>
         <button id="save-btn" class="btn">Save</button>
         <button id="optimize-btn" class="btn">Optimize Layout</button>
-        <button id="show-optimized-btn" class="btn" disabled>Show Optimized</button>
         <button id="delete-btn" class="btn" disabled>Delete</button>
       </div>
     </header>
@@ -680,6 +653,6 @@
     </div>
   </main>
 
-  <script src="/static/js/app.js"></script>
+  <script src="/static/js/app.js"></script>#canvas-container
 </body>
 </html>

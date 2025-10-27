@@ -378,4 +378,4 @@ if __name__ == '__main__':
     print("Access the app at: http://localhost:5000")
     print("="*60 + "\n")
     
-    app.run(debug=True, threaded=True)
+    app.run(debug=False, threaded=False)

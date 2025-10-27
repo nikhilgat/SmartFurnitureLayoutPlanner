@@ -1,7 +1,7 @@
 // Global state
 let currentJobId = null;
 let optimizedLayoutData = null;
-let currentViewMode = 'top-bottom'; // 'side-by-side' or 'top-bottom'
+let currentViewMode = 'side-by-side';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const furnitureList = document.getElementById('furniture-list');
@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const deleteBtn = document.getElementById('delete-btn');
     const saveBtn = document.getElementById('save-btn');
     const optimizeBtn = document.getElementById('optimize-btn');
-    const showOptimizedBtn = document.getElementById('show-optimized-btn');
     const toggleDimsSwitch = document.getElementById('toggle-dims-switch');
     const loadBtn = document.getElementById('load-btn');
     const loadLayoutInput = document.getElementById('load-layout-input');
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // View toggle buttons
     const viewToggleContainer = document.getElementById('view-toggle-container');
     const viewSideBySideBtn = document.getElementById('view-side-by-side');
-    const viewTopBottomBtn = document.getElementById('view-top-bottom');
     
     let roomContainer;
     let optimizedRoomContainer;
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Optimization error:', error);
             alert(`Optimization failed: ${error.message}`);
             optimizeBtn.disabled = false;
-            optimizeBtn.textContent = '✨ Optimize Layout';
+            optimizeBtn.textContent = 'Optimize Layout';
             document.getElementById('optimization-status').classList.add('hidden');
         }
     }
@@ -164,12 +162,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Store optimized layout
                     optimizedLayoutData = status.output_layout;
                     
-                    // Enable show optimized button
-                    showOptimizedBtn.disabled = false;
+                    // Automatically show optimized layout
+                    showOptimizedLayout();
                     
                     // Re-enable optimize button
                     optimizeBtn.disabled = false;
-                    optimizeBtn.textContent = '✨ Optimize Layout';
+                    optimizeBtn.textContent = 'Optimize Layout';
 
                     // Hide status after 3 seconds
                     setTimeout(() => {
@@ -183,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     statusTitle.style.color = '#ef4444';
                     
                     optimizeBtn.disabled = false;
-                    optimizeBtn.textContent = '✨ Optimize Layout';
+                    optimizeBtn.textContent = 'Optimize Layout';
 
                     setTimeout(() => {
                         statusToast.classList.add('hidden');
@@ -255,7 +253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Update canvas container layout
         const canvasContainer = document.getElementById('canvas-container');
         canvasContainer.classList.remove('single-view');
-        canvasContainer.classList.add(currentViewMode);
+        canvasContainer.classList.add('side-by-side');
 
         // Show view toggle
         viewToggleContainer.style.display = 'flex';
@@ -268,23 +266,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     viewSideBySideBtn.addEventListener('click', () => {
         currentViewMode = 'side-by-side';
         const canvasContainer = document.getElementById('canvas-container');
-        canvasContainer.classList.remove('top-bottom');
         canvasContainer.classList.add('side-by-side');
         viewSideBySideBtn.classList.add('active');
-        viewTopBottomBtn.classList.remove('active');
     });
-
-    viewTopBottomBtn.addEventListener('click', () => {
-        currentViewMode = 'top-bottom';
-        const canvasContainer = document.getElementById('canvas-container');
-        canvasContainer.classList.remove('side-by-side');
-        canvasContainer.classList.add('top-bottom');
-        viewTopBottomBtn.classList.add('active');
-        viewSideBySideBtn.classList.remove('active');
-    });
-
+    
     optimizeBtn.addEventListener('click', optimizeCurrentLayout);
-    showOptimizedBtn.addEventListener('click', showOptimizedLayout);
 
     // ==================== SIDEBAR TOGGLE ====================
     
@@ -916,10 +902,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         feature.innerHTML = `<div class="dimension-display"></div>`;
 
         if (type === 'door') {
-            feature.style.background = 'linear-gradient(to right, #3b82f6 0%, #1e3a8a 100%)';
-            feature.style.border = '2px solid #60a5fa';
+            feature.style.background = 'linear-gradient(to right, #ff5100ff 0%, #ff6600ff 100%)';
+            feature.style.border = '2px solid #ff782fff';
             feature.style.borderRadius = '3px';
-            feature.style.boxShadow = '0 0 8px rgba(59,130,246,0.5)';
+            feature.style.boxShadow = '0 0 8px rgba(255, 115, 0, 0.5)';
         } else if (type === 'window') {
             feature.style.background = 'linear-gradient(145deg, #38bdf8 0%, #0ea5e9 100%)';
             feature.style.border = '2px solid #7dd3fc';
