@@ -317,6 +317,83 @@ def delete_layout_pair(original_layout_id):
             'error': str(e)
         }), 500
 
+# ==================== VISUALIZATION API ====================
+
+@app.route('/api/visualize-costs', methods=['POST'])
+def visualize_costs():
+    """
+    Generate cost visualization charts
+    
+    Expected JSON body:
+    {
+        "original_layout": { ... },
+        "optimized_layout": { ... }
+    }
+    
+    Returns:
+    {
+        "success": true/false,
+        "images": {
+            "radar": "/static/visualizations/cost_radar.png",
+            "improvement_bars": "/static/visualizations/improvement_bars.png",
+            "cost_breakdown": "/static/visualizations/cost_breakdown.png",
+            "total_cost": "/static/visualizations/total_cost.png"
+        }
+    }
+    """
+    try:
+        import json
+        import tempfile
+        from costFunction.visualize_costs import generate_all_visualizations
+        
+        data = request.get_json()
+        
+        if not data or 'original_layout' not in data or 'optimized_layout' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Both original and optimized layouts required'
+            }), 400
+        
+        # Create temp files for layouts
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as orig_file:
+            json.dump(data['original_layout'], orig_file)
+            orig_path = orig_file.name
+        
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as opt_file:
+            json.dump(data['optimized_layout'], opt_file)
+            opt_path = opt_file.name
+        
+        # Create static/visualizations directory if it doesn't exist
+        viz_dir = os.path.join(app.root_path, 'static', 'visualizations')
+        os.makedirs(viz_dir, exist_ok=True)
+        
+        # Generate visualizations
+        output_prefix = os.path.join(viz_dir, '')
+        generate_all_visualizations(orig_path, opt_path, output_prefix)
+        
+        # Clean up temp files
+        os.unlink(orig_path)
+        os.unlink(opt_path)
+        
+        return jsonify({
+            'success': True,
+            'images': {
+                'radar': '/static/visualizations/cost_radar.png',
+                'improvement_bars': '/static/visualizations/improvement_bars.png',
+                'cost_breakdown': '/static/visualizations/cost_breakdown.png',
+                'total_cost': '/static/visualizations/total_cost.png'
+            }
+        })
+        
+    except Exception as e:
+        print(f"[API ERROR] visualize_costs: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
 # ==================== STATISTICS API ====================
 
 @app.route('/api/statistics', methods=['GET'])

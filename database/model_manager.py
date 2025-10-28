@@ -135,7 +135,6 @@ class ModelManager:
             self.loading_stage = f"Error: {str(e)}"
             print(f"\n[ERROR] Failed to load model: {e}")
 
-        print("[WARMUP] Running a short dummy generation...")
         _ = self.model.generate(**self.tokenizer("warmup", return_tensors="pt").to(self.device), max_new_tokens=5)
         torch.cuda.synchronize()
         print("[WARMUP] Done.")

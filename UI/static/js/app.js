@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const viewToggleContainer = document.getElementById('view-toggle-container');
     const viewSideBySideBtn = document.getElementById('view-side-by-side');
     
+    // New buttons
+    const saveOptimizedBtn = document.getElementById('save-optimized-btn');
+    const visualizeCostsBtn = document.getElementById('visualize-costs-btn');
+    
     let roomContainer;
     let optimizedRoomContainer;
     let selectedObject = null;
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             // Disable optimize button
             optimizeBtn.disabled = true;
-            optimizeBtn.textContent = '⏳ Optimizing...';
+            optimizeBtn.textContent = 'Optimizing...';
 
             // Show optimization status
             const statusToast = document.getElementById('optimization-status');
@@ -155,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 } else if (status.status === 'processing') {
                     statusMessage.textContent = 'AI is optimizing your layout...';
                 } else if (status.status === 'completed') {
-                    statusTitle.textContent = '✅ Optimization Complete!';
+                    statusTitle.textContent = 'Optimization Complete!';
                     statusMessage.textContent = `Found ${status.violations_count || 0} violations`;
                     progressBar.style.width = '100%';
                     
@@ -176,7 +180,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                     break;
                 } else if (status.status === 'failed') {
-                    statusTitle.textContent = '❌ Optimization Failed';
+                    statusTitle.textContent = 'Optimization Failed';
                     statusMessage.textContent = status.error || 'Unknown error';
                     statusTitle.style.color = '#ef4444';
                     
@@ -241,6 +245,81 @@ document.addEventListener('DOMContentLoaded', async () => {
         return layoutData;
     }
 
+    async function generateCostVisualizations(originalLayout, optimizedLayout) {
+        const vizSection = document.getElementById('visualization-section');
+        const vizContent = document.getElementById('viz-content');
+        
+        // Show the section
+        vizSection.classList.remove('hidden');
+        
+        // Show loading state
+        vizContent.innerHTML = `
+            <div class="viz-loading">
+                <div class="spinner"></div>
+                <p style="color: #94a3b8;">Generating visualizations...</p>
+            </div>
+        `;
+        
+        // Scroll to visualization section smoothly
+        vizSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        try {
+            // Call backend API to generate visualizations
+            const response = await fetch('/api/visualize-costs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    original_layout: originalLayout,
+                    optimized_layout: optimizedLayout
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to generate visualizations');
+            }
+            
+            // Display the visualizations
+            const timestamp = new Date().getTime(); // Cache busting
+            vizContent.innerHTML = `
+                <div class="viz-grid">
+                    <div class="viz-card">
+                        <h3>Multi-Objective Comparison</h3>
+                        <img src="${result.images.radar}?t=${timestamp}" alt="Radar Chart">
+                    </div>
+                    <div class="viz-card">
+                        <h3>Component-wise Improvement</h3>
+                        <img src="${result.images.improvement_bars}?t=${timestamp}" alt="Improvement Bars">
+                    </div>
+                    <div class="viz-card">
+                        <h3>Weighted Cost Breakdown</h3>
+                        <img src="${result.images.cost_breakdown}?t=${timestamp}" alt="Cost Breakdown">
+                    </div>
+                    <div class="viz-card">
+                        <h3>Total Cost Comparison</h3>
+                        <img src="${result.images.total_cost}?t=${timestamp}" alt="Total Cost">
+                    </div>
+                </div>
+            `;
+            
+            console.log('Visualizations generated successfully!');
+            
+        } catch (error) {
+            console.error('Visualization error:', error);
+            vizContent.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #ef4444;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Error</h3>
+                    <p>${error.message}</p>
+                    <button onclick="document.getElementById('visualization-section').classList.add('hidden')" 
+                            style="margin-top: 1rem; padding: 0.5rem 1rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                        Close
+                    </button>
+                </div>
+            `;
+        }
+    }
+
     function showOptimizedLayout() {
         if (!optimizedLayoutData) {
             alert('No optimized layout available.');
@@ -260,6 +339,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Build optimized layout
         buildLayoutFromJSON(optimizedLayoutData, optimizedCanvas, true);
+        
+        // Enable new buttons
+        saveOptimizedBtn.disabled = false;
+        visualizeCostsBtn.disabled = false;
     }
 
     // View mode switching
@@ -271,6 +354,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     
     optimizeBtn.addEventListener('click', optimizeCurrentLayout);
+
+    // Save Optimized Layout
+    saveOptimizedBtn.addEventListener('click', () => {
+        if (!optimizedLayoutData) {
+            alert('No optimized layout available to save.');
+            return;
+        }
+        
+        const blob = new Blob([JSON.stringify(optimizedLayoutData, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'room-layout-optimized.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        
+        console.log('Optimized layout saved!');
+    });
+
+    // Visualize Costs
+    visualizeCostsBtn.addEventListener('click', async () => {
+        if (!optimizedLayoutData) {
+            alert('No optimized layout available for visualization.');
+            return;
+        }
+        
+        const originalLayout = captureCurrentLayout();
+        if (!originalLayout) {
+            alert('Please ensure you have a valid original layout.');
+            return;
+        }
+        
+        await generateCostVisualizations(originalLayout, optimizedLayoutData);
+    });
 
     // ==================== SIDEBAR TOGGLE ====================
     
@@ -344,7 +460,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const dimDisplay = obj.querySelector('.dimension-display');
         if (!dimDisplay) return;
         const angle = getRotationAngle(obj);
-        dimDisplay.textContent = `${Math.round(obj.offsetWidth)}x${Math.round(obj.offsetHeight)}x${obj.dataset.zHeight} cm (${Math.round(angle)}°)`;
+        dimDisplay.textContent = `${Math.round(obj.offsetWidth)}x${Math.round(obj.offsetHeight)}x${obj.dataset.zHeight} cm (${Math.round(angle)}Â°)`;
     }
 
     function getVertices(obj) {
@@ -965,10 +1081,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const pos = { 
                 x: x - (itemData.width / 2), 
-                y: y - (adjHeight / 2),  // ✅ Use adjHeight
+                y: y - (adjHeight / 2),  // âœ… Use adjHeight
                 rotation: 0,
                 width: itemData.width,
-                height: adjHeight  // ✅ Use adjHeight
+                height: adjHeight  // âœ… Use adjHeight
             };
             const checkState = { 
                 x: pos.x, 

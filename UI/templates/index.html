@@ -14,16 +14,20 @@
       font-weight: 400;
       margin: 0;
       padding: 0;
+      height: 100vh;
       overflow: hidden;
     }
 
     #canvas-container {
-      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 80%);
+      background-color: #0f172a;
       padding: 2rem;
-      height: calc(100vh - 80px);
-      overflow: auto;
+      padding-bottom: 3rem;
+      min-height: 600px;
       display: flex;
       gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 0;
     }
 
     #canvas-container.single-view {
@@ -56,7 +60,7 @@
     }
 
     #room-container, #optimized-room-container {
-      background-color: #1e293b;
+      background-color: #0f172a;
       position: relative;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 2px #334155;
       border-radius: 12px;
@@ -85,6 +89,9 @@
     .furniture img {
       border-radius: 6px;
       pointer-events: none;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .colliding {
@@ -285,7 +292,7 @@
       position: fixed;
       top: 100px;
       left: 20px;
-      width: 280px;
+      width: 320px;
       max-height: calc(100vh - 140px);
       background: rgba(30, 41, 59, 0.98);
       backdrop-filter: blur(20px);
@@ -298,7 +305,7 @@
     }
 
     #floating-sidebar.hidden {
-      transform: translateX(-320px);
+      transform: translateX(-340px);
       opacity: 0;
       pointer-events: none;
     }
@@ -341,100 +348,126 @@
       background: rgba(59, 130, 246, 0.1);
     }
 
+    /* Fixed Catalog Button */
     #toggle-sidebar {
       position: fixed;
       top: 100px;
       left: 20px;
       z-index: 999;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      color: white;
-      border: none;
+      background: transparent;
+      color: #3b82f6;
+      border: 2px solid #3b82f6;
       padding: 12px 16px;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
       transition: all 0.2s ease;
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: 600;
     }
 
     #toggle-sidebar:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
     }
 
     #toggle-sidebar.sidebar-open {
-      left: 320px;
+      left: 350px;
     }
 
+    /* Subtle Button Styling */
     .btn {
       border-radius: 8px;
       font-weight: 500;
       padding: 0.75rem 1.25rem;
       transition: all 0.2s ease;
       font-family: "Inter", sans-serif;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border: none;
+      border: 2px solid;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       font-size: 14px;
+      background: transparent;
     }
 
     .btn:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
       cursor: not-allowed;
-      box-shadow: none;
     }
 
+    /* Subtle styling for all buttons except delete */
     #load-btn {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: white;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: transparent;
     }
     
     #load-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
     }
 
     #save-btn {
-      background: linear-gradient(135deg, #16a34a, #15803d);
-      color: white;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: transparent;
     }
     
     #save-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
     }
 
+    #save-optimized-btn {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: transparent;
+    }
+    
+    #save-optimized-btn:hover:not(:disabled) {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
+
+    #visualize-costs-btn {
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: transparent;
+    }
+    
+    #visualize-costs-btn:hover:not(:disabled) {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
+
+    /* Delete button keeps prominent styling */
     #delete-btn {
       background: linear-gradient(135deg, #dc2626, #b91c1c);
       color: white;
+      border-color: #dc2626;
     }
     
     #delete-btn:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+      border-color: #ef4444;
     }
 
     #optimize-btn {
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: white;
+      border-color: #3b82f6;
+      color: #3b82f6;
+      background: transparent;
     }
     
     #optimize-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
-    }
-
-    #show-optimized-btn {
-      background: linear-gradient(135deg, #059669, #047857);
-      color: white;
-    }
-    
-    #show-optimized-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: #60a5fa;
+      color: #60a5fa;
     }
 
     header {
@@ -483,8 +516,6 @@
     input.peer:checked + .toggle-switch {
       background: #3b82f6;
     }
-
-
 
     #contextual-settings {
       display: flex;
@@ -549,6 +580,7 @@
       background: rgba(255,255,255,0.3);
     }
 
+    /* Fixed Image Sizing in Furniture Grid */
     .furniture-grid, .architectural-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -558,7 +590,112 @@
 
     .furniture-grid > div, .architectural-grid > div {
       aspect-ratio: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 8px;
     }
+
+    .furniture-grid img, .architectural-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Visualization Section - Fixed spacing to prevent overlap */
+    #visualization-section {
+      background-color: #0f172a;
+      padding: 3rem 2rem;
+      min-height: 400px;
+      border-top: 2px solid #0f172a;
+      width: 100%;
+      margin-top: 0;
+      clear: both;
+    }
+
+    #visualization-section.hidden {
+      display: none;
+    }
+
+    .viz-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .viz-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #60a5fa;
+      margin-bottom: 0.5rem;
+    }
+
+    .viz-header p {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+
+    .viz-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 1200px) {
+      .viz-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .viz-card {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .viz-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+
+    .viz-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .viz-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .viz-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .viz-loading .spinner {
+      width: 48px;
+      height: 48px;
+      border-width: 4px;
+      margin-bottom: 1rem;
+    }
+
   </style>
 </head>
 <body class="font-sans bg-gray-900 text-gray-100">
@@ -590,7 +727,7 @@
     </div>
   </div>
 
-  <!-- Toggle Sidebar Button -->
+  <!-- Toggle Sidebar Button (Fixed Position) -->
   <button id="toggle-sidebar" title="Toggle Furniture Catalog">
     Catalog
   </button>
@@ -599,7 +736,7 @@
   <div id="floating-sidebar" class="hidden">
     <div id="floating-sidebar-header">
       <h1>Catalog</h1>
-      <button class="sidebar-icon" id="close-sidebar" title="Close">✕</button>
+      <button class="sidebar-icon" id="close-sidebar" title="Close">close</button>
     </div>
     <div class="p-4 space-y-6">
       <div>
@@ -614,10 +751,10 @@
   </div>
 
   <!-- Main Content -->
-  <main class="flex-1 flex flex-col">
+  <main style="flex: 1; display: flex; flex-direction: column; overflow-y: auto; height: 100vh;">
     <header>
       <div class="flex items-center space-x-4">
-        <h1 class="text-xl font-bold text-slate-200">Room Planner</h1>
+        <h1 class="text-xl font-bold text-slate-200">Pflegeassistenz Navigator</h1>
       </div>
 
       <div id="contextual-settings"></div>
@@ -625,7 +762,7 @@
       <div class="flex items-center space-x-3">
         <!-- View Toggle (hidden by default) -->
         <div id="view-toggle-container" class="view-toggle" style="display: none;">
-          <button id="view-side-by-side">Side by Side</button>
+          <button id="view-side-by-side"></button>
         </div>
 
         <label class="toggle-switch">
@@ -637,6 +774,8 @@
         <button id="load-btn" class="btn">Load</button>
         <button id="save-btn" class="btn">Save</button>
         <button id="optimize-btn" class="btn">Optimize Layout</button>
+        <button id="save-optimized-btn" class="btn" disabled>Save Optimized</button>
+        <button id="visualize-costs-btn" class="btn" disabled>Visualize</button>
         <button id="delete-btn" class="btn" disabled>Delete</button>
       </div>
     </header>
@@ -651,8 +790,28 @@
         <div id="optimized-canvas"></div>
       </div>
     </div>
-  </main>
 
-  <script src="/static/js/app.js"></script>#canvas-container
+    <!-- Visualization Section -->
+    <section id="visualization-section" class="hidden">
+      <div class="viz-header">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2> </h2>
+        <p> </p>
+      </div>
+
+      <div id="viz-content">
+        <div class="viz-loading">
+          <div class="spinner"></div>
+          <p style="color: #94a3b8;">Generating visualizations...</p>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+  <script src="/static/js/app.js"></script>
 </body>
 </html>
